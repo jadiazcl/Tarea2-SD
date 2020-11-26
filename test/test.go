@@ -92,7 +92,7 @@ func gutTheFile(FileName string) uint64 {
 func test_archivo(partToSend int32) []byte {
 	fileToBeChunked := "test.pdf" // change here!
 
-	parts := gutTheFile(fileToBeChunked)
+	gutTheFile(fileToBeChunked)
 
 	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(uint64(partToSend), 10)
 
