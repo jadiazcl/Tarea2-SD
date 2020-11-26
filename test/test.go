@@ -94,7 +94,7 @@ func test_archivo(partToSend int32) []byte {
 
 	parts := gutTheFile(fileToBeChunked)
 
-	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(partToSend, 10)
+	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(uint64(partToSend), 10)
 
 	// defer file.Close()
 
@@ -124,7 +124,7 @@ func main() {
 	opcion := 0
 	fmt.Println("Ingrese -1 para cerrar el programa ")
 	fmt.Scanf("%d", &opcion)
-	test_archivo(opcion)
+	test_archivo(int32(opcion))
 
 	for opcion != -1 {
 		fmt.Println("Ingrese -1 para cerrar el programa ")
