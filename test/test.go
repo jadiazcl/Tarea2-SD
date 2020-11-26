@@ -1,14 +1,14 @@
 package main
 
  import (
-         "bufio"
+
          "fmt"
-         "io/ioutil"
+
          "math"
          "os"
          "log"
          "net"
-         "strconv"
+
          "google.golang.org/grpc"
          "context"
           pb"Lab2/Tarea2-SD/pipeline"
@@ -60,7 +60,7 @@ package main
    totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 
    fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-
+   partBuffer :=0
    for i := uint64(0); i < totalPartsNum; i++ {
 
            partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
