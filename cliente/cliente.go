@@ -1,11 +1,7 @@
 package main
 
 import (
-  "os"
   "log"
-	"encoding/csv"
-	"fmt"
-	"io"
   "strconv"
   "time"
   "golang.org/x/net/context"
