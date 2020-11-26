@@ -3,6 +3,7 @@ package main
 import (
   "log"
   "time"
+  "fmt"
   "golang.org/x/net/context"
   "google.golang.org/grpc"
     pb"Lab2/Tarea2-SD/pipeline"
