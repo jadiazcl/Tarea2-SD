@@ -60,7 +60,7 @@ package main
    totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 
    fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-   partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+   partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk))))
    partBuffer := make([]byte, partSize)
    return partBuffer
    // just for fun, let's recombine back the chunked files in a new file
