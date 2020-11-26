@@ -50,3 +50,4 @@ message Test {
 service Greeter {
   rpc SayHello (Solcamion) returns (Test) {}
 }
+
