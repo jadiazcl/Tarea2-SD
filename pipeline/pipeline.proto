@@ -2,7 +2,7 @@ syntax = "proto3";
 package pipeline;
 
 
-option go_package ="Lab2/Tarea2-SD/pipeline";
+option go_package ="Lab2-Test/Tarea2-SD/pipeline";
 
 message Message {
   string Id = 1;
@@ -47,7 +47,18 @@ message Test {
   bytes Chuck = 2;
 }
 
+message ConsultaUbicacion {
+  int32 IdArchivo = 1;  
+}
+
+message RespuestaUbicacion {
+  int32 Partes = 1;  
+  string Ubicaciones=2;
+}
+
+
 service Greeter {
   rpc SayHello (Solcamion) returns (Test) {}
+  rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
 }
 
