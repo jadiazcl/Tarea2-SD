@@ -94,7 +94,7 @@ func test_archivo(partToSend int32) []byte {
 
 	parts := gutTheFile(fileToBeChunked)
 
-	chunkToSend = fileToBeChunked + "_" + strconv.FormatUint(partToSend, 10)
+	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(partToSend, 10)
 
 	// defer file.Close()
 
@@ -112,8 +112,8 @@ func test_archivo(partToSend int32) []byte {
 	if err != nil {
 		fmt.Print(err)
 	}
-	partBuffer := make([]byte, b)
-	return partBuffer
+	//partBuffer := make([]byte, b)
+	return b
 	// just for fun, let's recombine back the chunked files in a new file
 }
 
