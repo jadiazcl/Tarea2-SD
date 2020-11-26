@@ -49,6 +49,6 @@ func enviar_ordenes(){
 
 
 func main() {
-	enviar_ordenes(2)
+	enviar_ordenes()
 
 }
