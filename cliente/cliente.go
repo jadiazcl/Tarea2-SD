@@ -3,6 +3,9 @@ package main
 import (
   "log"
   "fmt"
+  "ioutil"
+  "os"
+  
   "golang.org/x/net/context"
   "google.golang.org/grpc"
     pb"Lab2/Tarea2-SD/pipeline"
@@ -21,11 +24,11 @@ func enviar_ordenes( delta_tiempo float64){
       fmt.Println("Ingrese -1 para cerrar el programa ")
       fmt.Scanf("%d", &opcion)
     c := pb.NewGreeterClient(conn)
-    response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:opcion})
+    response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:int32(opcion)})
     if err != nil {
       log.Fatalf("Error when calling SayHello: %s", err)
     }
-    log.Printf("El codigo de seguimiento del pedido es: %d", response.IdCamion)
+    log.Printf("El codigo de seguimiento del pedido es: %d", response.Valor)
     fileName := "bigfile_" + strconv.FormatUint(1, 10)
     ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
   }
