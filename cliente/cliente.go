@@ -36,11 +36,12 @@ import (
 // }
 
 //func requestChunk( idMchn  int, parte int){
+var Maquinas = map[string]int{"dist157": 0, "dist158": 1, "dist159": 2, "dist160": 3}
+
 func requestChunk(idMchn int) {
 
-	machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
-	mchn := machines[idMchn]
+	mchn := Maquinas[idMchn]
 	conn, err := grpc.Dial(mchn+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
