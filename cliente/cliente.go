@@ -40,7 +40,7 @@ var machines [4]string
 //func requestChunk( idMchn  int, parte int){
 func requestChunk(idMchn int) {
 
-	machines = []string{"dist157", "dist158", "dist159", "dist160"}
+	machines = {"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
 	mchn := machines[idMchn]
 	conn, err := grpc.Dial(mchn+":50054", grpc.WithInsecure())
@@ -60,7 +60,7 @@ func requestChunk(idMchn int) {
 			log.Fatalf("Error when calling SayHello: %s", err)
 		}
 		log.Printf("El codigo de seguimiento del pedido es: %d", response.Valor)
-		fileName := "bigfile_" + strconv.FormatUint(parte, 10)
+		fileName := "bigfile_" + strconv.FormatUint(0, 10)
 		// fileName := "bigfile_" + strconv.FormatUint(opcion, 10)
 		ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 	}
