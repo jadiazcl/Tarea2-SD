@@ -21,7 +21,7 @@ package main
  func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
  	log.Printf("recibi %d ", in.IdCamion )
   auxiliar:=test_archivo()
- 	return &pb.Test{Valor: in.IdCamion,Chuck_data:auxiliar}, nil
+ 	return &pb.Test{Valor: in.IdCamion,Chuck:auxiliar}, nil
  }
 
  func  recepcion_clientes(){
@@ -60,13 +60,8 @@ package main
    totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 
    fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-   partBuffer :=0
-   for i := uint64(0); i < totalPartsNum; i++ {
-
-           partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
-           partBuffer := make([]byte, partSize)
-           break
-   }
+   partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+   partBuffer := make([]byte, partSize)
    return partBuffer
    // just for fun, let's recombine back the chunked files in a new file
  }

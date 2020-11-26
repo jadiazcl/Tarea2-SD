@@ -44,7 +44,7 @@ message Solcamion {
 
 message Test {
   int32 Valor = 1;
-  bytes Chuck_data = 2;
+  bytes Chuck = 2;
 }
 
 service Greeter {
