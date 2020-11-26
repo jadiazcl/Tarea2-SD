@@ -1,8 +1,7 @@
 package main
 
 import (
-  "log"
-  "time"
+  "log"  
   "fmt"
   "golang.org/x/net/context"
   "google.golang.org/grpc"
