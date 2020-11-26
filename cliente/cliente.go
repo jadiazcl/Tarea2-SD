@@ -63,9 +63,9 @@ func requestChunk(idMchn int, bookName string) {
 
 func main() {
 	requestChunk(1, "test.pdf")
-	requestChunk(2, "test.pdf")
-	requestChunk(3, "test.pdf")
-	requestChunk(1, "test.pdf")
-	requestChunk(2, "test.pdf")
+	//requestChunk(2, "test.pdf")
+	//requestChunk(3, "test.pdf")
+	// requestChunk(1, "test.pdf")
+	// requestChunk(2, "test.pdf")
 
 }

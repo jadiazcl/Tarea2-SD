@@ -31,7 +31,7 @@ type Server struct {
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	log.Printf("recibi %d ", in.Request)
 	auxiliar := test_archivo(int(in.Request), in.BookName)
-	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
