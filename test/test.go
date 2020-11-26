@@ -24,13 +24,13 @@ type Server struct {
 
 // func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
 // 	log.Printf("recibi %d ", in.IdCamion)
-// 	auxiliar := test_archivo(int(in.IdCamion))
+// 	auxiliar := sendChunk(int(in.IdCamion))
 // 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
 // }
 
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
-	log.Printf("recibi %d ", in.Request)
-	auxiliar := test_archivo(int(in.Request), in.BookName)
+	log.Printf("Se solicitará el chunk: %d ", in.Request)
+	auxiliar := sendChunk(int(in.Request), in.BookName)
 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
 }
 
@@ -92,7 +92,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func test_archivo(partToSend int, bookName string) []byte {
+func sendChunk(partToSend int, bookName string) []byte {
 
 	gutTheFile(bookName)
 
