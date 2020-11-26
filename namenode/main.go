@@ -2,8 +2,6 @@ package main
 
  import (
          "fmt"
-         "math"
-         "os"
          "log"
          "net"
          "google.golang.org/grpc"
