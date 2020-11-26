@@ -89,7 +89,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func test_archivo(partToSend int) []byte {
+func test_archivo(partToSend int32) []byte {
 	fileToBeChunked := "test.pdf" // change here!
 
 	parts := gutTheFile(fileToBeChunked)
@@ -121,8 +121,11 @@ func test_archivo(partToSend int) []byte {
 
 func main() {
 	go clientsReception()
-	test_archivo()
 	opcion := 0
+	fmt.Println("Ingrese -1 para cerrar el programa ")
+	fmt.Scanf("%d", &opcion)
+	test_archivo(opcion)
+
 	for opcion != -1 {
 		fmt.Println("Ingrese -1 para cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
