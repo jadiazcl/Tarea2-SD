@@ -43,9 +43,10 @@ message Solcamion {
 }
 
 message Test {
-  int32 IdCamion = 1;
+  int32 valor = 1;
+  bytes Chuck_data = 2;
 }
 
 service Greeter {
-  rpc SayHello (Solcamion) returns (Solcamion) {}
+  rpc SayHello (Solcamion) returns (Test) {}
 }

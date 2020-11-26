@@ -26,6 +26,8 @@ func enviar_ordenes( delta_tiempo float64){
       log.Fatalf("Error when calling SayHello: %s", err)
     }
     log.Printf("El codigo de seguimiento del pedido es: %d", response.IdCamion)
+    fileName := "bigfile_" + strconv.FormatUint(1, 10)
+    ioutil.WriteFile(fileName, response.Chuck_data, os.ModeAppend)
   }
 }
 func main() {
