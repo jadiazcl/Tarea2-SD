@@ -120,8 +120,9 @@ func test_archivo(partToSend int) []byte {
 /*-----------------------------------------------------------------------------------------*/
 
 func main() {
+
 	go clientsReception()
-	test_archivo()
+
 	opcion := 0
 	for opcion != -1 {
 		fmt.Println("Ingrese -1 para cerrar el programa ")
