@@ -58,7 +58,7 @@ func requestChunk(idMchn int) {
 			log.Fatalf("Error when calling SayHello: %s", err)
 		}
 		log.Printf("La parte solicitada es: %d", response.Valor)
-		fileName := "bigfile_" + strconv.FormatUint(fileChunk, 10)
+		fileName := "bigfile_" + strconv.FormatUint(uint64(fileChunk), 10)
 		// fileName := "bigfile_" + strconv.FormatUint(fileChunk, 10)
 		ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 	}
