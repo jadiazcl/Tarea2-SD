@@ -20,7 +20,7 @@ package main
 
  func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Solcamion, error) {
  	log.Printf("recibi %d ", in.IdCamion )
- 	return &pb.ConsultaEstado{IdCamion: 1,}, nil
+ 	return &pb.Solcamion{IdCamion: 1,}, nil
  }
 
  func  recepcion_clientes(){
