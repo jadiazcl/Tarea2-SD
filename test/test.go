@@ -26,8 +26,8 @@ package main
 
          var fileSize int64 = fileInfo.Size()
 
-         const fileChunk = 0.25 * (1 << 20) // 1 MB, change this to your requirement
-
+         const fileChunk = 256000 // 1 MB, change this to your requirement
+         fmt.Printf( "sa",fileChunk)
          // calculate total number of parts the file will be chunked into
 
          totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
