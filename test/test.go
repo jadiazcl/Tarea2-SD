@@ -89,12 +89,12 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func test_archivo(partToSend int32) []byte {
+func test_archivo(partToSend int) []byte {
 	fileToBeChunked := "test.pdf" // change here!
 
-	gutTheFile(fileToBeChunked)
+	parts := gutTheFile(fileToBeChunked)
 
-	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(uint64(partToSend), 10)
+	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(partToSend, 10)
 
 	// defer file.Close()
 
@@ -112,7 +112,7 @@ func test_archivo(partToSend int32) []byte {
 	if err != nil {
 		fmt.Print(err)
 	}
-	//partBuffer := make([]byte, b)
+	//partBuffer := make([]byte, partSize)
 	return b
 	// just for fun, let's recombine back the chunked files in a new file
 }
@@ -121,11 +121,8 @@ func test_archivo(partToSend int32) []byte {
 
 func main() {
 	go clientsReception()
+	test_archivo()
 	opcion := 0
-	fmt.Println("Ingrese -1 para cerrar el programa ")
-	fmt.Scanf("%d", &opcion)
-	test_archivo(int32(opcion))
-
 	for opcion != -1 {
 		fmt.Println("Ingrese -1 para cerrar el programa ")
 		fmt.Scanf("%d", &opcion)

@@ -18,13 +18,13 @@ import (
 //   if err != nil {
 //     log.Fatalf("did not connect: %s", err)
 //   }
-//   opcion:=0
+//   fileChunk:=0
 //   defer conn.Close()
-//   for opcion!=-1{
+//   for fileChunk!=-1{
 //       fmt.Println("Ingrese -1 para cerrar el programa ")
-//       fmt.Scanf("%d", &opcion)
+//       fmt.Scanf("%d", &fileChunk)
 //     c := pb.NewGreeterClient(conn)
-//     response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:int32(opcion)})
+//     response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:int32(fileChunk)})
 //     if err != nil {
 //       log.Fatalf("Error when calling SayHello: %s", err)
 //     }
@@ -45,21 +45,21 @@ func requestChunk(idMchn int) {
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	opcion := 0
+	fileChunk := 0
 	defer conn.Close()
-	for opcion != -1 {
+	for fileChunk != -1 {
 		fmt.Println("waiting >>>")
-		fmt.Scanf("%d", &opcion)
+		fmt.Scanf("%d", &fileChunk)
 		c := pb.NewGreeterClient(conn)
 		// response, err := c.SayHello(context.Background(), &pb.Test{Valor:int32(parte), Chuck:------}
-		response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion: int32(opcion)})
+		response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion: fileChunk}) //check
 
 		if err != nil {
 			log.Fatalf("Error when calling SayHello: %s", err)
 		}
-		log.Printf("El codigo de seguimiento del pedido es: %d", response.Valor)
+		log.Printf("La parte solicitada es: %d", response.Valor)
 		fileName := "bigfile_" + strconv.FormatUint(0, 10)
-		// fileName := "bigfile_" + strconv.FormatUint(opcion, 10)
+		// fileName := "bigfile_" + strconv.FormatUint(fileChunk, 10)
 		ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 	}
 }
