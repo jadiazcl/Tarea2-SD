@@ -22,7 +22,7 @@ package main
  }
 
  func  recepcion_clientes(){
-   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50004))
+   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
    if err != nil {
      log.Fatalf("failed to listen: %v", err)
    }
