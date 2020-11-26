@@ -9,7 +9,7 @@ package main
          "strconv"
          "google.golang.org/grpc"
          "context"
-          pb"Lab2/SD/pipeline"
+          pb"Lab2/Tarea2-SD/pipeline"
  )
 
  type Server struct {
