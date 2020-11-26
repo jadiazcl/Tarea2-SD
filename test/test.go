@@ -7,10 +7,36 @@ package main
          "math"
          "os"
          "strconv"
+         "google.golang.org/grpc"
+         "context"
+          pb"Lab2/SD/pipeline"
  )
 
- func main() {
+ type Server struct {
+     pb.UnimplementedGreeterServer
+ }
 
+ func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.ConsultaEstado, error) {
+ 	log.Printf("recibi %d ", in.IdCamion )
+ 	return &pb.ConsultaEstado{IdCamion: 1,}, nil
+ }
+
+ func  recepcion_clientes(){
+   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 9001))
+   if err != nil {
+     log.Fatalf("failed to listen: %v", err)
+   }
+   grpcServer := grpc.NewServer()
+
+   pb.RegisterGreeterServer(grpcServer, &Server{})
+
+   if err := grpcServer.Serve(lis); err != nil {
+     log.Fatalf("failed to serve: %s", err)
+   }
+ }
+
+ func main() {
+         go recepcion_clientes()
          fileToBeChunked := "test.pdf" // change here!
 
          file, err := os.Open(fileToBeChunked)
@@ -27,7 +53,6 @@ package main
          var fileSize int64 = fileInfo.Size()
 
          const fileChunk = 256000 // 1 MB, change this to your requirement
-         fmt.Printf( "sa",fileChunk)
          // calculate total number of parts the file will be chunked into
 
          totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
