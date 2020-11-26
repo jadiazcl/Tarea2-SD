@@ -48,21 +48,21 @@ func requestChunk(idMchn int) {
 	}
 	fileChunk := 0
 	defer conn.Close()
-	for fileChunk != -1 {
-		fmt.Println("waiting >>>")
-		fmt.Scanf("%d", &fileChunk)
-		c := pb.NewGreeterClient(conn)
-		// response, err := c.SayHello(context.Background(), &pb.Test{Valor:int32(parte), Chuck:------}
-		response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion: int32(fileChunk)}) //check
+	// for fileChunk != -1 {
+	fmt.Println("waiting >>>")
+	fmt.Scanf("%d", &fileChunk)
+	c := pb.NewGreeterClient(conn)
+	// response, err := c.SayHello(context.Background(), &pb.Test{Valor:int32(parte), Chuck:------}
+	response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion: int32(fileChunk)}) //check
 
-		if err != nil {
-			log.Fatalf("Error when calling SayHello: %s", err)
-		}
-		log.Printf("La parte solicitada es: %d", response.Valor)
-		fileName := "bigfile_" + strconv.FormatUint(uint64(fileChunk), 10)
-		// fileName := "bigfile_" + strconv.FormatUint(fileChunk, 10)
-		ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
 	}
+	log.Printf("La parte solicitada es: %d", response.Valor)
+	fileName := "bigfile_" + strconv.FormatUint(uint64(fileChunk), 10)
+	// fileName := "bigfile_" + strconv.FormatUint(fileChunk, 10)
+	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
+	//}
 }
 
 // func recuperar_archivo(){
@@ -77,5 +77,8 @@ func requestChunk(idMchn int) {
 
 func main() {
 	requestChunk(3)
+	requestChunk(1)
+	requestChunk(1)
+	requestChunk(2)
 
 }
