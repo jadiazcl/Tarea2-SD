@@ -34,12 +34,11 @@ import (
 //   }
 // }
 
-
 var machines string[] = ["dist157", "dist158", "dist159", "dist160"]
 
 
 //func request_chunk( id_maquina  int, parte int){
-func request_chunk(){
+func request_chunk(id_maquina  int,){
   var conn *grpc.ClientConn
   mchn := machines[id_maquina]
   conn, err := grpc.Dial( mchn + ":50054", grpc.WithInsecure())
@@ -76,6 +75,6 @@ func request_chunk(){
 
 
 func main() {
-	request_chunk()
+	request_chunk(3)
 
 }
