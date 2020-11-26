@@ -65,7 +65,7 @@ package main
 
            partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
            partBuffer := make([]byte, partSize)
-           return partBuffer
+           break
            file.Read(partBuffer)
 
            // write to disk
@@ -82,9 +82,10 @@ package main
 
            fmt.Println("Split to : ", fileName)
    }
-
+   return partBuffer
    // just for fun, let's recombine back the chunked files in a new file
  }
+
 func juntar_archivo(){
   newFileName := "NEWbigfile.pdf"
   _, err = os.Create(newFileName)
@@ -177,6 +178,7 @@ func juntar_archivo(){
   // now, we close the newFileName
   file.Close()
 }
+
  func main() {
          go recepcion_clientes()
          test_archivo()
