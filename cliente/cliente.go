@@ -1,7 +1,7 @@
 package main
 
 import (
-  "log"  
+  "log"
   "fmt"
   "golang.org/x/net/context"
   "google.golang.org/grpc"
@@ -21,7 +21,7 @@ func enviar_ordenes( delta_tiempo float64){
       fmt.Println("Ingrese -1 para cerrar el programa ")
       fmt.Scanf("%d", &opcion)
     c := pb.NewGreeterClient(conn)
-    response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:1})
+    response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:opcion})
     if err != nil {
       log.Fatalf("Error when calling SayHello: %s", err)
     }
