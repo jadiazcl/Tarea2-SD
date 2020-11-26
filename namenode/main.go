@@ -18,7 +18,7 @@ package main
  //La funcion GRPC para la consulta de la ubicacion del archivo
  func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicacion) (*pb.RespuestaUbicacion, error) {
     partes,ubicaciones:=ubicacion_archivo(int(in.IdArchivo))
- 	return &pb.RespuestaUbicacion{Partes: partes,Ubicaciones:ubicaciones}, nil
+ 	return &pb.RespuestaUbicacion{Partes: int32(partes),Ubicaciones:ubicaciones}, nil
  }
 
  // Esta funcion busca la ubicacion de las partes del archivo
