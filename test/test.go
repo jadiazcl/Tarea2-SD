@@ -18,7 +18,7 @@ package main
      pb.UnimplementedGreeterServer
  }
 
- func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.ConsultaEstado, error) {
+ func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Solcamion, error) {
  	log.Printf("recibi %d ", in.IdCamion )
  	return &pb.ConsultaEstado{IdCamion: 1,}, nil
  }
