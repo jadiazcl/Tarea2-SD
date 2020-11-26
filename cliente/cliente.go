@@ -27,7 +27,7 @@ func enviar_ordenes( delta_tiempo float64){
     }
     log.Printf("El codigo de seguimiento del pedido es: %d", response.IdCamion)
     fileName := "bigfile_" + strconv.FormatUint(1, 10)
-    ioutil.WriteFile(fileName, response.Chuck_data, os.ModeAppend)
+    ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
   }
 }
 func main() {
