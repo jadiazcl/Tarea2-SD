@@ -3,9 +3,9 @@ package main
 import (
   "log"
   "fmt"
-  "io/ioutil"
-  "os"
-  "strconv"
+  //"io/ioutil"
+  //"os"
+  //"strconv"
   "golang.org/x/net/context"
   "google.golang.org/grpc"
   pb"Lab2-Test/Tarea2-SD/pipeline"
