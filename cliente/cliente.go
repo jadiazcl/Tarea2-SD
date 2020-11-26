@@ -52,7 +52,7 @@ func requestChunk(idMchn int) {
 		fmt.Scanf("%d", &fileChunk)
 		c := pb.NewGreeterClient(conn)
 		// response, err := c.SayHello(context.Background(), &pb.Test{Valor:int32(parte), Chuck:------}
-		response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion: fileChunk}) //check
+		response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion: int32(fileChunk)}) //check
 
 		if err != nil {
 			log.Fatalf("Error when calling SayHello: %s", err)
