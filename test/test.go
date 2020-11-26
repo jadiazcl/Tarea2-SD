@@ -179,6 +179,7 @@ package main
  func main() {
          go recepcion_clientes()
          test_archivo()
+         opcion:=0
          for opcion!=-1{
              fmt.Println("Ingrese -1 para cerrar el programa ")
              fmt.Scanf("%d", &opcion)
