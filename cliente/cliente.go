@@ -35,13 +35,14 @@ import (
 // }
 
 
-var machines string[] = ["dist158", "dist159", "dist160"]
+var machines string[] = ["dist157", "dist158", "dist159", "dist160"]
 
 
-func request_chunk( id_maquina  int, parte int){
+//func request_chunk( id_maquina  int, parte int){
+func request_chunk(){
   var conn *grpc.ClientConn
-  mchn := 
-  conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
+  mchn := machines[id_maquina]
+  conn, err := grpc.Dial( mchn + ":50054", grpc.WithInsecure())
   if err != nil {
     log.Fatalf("did not connect: %s", err)
   }
@@ -51,13 +52,15 @@ func request_chunk( id_maquina  int, parte int){
       fmt.Println("waiting >>>")
       fmt.Scanf("%d", &opcion)
     c := pb.NewGreeterClient(conn)
-    response, err := c.SayHello(context.Background(), &pb.Test{Valor:int32(parte), Chuck:------})
+   // response, err := c.SayHello(context.Background(), &pb.Test{Valor:int32(parte), Chuck:------}
+    response, err := c.SayHello(context.Background(), &pb.Solcamion{IdCamion:int32(opcion)})
+
     if err != nil {
       log.Fatalf("Error when calling SayHello: %s", err)
     }
     log.Printf("El codigo de seguimiento del pedido es: %d", response.Valor)
-    //fileName := "bigfile_" + strconv.FormatUint(parte, 10)
-    fileName := "bigfile_" + strconv.FormatUint(opcion, 10)
+    fileName := "bigfile_" + strconv.FormatUint(parte, 10)
+    // fileName := "bigfile_" + strconv.FormatUint(opcion, 10)
     ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
   }
 }
