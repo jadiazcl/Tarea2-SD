@@ -175,5 +175,8 @@ package main
 
          // now, we close the newFileName
          file.Close()
-
+         for opcion!=-1{
+             fmt.Println("Ingrese -1 para cerrar el programa ")
+             fmt.Scanf("%d", &opcion)
+         }
  }
