@@ -42,6 +42,11 @@ message Solcamion {
   int32 IdCamion = 1;
 }
 
+message Book {
+  int32 Request = 1;
+  string BookName =2;
+}
+
 message Test {
   int32 Valor = 1;
   bytes Chuck = 2;

@@ -5,12 +5,12 @@ import (
 	"io/ioutil"
 	"strconv"
 
+	pb "Lab2/Tarea2-SD/pipeline"
 	"log"
 	"math"
 	"net"
 	"os"
 
-	pb "Lab2/Tarea2-SD/pipeline"
 	"context"
 
 	"google.golang.org/grpc"
@@ -22,9 +22,15 @@ type Server struct {
 
 /*-----------------------------------------------------------------------------------------*/
 
-func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
-	log.Printf("recibi %d ", in.IdCamion)
-	auxiliar := test_archivo(int(in.IdCamion))
+// func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
+// 	log.Printf("recibi %d ", in.IdCamion)
+// 	auxiliar := test_archivo(int(in.IdCamion))
+// 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
+// }
+
+func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
+	log.Printf("recibi %d ", in.Request)
+	auxiliar := test_archivo(int(in.Request), in.BookName)
 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
 }
 
@@ -46,7 +52,7 @@ func clientsReception() {
 /*-----------------------------------------------------------------------------------------*/
 
 func gutTheFile(FileName string) uint64 {
-	fileToBeChunked := FileName // change here!
+	fileToBeChunked := FileName
 	file, err := os.Open(fileToBeChunked)
 	if err != nil {
 		fmt.Println(err)
@@ -70,8 +76,6 @@ func gutTheFile(FileName string) uint64 {
 		partBuffer := make([]byte, partSize)
 
 		file.Read(partBuffer)
-
-		// write to disk
 		fileName := FileName + "_" + strconv.FormatUint(i, 10)
 		_, err := os.Create(fileName)
 
@@ -80,7 +84,6 @@ func gutTheFile(FileName string) uint64 {
 			os.Exit(1)
 		}
 
-		// write/save buffer to disk
 		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
 
 		fmt.Println("Split to : ", fileName)
@@ -89,12 +92,11 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func test_archivo(partToSend int) []byte {
-	fileToBeChunked := "test.pdf" // change here!
+func test_archivo(partToSend int, bookName string) []byte {
 
-	gutTheFile(fileToBeChunked)
+	gutTheFile(bookName)
 
-	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(uint64(partToSend), 10)
+	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 
 	// defer file.Close()
 
