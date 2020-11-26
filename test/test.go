@@ -20,7 +20,7 @@ package main
 
  func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
  	log.Printf("recibi %d ", in.IdCamion )
-  auxiliar:=leer_archivo()
+  auxiliar:=test_archivo()
  	return &pb.Test{Valor: in.IdCamion,Chuck_data:auxiliar}, nil
  }
 
@@ -38,7 +38,7 @@ package main
    }
  }
 
- func leer_archivo() []byte{
+ func test_archivo() []byte{
    fileToBeChunked := "test.pdf" // change here!
 
    file, err := os.Open(fileToBeChunked)
