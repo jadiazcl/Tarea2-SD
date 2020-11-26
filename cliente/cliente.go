@@ -16,7 +16,7 @@ import (
 
 func enviar_ordenes( delta_tiempo float64){
   var conn *grpc.ClientConn
-  conn, err := grpc.Dial("dist158:50054", grpc.WithInsecure())
+  conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
   if err != nil {
     log.Fatalf("did not connect: %s", err)
   }
