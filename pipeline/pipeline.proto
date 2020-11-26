@@ -43,7 +43,7 @@ message Solcamion {
 }
 
 message Test {
-  int32 valor = 1;
+  int32 Valor = 1;
   bytes Chuck_data = 2;
 }
 

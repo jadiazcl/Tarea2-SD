@@ -21,7 +21,7 @@ package main
  func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
  	log.Printf("recibi %d ", in.IdCamion )
   auxiliar:=leer_archivo()
- 	return &pb.Test{IdCamion: in.IdCamion,Chuck_data:auxiliar}, nil
+ 	return &pb.Test{Valor: in.IdCamion,Chuck_data:auxiliar}, nil
  }
 
  func  recepcion_clientes(){
