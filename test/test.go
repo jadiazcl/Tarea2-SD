@@ -20,7 +20,7 @@ package main
 
  func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Solcamion, error) {
  	log.Printf("recibi %d ", in.IdCamion )
- 	return &pb.Solcamion{IdCamion: 1,}, nil
+ 	return &pb.Solcamion{IdCamion: in.IdCamion,}, nil
  }
 
  func  recepcion_clientes(){
@@ -29,7 +29,7 @@ package main
      log.Fatalf("failed to listen: %v", err)
    }
    grpcServer := grpc.NewServer()
-   
+
    pb.RegisterGreeterServer(grpcServer, &Server{})
 
    if err := grpcServer.Serve(lis); err != nil {
