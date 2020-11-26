@@ -1,80 +1,130 @@
 package main
 
- import (
+import (
+	"fmt"
+	"io/ioutil"
+	"strconv"
 
-         "fmt"
+	"log"
+	"math"
+	"net"
+	"os"
 
-         "math"
-         "os"
-         "log"
-         "net"
+	pb "Lab2/Tarea2-SD/pipeline"
+	"context"
 
-         "google.golang.org/grpc"
-         "context"
-          pb"Lab2/Tarea2-SD/pipeline"
- )
+	"google.golang.org/grpc"
+)
 
- type Server struct {
-     pb.UnimplementedGreeterServer
- }
+type Server struct {
+	pb.UnimplementedGreeterServer
+}
 
- func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
- 	log.Printf("recibi %d ", in.IdCamion )
-  auxiliar:=test_archivo()
- 	return &pb.Test{Valor: in.IdCamion,Chuck:auxiliar}, nil
- }
+/*-----------------------------------------------------------------------------------------*/
 
- func  recepcion_clientes(){
-   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
-   if err != nil {
-     log.Fatalf("failed to listen: %v", err)
-   }
-   grpcServer := grpc.NewServer()
+func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
+	log.Printf("recibi %d ", in.IdCamion)
+	auxiliar := test_archivo(in.IdCamion)
+	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
+}
 
-   pb.RegisterGreeterServer(grpcServer, &Server{})
+/*-----------------------------------------------------------------------------------------*/
+func clientsReception() {
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	grpcServer := grpc.NewServer()
 
-   if err := grpcServer.Serve(lis); err != nil {
-     log.Fatalf("failed to serve: %s", err)
-   }
- }
+	pb.RegisterGreeterServer(grpcServer, &Server{})
 
- func test_archivo() []byte{
-   fileToBeChunked := "test.pdf" // change here!
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %s", err)
+	}
+}
 
-   file, err := os.Open(fileToBeChunked)
+/*-----------------------------------------------------------------------------------------*/
 
-   if err != nil {
-           fmt.Println(err)
-           os.Exit(1)
-   }
+func gutTheFile(FileName string) uint64 {
+	fileToBeChunked := FileName // change here!
+	file, err := os.Open(fileToBeChunked)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
 
-   defer file.Close()
+	fileInfo, _ := file.Stat()
 
-   fileInfo, _ := file.Stat()
+	var fileSize int64 = fileInfo.Size()
 
-   var fileSize int64 = fileInfo.Size()
+	const fileChunk = 256000 //Bytes
 
-   const fileChunk = 256000 // 1 MB, change this to your requirement
-   // calculate total number of parts the file will be chunked into
+	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 
-   totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
 
-   fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-   partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk))))
-   partBuffer := make([]byte, partSize)
-   return partBuffer
-   // just for fun, let's recombine back the chunked files in a new file
- }
+	for i := uint64(0); i < totalPartsNum; i++ {
 
+		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+		partBuffer := make([]byte, partSize)
 
+		file.Read(partBuffer)
 
+		// write to disk
+		fileName := FileName + "_" + strconv.FormatUint(i, 10)
+		_, err := os.Create(fileName)
 
- func main() {
-         go recepcion_clientes()
-         test_archivo()
-         opcion:=0
-         for opcion!=-1{
-             fmt.Println("Ingrese -1 para cerrar el programa ")
-             fmt.Scanf("%d", &opcion)
-         }
- }
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		// write/save buffer to disk
+		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+
+		fmt.Println("Split to : ", fileName)
+	}
+	return totalPartsNum
+}
+
+/**---------------------------------------------------------------------------------------------wwww*/
+func test_archivo(partToSend int) []byte {
+	fileToBeChunked := "test.pdf" // change here!
+
+	parts := gutTheFile(fileToBeChunked)
+
+	chunkToSend = fileToBeChunked + "_" + strconv.FormatUint(partToSend, 10)
+
+	// defer file.Close()
+
+	// fileInfo, _ := file.Stat()
+
+	// var fileSize int64 = fileInfo.Size()
+
+	// const fileChunk = 256000
+
+	//totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+
+	//fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+	//partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk)))) //parte del archivo
+	b, err := ioutil.ReadFile(chunkToSend) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+	partBuffer := make([]byte, b)
+	return partBuffer
+	// just for fun, let's recombine back the chunked files in a new file
+}
+
+/*-----------------------------------------------------------------------------------------*/
+
+func main() {
+	go clientsReception()
+	test_archivo()
+	opcion := 0
+	for opcion != -1 {
+		fmt.Println("Ingrese -1 para cerrar el programa ")
+		fmt.Scanf("%d", &opcion)
+	}
+}
