@@ -29,7 +29,7 @@ package main
      log.Fatalf("failed to listen: %v", err)
    }
    grpcServer := grpc.NewServer()
-
+   
    pb.RegisterGreeterServer(grpcServer, &Server{})
 
    if err := grpcServer.Serve(lis); err != nil {
