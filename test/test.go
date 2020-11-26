@@ -24,7 +24,7 @@ type Server struct {
 
 func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
 	log.Printf("recibi %d ", in.IdCamion)
-	auxiliar := test_archivo(in.IdCamion)
+	auxiliar := test_archivo(int(in.IdCamion))
 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
 }
 
@@ -94,7 +94,7 @@ func test_archivo(partToSend int) []byte {
 
 	parts := gutTheFile(fileToBeChunked)
 
-	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(partToSend, 10)
+	chunkToSend := fileToBeChunked + "_" + strconv.FormatUint(uint64(partToSend), 10)
 
 	// defer file.Close()
 
