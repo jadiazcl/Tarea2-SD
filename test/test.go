@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	pb "Lab2/Tarea2-SD/pipeline"
+	"errors"
 	"log"
 	"math"
 	"net"
@@ -38,9 +39,11 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 /*-----------------------------------------------------------------------------------------*/
 func clientsReception() {
 	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
+
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	grpcServer := grpc.NewServer()
 
 	pb.RegisterGreeterServer(grpcServer, &Server{})
@@ -93,7 +96,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func sendChunk(partToSend int, bookName string) ([]byte, int) {
+func sendChunk(partToSend int, bookName string) ([]byte, error) {
 
 	totalParts := gutTheFile(bookName)
 
@@ -117,7 +120,7 @@ func sendChunk(partToSend int, bookName string) ([]byte, int) {
 	}
 
 	if totalParts >= partToSend {
-		return chunkBytes, totalParts
+		return chunkBytes, errors.New("unavailable")
 	} else {
 		return chunkBytes, nil
 
