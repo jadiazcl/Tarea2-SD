@@ -32,7 +32,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) *pb.Test {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
 	auxiliar := sendChunk((req), in.BookName)
-	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, err
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}
 }
 
 /*-----------------------------------------------------------------------------------------*/
