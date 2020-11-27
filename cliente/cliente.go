@@ -40,8 +40,8 @@ func requestChunk(idMchn int, bookName string) {
 
 	machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
-  mchn := machines[idMchn]
-  log.Println("maquina": mchn)
+	mchn := machines[idMchn]
+	log.Println("maquina", mchn)
 	conn, err := grpc.Dial(mchn+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
