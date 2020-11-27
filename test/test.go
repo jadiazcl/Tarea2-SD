@@ -29,16 +29,16 @@ type Server struct {
 // }
 
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
-  log.Printf("Se solicitará el chunk: %d ", in.Request)
-  err := nil
-  req := int(in.Request)
-  auxiliar, parts:= sendChunk(req), in.BookName)
-  if(req >= parts){
-    err = 1
-  }else{
-    err=nil
-  }
-  
+	log.Printf("Se solicitará el chunk: %d ", in.Request)
+	err := nil
+	req := int(in.Request)
+	auxiliar, parts := sendChunk((req), in.BookName)
+	if req >= parts {
+		err = 1
+	} else {
+		err = nil
+	}
+
 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, err
 }
 
