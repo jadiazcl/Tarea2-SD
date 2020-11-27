@@ -119,7 +119,7 @@ func sendChunk(partToSend int, bookName string) ([]byte, error) {
 		fmt.Print(err)
 	}
 
-	if totalParts >= partToSend {
+	if int(totalParts) >= partToSend {
 		return chunkBytes, errors.New("unavailable")
 	} else {
 		return chunkBytes, nil
