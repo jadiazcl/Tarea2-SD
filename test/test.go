@@ -28,11 +28,11 @@ type Server struct {
 // 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
 // }
 
-func (s *Server) SayHello(ctx context.Context, in *pb.Book) *pb.Test {
+func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
-	auxiliar := sendChunk((req), in.BookName)
-	return &pb.Test{Valor: in.Request, Chuck: auxiliar}
+	auxiliar, err := sendChunk((req), in.BookName)
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, err
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -95,7 +95,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func sendChunk(partToSend int, bookName string) []byte {
+func sendChunk(partToSend int, bookName string) ([]byte, error) {
 
 	gutTheFile(bookName)
 
@@ -118,7 +118,7 @@ func sendChunk(partToSend int, bookName string) []byte {
 		fmt.Print(err)
 	}
 
-	return chunkBytes
+	return chunkBytes, nil
 
 	//partBuffer := make([]byte, partSize)
 	// just for fun, let's recombine back the chunked files in a new file
