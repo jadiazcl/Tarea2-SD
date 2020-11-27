@@ -30,15 +30,8 @@ type Server struct {
 
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	log.Printf("Se solicitará el chunk: %d ", in.Request)
-	err := nil
 	req := int(in.Request)
-	auxiliar, parts := sendChunk((req), in.BookName)
-	if req >= parts {
-		err = 1
-	} else {
-		err = nil
-	}
-
+	auxiliar, err := sendChunk((req), in.BookName)
 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, err
 }
 
@@ -122,8 +115,14 @@ func sendChunk(partToSend int, bookName string) ([]byte, int) {
 	if err != nil {
 		fmt.Print(err)
 	}
+
+	if totalParts >= partToSend {
+		return chunkBytes, totalParts
+	} else {
+		return chunkBytes, nil
+
+	}
 	//partBuffer := make([]byte, partSize)
-	return chunkBytes, totalParts
 	// just for fun, let's recombine back the chunked files in a new file
 }
 
