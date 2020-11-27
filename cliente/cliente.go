@@ -48,9 +48,9 @@ func requestChunk(idMchn int) {
 
 }
 
-var writePosition int64 = 0
-
+/*---------------------------------------------------*/
 func stitchTheFile(originalName string, totalPartsNum uint64) {
+	writePosition := int64(0)
 
 	for j := uint64(0); j < totalPartsNum; j++ {
 		currentChunkFileName := originalName + "_" + strconv.FormatUint(j, 10)
@@ -83,6 +83,16 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
+		file, err := os.Open(originalName)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		defer file.Close()
+
 		n, err := file.Write(chunkBufferBytes)
 
 		if err != nil {
