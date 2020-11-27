@@ -36,7 +36,7 @@ import (
 // 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 // 	//REARMAR
 // }
-func requestChunk(idMchn int, bookName string) {
+func requestChunk(idMchn int) {
 
 	machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
@@ -47,11 +47,13 @@ func requestChunk(idMchn int, bookName string) {
 		log.Fatalf("did not connect: %s", err)
 	}
 	fileChunk := 0
+	bookTag := ""
 	defer conn.Close()
 	fmt.Println("waiting >>>")
 	fmt.Scanf("%d", &fileChunk)
+	fmt.Scanf("%s", &bookTag)
 	c := pb.NewGreeterClient(conn)
-	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookName})
+	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
@@ -63,10 +65,10 @@ func requestChunk(idMchn int, bookName string) {
 }
 
 func main() {
-	requestChunk(1, "test.pdf")
-	requestChunk(2, "test.pdf")
-	requestChunk(3, "test.pdf")
-	requestChunk(1, "test.pdf")
-	requestChunk(2, "test.pdf")
+	requestChunk(1)
+	requestChunk(2)
+	requestChunk(3)
+	requestChunk(1)
+	requestChunk(2)
 
 }
