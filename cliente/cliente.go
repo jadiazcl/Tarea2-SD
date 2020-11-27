@@ -51,11 +51,14 @@ func requestChunk(idMchn int) {
 	defer conn.Close()
 
 	fmt.Println("waiting >>>")
-	fmt.Println("Chunk Solicitado:")
+	fmt.Println("*     Chunk Solicitado      *")
 	fmt.Scanf("%d", &fileChunk)
-	fmt.Println("  Nombre del Archivo Original:")
+	fmt.Println("*****************************")
+	fmt.Println("Nombre del Archivo Original *")
 
 	fmt.Scanf("%s", &bookTag)
+	fmt.Println("*****************************")
+
 	c := pb.NewGreeterClient(conn)
 	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
@@ -70,9 +73,9 @@ func requestChunk(idMchn int) {
 
 func main() {
 	requestChunk(1)
-	// requestChunk(2)
-	// requestChunk(3)
-	// requestChunk(1)
-	// requestChunk(2)
+	requestChunk(2)
+	requestChunk(3)
+	requestChunk(1)
+	requestChunk(2)
 
 }
