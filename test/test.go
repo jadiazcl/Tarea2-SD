@@ -29,9 +29,17 @@ type Server struct {
 // }
 
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
-	log.Printf("Se solicitará el chunk: %d ", in.Request)
-	auxiliar := sendChunk(int(in.Request), in.BookName)
-	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
+  log.Printf("Se solicitará el chunk: %d ", in.Request)
+  err := nil
+  req := int(in.Request)
+  auxiliar, parts:= sendChunk(req), in.BookName)
+  if(req >= parts){
+    err = 1
+  }else{
+    err=nil
+  }
+  
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, err
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -92,9 +100,9 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func sendChunk(partToSend int, bookName string) []byte {
+func sendChunk(partToSend int, bookName string) ([]byte, int) {
 
-	gutTheFile(bookName)
+	totalParts := gutTheFile(bookName)
 
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 
@@ -110,12 +118,12 @@ func sendChunk(partToSend int, bookName string) []byte {
 
 	//fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
 	//partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk)))) //parte del archivo
-	b, err := ioutil.ReadFile(chunkToSend) // just pass the file name
+	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
 	//partBuffer := make([]byte, partSize)
-	return b
+	return chunkBytes, totalParts
 	// just for fun, let's recombine back the chunked files in a new file
 }
 
