@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	pb "Lab2/Tarea2-SD/pipeline"
-	"errors"
 	"log"
 	"math"
 	"net"
@@ -98,7 +97,7 @@ func gutTheFile(FileName string) uint64 {
 /**---------------------------------------------------------------------------------------------wwww*/
 func sendChunk(partToSend int, bookName string) ([]byte, error) {
 
-	totalParts := gutTheFile(bookName)
+	gutTheFile(bookName)
 
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 
@@ -119,12 +118,8 @@ func sendChunk(partToSend int, bookName string) ([]byte, error) {
 		fmt.Print(err)
 	}
 
-	if int(totalParts) >= partToSend {
-		return chunkBytes, errors.New("unavailable")
-	} else {
-		return chunkBytes, nil
+	return chunkBytes, nil
 
-	}
 	//partBuffer := make([]byte, partSize)
 	// just for fun, let's recombine back the chunked files in a new file
 }
