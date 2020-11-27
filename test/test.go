@@ -32,7 +32,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
 	auxiliar, err := sendChunk((req), in.BookName)
-	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, err
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -95,7 +95,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func sendChunk(partToSend int, bookName string) ([]byte, error) {
+func sendChunk(partToSend int, bookName string) []byte {
 
 	gutTheFile(bookName)
 
@@ -118,7 +118,7 @@ func sendChunk(partToSend int, bookName string) ([]byte, error) {
 		fmt.Print(err)
 	}
 
-	return chunkBytes, nil
+	return chunkBytes
 
 	//partBuffer := make([]byte, partSize)
 	// just for fun, let's recombine back the chunked files in a new file

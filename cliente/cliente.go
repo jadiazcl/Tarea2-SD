@@ -67,9 +67,9 @@ func requestChunk(idMchn int) {
 
 func main() {
 	requestChunk(1)
-	requestChunk(2)
-	requestChunk(3)
-	requestChunk(1)
-	requestChunk(2)
+	// requestChunk(2)
+	// requestChunk(3)
+	// requestChunk(1)
+	// requestChunk(2)
 
 }
