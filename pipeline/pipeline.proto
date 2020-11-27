@@ -53,6 +53,6 @@ message Test {
 }
 
 service Greeter {
-  rpc SayHello (Book) returns (Test) {}
+  rpc SayHello (Book) returns (Test, error) {}
 }
 

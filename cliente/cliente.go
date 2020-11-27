@@ -49,6 +49,7 @@ func requestChunk(idMchn int) {
 	fileChunk := 0
 	bookTag := ""
 	defer conn.Close()
+
 	fmt.Println("waiting >>>")
 	fmt.Scanf("Chunk buscado [0...N] %d", &fileChunk)
 	fmt.Scanf("Nombre del Archivo Original %s", &bookTag)
