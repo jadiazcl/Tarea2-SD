@@ -107,12 +107,11 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 }
 
 func main() {
-	requestChunk(1)
-	requestChunk(1)
-	requestChunk(1)
-	requestChunk(1)
-	requestChunk(1)
-
-	stitchTheFile("test.pdf", 5)
-
+	totalChunks := 5
+	nameFile := "test.pdf"
+	maquinas := int{1, 2, 3, 1, 2}
+	for j := uint64(0); j < totalChunks; j++ {
+		stitchTheFile(nameFile, maquinas[j])
+	}
+	stitchTheFile(nameFile, totalChunks)
 }
