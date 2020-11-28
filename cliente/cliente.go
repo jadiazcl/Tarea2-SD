@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func requestChunk(idMchn int) {
+func requestChunk(idMchn int, bookTag string) {
 
 	machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
@@ -24,18 +24,12 @@ func requestChunk(idMchn int) {
 		log.Fatalf("did not connect: %s", err)
 	}
 	fileChunk := 0
-	bookTag := ""
 	defer conn.Close()
 	// Esto debe ser cambiado para poder recibir todo desde un json o txt
 	fmt.Println("waiting >>>")
 	fmt.Println("*     Chunk Solicitado      *")
 	fmt.Scanf("%d", &fileChunk)
 	fmt.Println("*****************************")
-	fmt.Println("Nombre del Archivo Original *")
-
-	fmt.Scanf("%s", &bookTag)
-	fmt.Println("*****************************")
-
 	c := pb.NewGreeterClient(conn)
 	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
@@ -44,6 +38,7 @@ func requestChunk(idMchn int) {
 	}
 	log.Printf("La parte solicitada es: %d", response.Valor)
 	fileName := bookTag + "_" + strconv.FormatUint(uint64(fileChunk), 10)
+	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 
 }
@@ -113,5 +108,6 @@ func main() {
 	for j := uint64(0); j < totalChunks; j++ {
 		stitchTheFile(nameFile, maquinas[j])
 	}
+
 	stitchTheFile(nameFile, totalChunks)
 }
