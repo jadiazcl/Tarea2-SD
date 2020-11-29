@@ -118,9 +118,9 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 }
 
 func main() {
-	totalChunks,maquinas,nameFile:=pedir_archivo()
+	partes,maquinas,nameFile:=pedir_archivo()
 	maquinas=strings.Split(maquinas, "-")
-	totalChunks=uint64(totalChunks)
+	totalChunks=uint64(partes)
 	for j := uint64(0); j < totalChunks; j++ {
 		requestChunk(maquinas[j],j,nameFile)
 	}
