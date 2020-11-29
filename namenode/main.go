@@ -21,7 +21,7 @@ package main
     pb.UnimplementedGreeterServer
  }
 
- La funcion GRPC para la consulta de la ubicacion del archivo
+ //La funcion GRPC para la consulta de la ubicacion del archivo
  func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicacion) (*pb.RespuestaUbicacion, error) {
    log.Printf("recibi %s ", in.NombreArchivo )
    partes,ubicaciones:=buscar_en_log(in.NombreArchivo)
