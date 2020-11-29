@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "Lab2/Tarea2-SD/pipeline"
+	pb "Lab2-Test/Tarea2-SD/pipeline"
 	"bufio"
 	"fmt"
 	"io/ioutil"

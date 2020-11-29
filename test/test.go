@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"strconv"
 
-	pb "Lab2/Tarea2-SD/pipeline"
+	pb "Lab2-Test/Tarea2-SD/pipeline"
 	"log"
 	"math"
 	"net"
