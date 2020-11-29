@@ -33,7 +33,7 @@ func pedir_archivo() (int , string, string ){
 	 ubicacion:=response.Ubicaciones
    log.Printf("Cantidad de partes: %d", partes)
    log.Printf("Ubicacion: %s", ubicacion)
-	 return int(partes),"hola",opcion
+	 return int(partes),ubicacion,opcion
 }
 
 func requestChunk(maquina string, fileChunk int, bookTag string) {
@@ -124,7 +124,7 @@ func main() {
 	partes,maquinas,nameFile:=pedir_archivo()
 	//maquinas=strings.Split(maquinas, "-")
 	fmt.Println("holanda que talca")
-	fmt.Println(maquinas[0])
+	fmt.Println(maquinas)
 	fmt.Println(maquinas[1])
 	fmt.Println(reflect.TypeOf(maquinas))
 	totalChunks:=uint64(partes)
