@@ -29,9 +29,11 @@ func pedir_archivo() (int , string , string ){
    if err != nil {
      log.Fatalf("Error when calling SayHello: %s", err)
    }
-   log.Printf("Cantidad de partes: %d", response.Partes)
-   log.Printf("Ubicacion: %s", response.Ubicaciones)
-	 return int(response.Partes),response.Ubicaciones,opcion
+	 partes:=response.Partes
+	 ubicacion:=response.Ubicaciones
+   log.Printf("Cantidad de partes: %d", partes)
+   log.Printf("Ubicacion: %s", ubicacion)
+	 return int(partes),ubicacion,opcion
 }
 
 func requestChunk(maquina string, fileChunk int, bookTag string) {
