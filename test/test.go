@@ -1,80 +1,138 @@
 package main
 
- import (
+import (
+	"fmt"
+	"io/ioutil"
+	"strconv"
 
-         "fmt"
+	pb "Lab2/Tarea2-SD/pipeline"
+	"log"
+	"math"
+	"net"
+	"os"
 
-         "math"
-         "os"
-         "log"
-         "net"
+	"context"
 
-         "google.golang.org/grpc"
-         "context"
-          pb"Lab2/Tarea2-SD/pipeline"
- )
+	"google.golang.org/grpc"
+)
 
- type Server struct {
-     pb.UnimplementedGreeterServer
- }
+type Server struct {
+	pb.UnimplementedGreeterServer
+}
 
- func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
- 	log.Printf("recibi %d ", in.IdCamion )
-  auxiliar:=test_archivo()
- 	return &pb.Test{Valor: in.IdCamion,Chuck:auxiliar}, nil
- }
+/*-----------------------------------------------------------------------------------------*/
 
- func  recepcion_clientes(){
-   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
-   if err != nil {
-     log.Fatalf("failed to listen: %v", err)
-   }
-   grpcServer := grpc.NewServer()
+// func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
+// 	log.Printf("recibi %d ", in.IdCamion)
+// 	auxiliar := sendChunk(int(in.IdCamion))
+// 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
+// }
 
-   pb.RegisterGreeterServer(grpcServer, &Server{})
+func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
+	req := int(in.Request)
+	log.Printf("Se solicitará el chunk: %d ", req)
+	auxiliar := sendChunk((req), in.BookName)
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
+}
 
-   if err := grpcServer.Serve(lis); err != nil {
-     log.Fatalf("failed to serve: %s", err)
-   }
- }
+/*-----------------------------------------------------------------------------------------*/
+func clientsReception() {
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
 
- func test_archivo() []byte{
-   fileToBeChunked := "test.pdf" // change here!
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
 
-   file, err := os.Open(fileToBeChunked)
+	grpcServer := grpc.NewServer()
 
-   if err != nil {
-           fmt.Println(err)
-           os.Exit(1)
-   }
+	pb.RegisterGreeterServer(grpcServer, &Server{})
 
-   defer file.Close()
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %s", err)
+	}
+}
 
-   fileInfo, _ := file.Stat()
+/*-----------------------------------------------------------------------------------------*/
 
-   var fileSize int64 = fileInfo.Size()
+func gutTheFile(FileName string) uint64 {
+	fileToBeChunked := FileName
+	file, err := os.Open(fileToBeChunked)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
 
-   const fileChunk = 256000 // 1 MB, change this to your requirement
-   // calculate total number of parts the file will be chunked into
+	fileInfo, _ := file.Stat()
 
-   totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+	var fileSize int64 = fileInfo.Size()
 
-   fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-   partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk))))
-   partBuffer := make([]byte, partSize)
-   return partBuffer
-   // just for fun, let's recombine back the chunked files in a new file
- }
+	const fileChunk = 256000 //Bytes
 
+	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 
+	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
 
+	for i := uint64(0); i < totalPartsNum; i++ {
 
- func main() {
-         go recepcion_clientes()
-         test_archivo()
-         opcion:=0
-         for opcion!=-1{
-             fmt.Println("Ingrese -1 para cerrar el programa ")
-             fmt.Scanf("%d", &opcion)
-         }
- }
+		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+		partBuffer := make([]byte, partSize)
+
+		file.Read(partBuffer)
+		fileName := FileName + "_" + strconv.FormatUint(i, 10)
+		_, err := os.Create(fileName)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+
+		fmt.Println("Split to : ", fileName)
+	}
+	return totalPartsNum
+}
+
+/**---------------------------------------------------------------------------------------------wwww*/
+func sendChunk(partToSend int, bookName string) []byte {
+
+	gutTheFile(bookName)
+
+	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
+
+	// defer file.Close()
+
+	// fileInfo, _ := file.Stat()
+
+	// var fileSize int64 = fileInfo.Size()
+
+	// const fileChunk = 256000
+
+	//totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+
+	//fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+	//partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk)))) //parte del archivo
+	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	return chunkBytes
+
+	//partBuffer := make([]byte, partSize)
+	// just for fun, let's recombine back the chunked files in a new file
+}
+
+/*-----------------------------------------------------------------------------------------*/
+
+func main() {
+
+	go clientsReception()
+
+	opcion := 0
+	for opcion != -1 {
+		fmt.Println("Ingrese -1 para cerrar el programa ")
+		fmt.Scanf("%d", &opcion)
+	}
+}

@@ -22,18 +22,18 @@ func enviar_ordenes(delta_tiempo float64) {
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 	i := 0
-	update_time := time.Now()
+	updateTime := time.Now()
 	time2 := time.Now()
 	for i < 10 {
 		time2 = time.Now()
-		if time2.Sub(update_time).Seconds() > delta_tiempo {
+		if time2.Sub(updateTime).Seconds() > delta_tiempo {
 			response, err := c.SayHello(context.Background(), &pb.ConsultaEstado{IdCamion: i})
 			if err != nil {
 				log.Fatalf("error %s", err)
 			}
 			log.Printf("respuesta:  %d", response.Seguimiento)
-			i +=1 
-			update_time = time.Now()
+			i++
+			updateTime = time.Now()
 		}
 	}
 }

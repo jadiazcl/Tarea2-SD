@@ -42,23 +42,27 @@ message Solcamion {
   int32 IdCamion = 1;
 }
 
+message Book {
+  int32 Request = 1;
+  string BookName =2;
+}
+
 message Test {
   int32 Valor = 1;
   bytes Chuck = 2;
 }
 
 message ConsultaUbicacion {
-  string NombreArchivo = 1;  
+  string NombreArchivo = 1;
 }
 
 message RespuestaUbicacion {
-  int32 Partes = 1;  
+  int32 Partes = 1;
   string Ubicaciones=2;
 }
 
 
 service Greeter {
-  rpc SayHello (Solcamion) returns (Test) {}
+  rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
 }
-
