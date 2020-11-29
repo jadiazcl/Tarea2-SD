@@ -14,7 +14,7 @@ import (
 	"reflect"
 )
 
-func pedir_archivo() (int , string , string ){
+func pedir_archivo() (int , string, string ){
    var conn *grpc.ClientConn
    conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
    if err != nil {
@@ -33,7 +33,7 @@ func pedir_archivo() (int , string , string ){
 	 ubicacion:=response.Ubicaciones
    log.Printf("Cantidad de partes: %d", partes)
    log.Printf("Ubicacion: %s", ubicacion)
-	 return int(partes),ubicacion,opcion
+	 return int(partes),"hola",opcion
 }
 
 func requestChunk(maquina string, fileChunk int, bookTag string) {
