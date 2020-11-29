@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 	"strconv"
-	//"strings"
+	"strings"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"reflect"
@@ -23,7 +23,7 @@ func pedir_archivo() (int , string , string ){
    opcion:=""
    defer conn.Close()
    fmt.Println("Ingrese el nombre del pdf a pedir")
-   fmt.Scanf("%d", &opcion)
+   fmt.Scanf("%s", &opcion)
    c := pb.NewGreeterClient(conn)
    response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:opcion})
    if err != nil {
@@ -120,14 +120,14 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func main() {
 	partes,maquinas,nameFile:=pedir_archivo()
-	//maquinas=strings.Split(maquinas, "-")
+	maquinas=strings.Split(maquinas, "-")
 	fmt.Println(maquinas)
 	fmt.Println(reflect.TypeOf(maquinas))
 	totalChunks:=uint64(partes)
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {
 		aux=int(j)
-		requestChunk(maquinas,aux,nameFile)
+		requestChunk(maquinas[aux],aux,nameFile)
 	}
 	stitchTheFile(nameFile, totalChunks)
 }
