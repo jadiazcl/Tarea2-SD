@@ -127,7 +127,7 @@ func main() {
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {
 		aux=int(j)
-		requestChunk(maquinas[aux],j,nameFile)
+		requestChunk(maquinas,aux,nameFile)
 	}
 	stitchTheFile(nameFile, totalChunks)
 }
