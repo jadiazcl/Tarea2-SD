@@ -48,7 +48,7 @@ message Test {
 }
 
 message ConsultaUbicacion {
-  int32 IdArchivo = 1;  
+  string NombreArchivo = 1;  
 }
 
 message RespuestaUbicacion {

@@ -27,7 +27,7 @@ func pedir_archivo(){
        fmt.Println("Ingrese -1 para cerrar el programa ")
        fmt.Scanf("%d", &opcion)
      c := pb.NewGreeterClient(conn)
-     response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{IdArchivo:int32(opcion)})
+     response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:"tutankamont"})
      if err != nil {
        log.Fatalf("Error when calling SayHello: %s", err)
      }
