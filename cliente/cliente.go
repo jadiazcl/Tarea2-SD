@@ -10,8 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
-	"reflect"
+	"google.golang.org/grpc"	
 )
 
 /*-----------------------------------------------------------------------------------------*/
@@ -120,7 +119,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func main() {
 	partes,maquinas,nameFile:=pedir_archivo()
-	aux_maquina:=strings.Split(maquinas, "-")		
+	aux_maquina:=strings.Split(maquinas, "-")
 	totalChunks:=uint64(partes)
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {
