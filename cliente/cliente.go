@@ -11,6 +11,7 @@ import (
 	"strings"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"reflect"
 )
 
 func pedir_archivo() (int , string , string ){
@@ -121,7 +122,7 @@ func main() {
 	partes,maquinas,nameFile:=pedir_archivo()
 	//maquinas=strings.Split(maquinas, "-")
 	fmt.Println(maquinas)
-	fmt.Println(type(maquinas))
+	fmt.Println(reflect.TypeOf(maquinas))
 	totalChunks:=uint64(partes)
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {
