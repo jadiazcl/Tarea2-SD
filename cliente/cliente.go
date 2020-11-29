@@ -127,7 +127,7 @@ func main() {
 	fmt.Println("holanda que talca")
 	fmt.Println(maquinas)
 	fmt.Println(maquinas[1])
-	fmt.Println(reflect.TypeOf(aux_maquina))
+	fmt.Println(reflect.TypeOf(maquinas))
 	totalChunks:=uint64(partes)
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {
