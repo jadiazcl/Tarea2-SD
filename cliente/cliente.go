@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func pedir_archivo(){
+func pedir_archivo()(int,string,string){
    var conn *grpc.ClientConn
    conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
    if err != nil {
