@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 	"strconv"
-
+	"strings"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
@@ -21,7 +21,7 @@ func pedir_archivo(){
    }
    opcion:=""
    defer conn.Close()
-   fmt.Println("Ingrese -1 para cerrar el programa ")
+   fmt.Println("Ingrese el nombre del pdf a pedir")
    fmt.Scanf("%d", &opcion)
    c := pb.NewGreeterClient(conn)
    response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:opcion})
@@ -30,14 +30,14 @@ func pedir_archivo(){
    }
    log.Printf("Cantidad de partes: %d", response.Partes)
    log.Printf("Ubicacion: %s", response.Ubicaciones)
+	 return response.Partes,response.Ubicaciones,opcion
 }
 
-func requestChunk(idMchn int, bookTag string) {
+func requestChunk(maquina string, fileChunk int, bookTag string) {
 
-	machines := []string{"dist157", "dist158", "dist159", "dist160"}
+	//machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
-	mchn := machines[idMchn]
-	log.Println("maquina", mchn)
+	log.Println("maquina", maquina)
 	conn, err := grpc.Dial(mchn+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
@@ -47,11 +47,10 @@ func requestChunk(idMchn int, bookTag string) {
 	// Esto debe ser cambiado para poder recibir todo desde un json o txt
 	fmt.Println("waiting >>>")
 	fmt.Println("*     Chunk Solicitado      *")
-	fmt.Scanf("%d", &fileChunk)
+	fmt.Println(fileChunk)
 	fmt.Println("*****************************")
 	c := pb.NewGreeterClient(conn)
 	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
-
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
@@ -59,7 +58,6 @@ func requestChunk(idMchn int, bookTag string) {
 	fileName := bookTag + "_" + strconv.FormatUint(uint64(fileChunk), 10)
 	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
-
 }
 
 /*---------------------------------------------------*/
@@ -121,12 +119,10 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 }
 
 func main() {
-	totalChunks := uint64(5)
-	nameFile := "test.pdf"
-	maquinas := [5]int{1, 2, 3, 1, 2}
+	totalChunks,maquinas,nameFile=pedir_archivo()
+	maquinas:=strings.Split(linea, "-")
 	for j := uint64(0); j < totalChunks; j++ {
-		requestChunk(maquinas[j], nameFile)
+		requestChunk(maquinas[j],j,nameFile)
 	}
-
 	stitchTheFile(nameFile, totalChunks)
 }
