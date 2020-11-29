@@ -123,16 +123,17 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 func main() {
 	partes,maquinas,nameFile:=pedir_archivo()
 	maquinas=string(maquinas)
-	//maquinas=strings.Split(maquinas, "-")
+	aux_maquina:=""+maquinas
+	aux_maquina=strings.Split(aux_maquina, "-")
 	fmt.Println("holanda que talca")
-	fmt.Println(maquinas)
-	fmt.Println(maquinas[1])
-	fmt.Println(reflect.TypeOf(maquinas))
+	fmt.Println(aux_maquina)
+	fmt.Println(aux_maquina[1])
+	fmt.Println(reflect.TypeOf(aux_maquina))
 	totalChunks:=uint64(partes)
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {
 		aux=int(j)
-		requestChunk(maquinas,aux,nameFile)
+		requestChunk(aux_maquina,aux,nameFile)
 	}
 	stitchTheFile(nameFile, totalChunks)
 }
