@@ -121,7 +121,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 }
 
 func main() {
-	partes,maquinas,nameFile:=pedir_archivo()
+	partes,maquinas,nameFile=pedir_archivo()
 	maquinas=strings.Split(maquinas, "-")
 	fmt.Println("holanda que talca")
 	fmt.Println(maquinas)
