@@ -52,7 +52,17 @@ message Test {
   bytes Chuck = 2;
 }
 
-service Greeter {
-  rpc SayHello (Book) returns (Test) {}
+message ConsultaUbicacion {
+  string NombreArchivo = 1;
 }
 
+message RespuestaUbicacion {
+  int32 Partes = 1;
+  string Ubicaciones=2;
+}
+
+
+service Greeter {
+  rpc SayHello (Book) returns (Test) {}
+  rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
+}

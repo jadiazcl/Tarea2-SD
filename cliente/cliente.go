@@ -13,6 +13,25 @@ import (
 	"google.golang.org/grpc"
 )
 
+func pedir_archivo(){
+   var conn *grpc.ClientConn
+   conn, err := grpc.Dial("dist157:50054", grpc.WithInsecure())
+   if err != nil {
+     log.Fatalf("did not connect: %s", err)
+   }
+   opcion:=""
+   defer conn.Close()
+   fmt.Println("Ingrese -1 para cerrar el programa ")
+   fmt.Scanf("%d", &opcion)
+   c := pb.NewGreeterClient(conn)
+   response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:opcion})
+   if err != nil {
+     log.Fatalf("Error when calling SayHello: %s", err)
+   }
+   log.Printf("Cantidad de partes: %d", response.Partes)
+   log.Printf("Ubicacion: %s", response.Ubicaciones)
+}
+
 func requestChunk(idMchn int, bookTag string) {
 
 	machines := []string{"dist157", "dist158", "dist159", "dist160"}
