@@ -120,6 +120,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func main() {
 	partes,maquinas,nameFile:=pedir_archivo()
+	"dist157-dist160-dist157"
 	maquinas=strings.Split(maquinas, "-")
 	fmt.Println(maquinas)
 	fmt.Println(reflect.TypeOf(maquinas))
