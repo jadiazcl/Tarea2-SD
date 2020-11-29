@@ -38,7 +38,7 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	//machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
 	log.Println("maquina", maquina)
-	conn, err := grpc.Dial(mchn+":50054", grpc.WithInsecure())
+	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
