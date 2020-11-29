@@ -14,6 +14,7 @@ import (
 	"reflect"
 )
 
+/*-----------------------------------------------------------------------------------------*/
 func pedir_archivo() (int , string, string ){
    var conn *grpc.ClientConn
    conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
@@ -31,14 +32,12 @@ func pedir_archivo() (int , string, string ){
    }
 	 partes:=response.Partes
 	 ubicacion:=response.Ubicaciones
-   log.Printf("Cantidad de partes: %d", partes)
-   log.Printf("Ubicacion: %s", ubicacion)
 	 return int(partes),ubicacion,opcion
 }
 
+/*-----------------------------------------------------------------------------------------*/
 func requestChunk(maquina string, fileChunk int, bookTag string) {
 
-	//machines := []string{"dist157", "dist158", "dist159", "dist160"}
 	var conn *grpc.ClientConn
 	log.Println("maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
@@ -46,7 +45,6 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
-	// Esto debe ser cambiado para poder recibir todo desde un json o txt
 	fmt.Println("waiting >>>")
 	fmt.Println("*     Chunk Solicitado      *")
 	fmt.Println(fileChunk)
@@ -121,12 +119,8 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 }
 
 func main() {
-	partes,maquinas,nameFile:=pedir_archivo()		
-	aux_maquina:=strings.Split(maquinas, "-")
-	fmt.Println("holanda que talca")
-	fmt.Println(aux_maquina)
-	fmt.Println(aux_maquina[1])
-	fmt.Println(reflect.TypeOf(aux_maquina))
+	partes,maquinas,nameFile:=pedir_archivo()
+	aux_maquina:=strings.Split(maquinas, "-")		
 	totalChunks:=uint64(partes)
 	aux:=0
 	for j := uint64(0); j < totalChunks; j++ {

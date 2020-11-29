@@ -4,16 +4,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strconv"
-
-	pb "Lab2-Test/Tarea2-SD/pipeline"
 	"log"
 	"math"
 	"net"
 	"os"
-
 	"context"
-
 	"google.golang.org/grpc"
+	pb "Lab2-Test/Tarea2-SD/pipeline"
 )
 
 type Server struct {
@@ -21,12 +18,6 @@ type Server struct {
 }
 
 /*-----------------------------------------------------------------------------------------*/
-
-// func (s *Server) SayHello(ctx context.Context, in *pb.Solcamion) (*pb.Test, error) {
-// 	log.Printf("recibi %d ", in.IdCamion)
-// 	auxiliar := sendChunk(int(in.IdCamion))
-// 	return &pb.Test{Valor: in.IdCamion, Chuck: auxiliar}, nil
-// }
 
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
@@ -96,40 +87,19 @@ func gutTheFile(FileName string) uint64 {
 
 /**---------------------------------------------------------------------------------------------wwww*/
 func sendChunk(partToSend int, bookName string) []byte {
-
 	gutTheFile(bookName)
-
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
-
-	// defer file.Close()
-
-	// fileInfo, _ := file.Stat()
-
-	// var fileSize int64 = fileInfo.Size()
-
-	// const fileChunk = 256000
-
-	//totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
-
-	//fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-	//partSize := int(math.Min(fileChunk, float64(fileSize-int64(0*fileChunk)))) //parte del archivo
 	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
-
 	return chunkBytes
-
-	//partBuffer := make([]byte, partSize)
-	// just for fun, let's recombine back the chunked files in a new file
 }
 
 /*-----------------------------------------------------------------------------------------*/
 
 func main() {
-
 	go clientsReception()
-
 	opcion := 0
 	for opcion != -1 {
 		fmt.Println("Ingrese -1 para cerrar el programa ")
