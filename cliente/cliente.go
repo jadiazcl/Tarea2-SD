@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func pedir_archivo()(int,string,string){
+func pedir_archivo() (int,string,string){
    var conn *grpc.ClientConn
    conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
    if err != nil {
@@ -30,7 +30,7 @@ func pedir_archivo()(int,string,string){
    }
    log.Printf("Cantidad de partes: %d", response.Partes)
    log.Printf("Ubicacion: %s", response.Ubicaciones)
-	 return response.Partes,response.Ubicaciones,opcion
+	 return int(response.Partes),response.Ubicaciones,opcion
 }
 
 func requestChunk(maquina string, fileChunk int, bookTag string) {
@@ -41,7 +41,7 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
-	}	
+	}
 	defer conn.Close()
 	// Esto debe ser cambiado para poder recibir todo desde un json o txt
 	fmt.Println("waiting >>>")
@@ -119,7 +119,8 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func main() {
 	totalChunks,maquinas,nameFile:=pedir_archivo()
-	maquinas:=strings.Split(linea, "-")
+	maquinas=strings.Split(maquinas, "-")
+	totalChunks=uint64(totalChunks)
 	for j := uint64(0); j < totalChunks; j++ {
 		requestChunk(maquinas[j],j,nameFile)
 	}
