@@ -4,3 +4,15 @@ parte_1_2 dist160
 parte_1_3 dist160
 parte_1_4 dist160
 parte_1_5 dist160
+test2.pdf 4
+parte_1_1 dist160
+parte_1_2 dist160
+parte_1_3 dist160
+parte_1_4 dist160
+test3.pdf 6
+parte_1_1 dist160
+parte_1_2 dist157
+parte_1_3 dist158
+parte_1_4 dist159
+parte_1_5 dist160
+parte_1_6 dist157
