@@ -41,8 +41,7 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
-	}
-	fileChunk := 0
+	}	
 	defer conn.Close()
 	// Esto debe ser cambiado para poder recibir todo desde un json o txt
 	fmt.Println("waiting >>>")
