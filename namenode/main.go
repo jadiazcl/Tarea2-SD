@@ -25,7 +25,7 @@ type Server struct {
 
 //La funcion GRPC para la consulta de la ubicacion del archivo
 
-func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicacion) (*pb.RespuestaUbicacion, error) {
+func (s *Server) SolicitarUbicaciones(ctx context.Context(), in *pb.ConsultaUbicacion) (*pb.RespuestaUbicacion, error) {
 	log.Printf("recibi %s ", in.NombreArchivo)
 	partes, ubicaciones := buscar_en_log(in.NombreArchivo)
 	return &pb.RespuestaUbicacion{Partes: int32(partes), Ubicaciones: ubicaciones}, nil
