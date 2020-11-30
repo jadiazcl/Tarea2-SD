@@ -104,10 +104,10 @@ func decisionOnProposal(filechunk int, bookTag string ) bool{
 		  return false
 	  } else{
 	  c := pb.NewGreeterClient(conn)
-	  response, err := YadaYada(ctx context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
+	  response, err := c.YadaYada(ctx context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 	  if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
-	  }
+	}
 	  theLog = theLog + response
 		  return true
 	}
