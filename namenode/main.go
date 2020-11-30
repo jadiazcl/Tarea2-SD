@@ -114,7 +114,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 		if err != nil {
 			log.Fatalf("Error when calling SayHello: %s", err)
 		}
-		theLog = theLog + string(response)
+		theLog = theLog + string(response.Proposal)
 		return true
 	}
 }
