@@ -61,8 +61,14 @@ message RespuestaUbicacion {
   string Ubicaciones=2;
 }
 
+message Distribution{
+  bytes Proposal = 1;
+
+}
+
 
 service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
+  rpc YadaYada (Book) returns (Distribution) {}
 }
