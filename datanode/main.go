@@ -1,16 +1,17 @@
 package main
 
 import (
+	pb "Lab2-Test/Tarea2-SD/pipeline"
+	"context"
 	"fmt"
 	"io/ioutil"
-	"strconv"
 	"log"
 	"math"
 	"net"
 	"os"
-	"context"
+	"strconv"
+
 	"google.golang.org/grpc"
-	pb "Lab2-Test/Tarea2-SD/pipeline"
 )
 
 type Server struct {

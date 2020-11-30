@@ -9,29 +9,30 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"	
+	"google.golang.org/grpc"
 )
 
 /*-----------------------------------------------------------------------------------------*/
-func pedir_archivo() (int , string, string ){
-   var conn *grpc.ClientConn
-   conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
-   if err != nil {
-     log.Fatalf("did not connect: %s", err)
-   }
-   opcion:=""
-   defer conn.Close()
-   fmt.Println("Ingrese el nombre del pdf a pedir")
-   fmt.Scanf("%s", &opcion)
-   c := pb.NewGreeterClient(conn)
-   response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:opcion})
-   if err != nil {
-     log.Fatalf("Error when calling SayHello: %s", err)
-   }
-	 partes:=response.Partes
-	 ubicacion:=response.Ubicaciones
-	 return int(partes),ubicacion,opcion
+func pedir_archivo() (int, string, string) {
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	opcion := ""
+	defer conn.Close()
+	fmt.Println("Ingrese el nombre del pdf a pedir")
+	fmt.Scanf("%s", &opcion)
+	c := pb.NewGreeterClient(conn)
+	response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: opcion})
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
+	}
+	partes := response.Partes
+	ubicacion := response.Ubicaciones
+	return int(partes), ubicacion, opcion
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -118,13 +119,13 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 }
 
 func main() {
-	partes,maquinas,nameFile:=pedir_archivo()
-	aux_maquina:=strings.Split(maquinas, "-")
-	totalChunks:=uint64(partes)
-	aux:=0
+	partes, maquinas, nameFile := pedir_archivo()
+	aux_maquina := strings.Split(maquinas, "-")
+	totalChunks := uint64(partes)
+	aux := 0
 	for j := uint64(0); j < totalChunks; j++ {
-		aux=int(j)
-		requestChunk(aux_maquina[aux],aux,nameFile)
+		aux = int(j)
+		requestChunk(aux_maquina[aux], aux, nameFile)
 	}
 	stitchTheFile(nameFile, totalChunks)
 }
