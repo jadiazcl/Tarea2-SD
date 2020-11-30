@@ -95,7 +95,7 @@ var theLog string = "" //Variable que contendrá el log actualizado en un string
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-func decisionOnProposal(filechunk int, bookTag string) bool {
+func decisionOnProposal(fileChunk int, bookTag string) bool {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist160:50055", grpc.WithInsecure())
 	if err != nil {
