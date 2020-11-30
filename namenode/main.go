@@ -6,20 +6,24 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc"
 )
 
 var Maquinas = map[string]int{"dist157": 0, "dist158": 1, "dist159": 2, "dist160": 3}
+
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 type Server struct {
 	pb.UnimplementedGreeterServer
 }
+
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -30,8 +34,8 @@ func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicac
 	partes, ubicaciones := buscar_en_log(in.NombreArchivo)
 	return &pb.RespuestaUbicacion{Partes: int32(partes), Ubicaciones: ubicaciones}, nil
 }
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
@@ -65,8 +69,8 @@ func buscar_en_log(nombre_libro string) (int, string) {
 	}
 	return cantidad_saltos, ubicacion
 }
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
@@ -84,34 +88,37 @@ func recepcion_clientes() {
 		log.Fatalf("failed to serve: %s", err)
 	}
 }
+
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 var theLog string = "" //Variable que contendrá el log actualizado en un string
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-func decisionOnProposal(filechunk int, bookTag string ) bool{
+func decisionOnProposal(filechunk int, bookTag string) bool {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist160:50055", grpc.WithInsecure())
 	if err != nil {
-	  log.Fatalf("did not connect: %s", err)
+		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
-  
+
 	rand.Seed(time.Now().UTC().UnixNano())
 	chance := rand.Intn(2)
-	if chance < 51{
-		  return false
-	  } else{
-	  c := pb.NewGreeterClient(conn)
-	  response, err := c.YadaYada(ctx context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
-	  if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
+	if chance < 51 {
+		return false
+	} else {
+		c := pb.NewGreeterClient(conn)
+		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
+
+		if err != nil {
+			log.Fatalf("Error when calling SayHello: %s", err)
+		}
+		theLog = theLog + response
+		return true
 	}
-	  theLog = theLog + response
-		  return true
-	}
-  }
+}
+
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*####################################################################################################################################### */
