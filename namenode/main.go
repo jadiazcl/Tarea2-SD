@@ -27,7 +27,6 @@ type Server struct {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
 //La funcion GRPC para la consulta de la ubicacion del archivo
 func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicacion) (*pb.RespuestaUbicacion, error) {
 	log.Printf("recibi %s ", in.NombreArchivo)
@@ -38,7 +37,6 @@ func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicac
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
 // Esta funcion busca la ubicacion de las partes del archivo
 func buscar_en_log(nombre_libro string) (int, string) {
 	file, err := os.Open("log.txt")
@@ -73,10 +71,9 @@ func buscar_en_log(nombre_libro string) (int, string) {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
 //funcion para recepcionar conexiones
 func recepcion_clientes() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -90,14 +87,17 @@ func recepcion_clientes() {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
 var theLog string = "" //Variable que contendrá el log actualizado en un string
-
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func decisionOnProposal(fileChunk int, bookTag string) bool {
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
+	dist := ""
+	fmt.Println("Ingrese el nombre del DataNode")
+	fmt.Scanf("%d", &dist)
+
+	conn, err := grpc.Dial(dist+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
