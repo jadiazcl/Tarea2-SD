@@ -97,7 +97,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 	fmt.Println("Ingrese el nombre del DataNode")
 	fmt.Scanf("%d", &dist)
 	dist = dist + ":50054"
-	conn, err := grpc.Dial(dist, grpc.WithInsecure())
+	conn, err := grpc.Dial(string(dist), grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
