@@ -135,8 +135,11 @@ func main() {
 		fmt.Scanf("%d", &opcion)
 		if opcion == 1 {
 			boolean = decisionOnProposal(chunks, name)
+		} else {
+			break
 		}
 		fmt.Println("decision:  ", boolean)
+		fmt.Println(log)
 
 	}
 }
