@@ -149,8 +149,9 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.Book) (*pb.Distribution, e
 func main() {
 	go clientsReception()
 	opcion := 0
+	fmt.Println("-1 : Cerrar el programa ")
+
 	for opcion != -1 {
-		fmt.Println("Ingrese -1 para cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
 	}
 }

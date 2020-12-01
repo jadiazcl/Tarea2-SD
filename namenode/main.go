@@ -124,11 +124,18 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 /*####################################################################################################################################### */
 
 func main() {
-
+	name := "fileName"
+	chunks := 6
 	go recepcion_clientes()
 	opcion := 0
+	boolean := true
+	fmt.Println("-1 : Cerrar")
+	fmt.Println("1 : decisionOnProposal(fileChunk int, bookTag string) ")
 	for opcion != -1 {
-		fmt.Println("Ingrese -1 para cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
+		if opcion == 1 {
+			boolean = decisionOnProposal(chunks, name)
+		}
+
 	}
 }
