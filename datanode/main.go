@@ -138,7 +138,7 @@ func sendChunk(partToSend int, bookName string) []byte {
 func (s *Server) YadaYada(ctx context.Context, in *pb.Book) (*pb.Distribution, error) {
 	req := int(in.Request)
 	nm := in.BookName
-	auxiliar := createDistribution(req, fileName)
+	auxiliar := createDistribution(req, nm)
 	return &pb.Distribution{Proposal: auxiliar}, nil
 }
 
