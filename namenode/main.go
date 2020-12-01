@@ -104,7 +104,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 	defer conn.Close()
 
 	rand.Seed(time.Now().UTC().UnixNano())
-	chance := rand.Intn(2)
+	//chance := rand.Intn(2)
 
 	c := pb.NewGreeterClient(conn)
 	response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
