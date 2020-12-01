@@ -136,6 +136,7 @@ func main() {
 		if opcion == 1 {
 			boolean = decisionOnProposal(chunks, name)
 		}
+		fmt.Println("decision:  ", boolean)
 
 	}
 }
