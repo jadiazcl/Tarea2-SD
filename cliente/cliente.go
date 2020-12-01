@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "Lab2-Test/Tarea2-SD/pipeline"
+	pb "Lab2-Centralizada/Tarea2-SD/pipeline"
 	"bufio"
 	"fmt"
 	"io/ioutil"
@@ -13,6 +13,10 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
+
+type Server struct {
+	pb.UnimplementedGreeterServer
+}
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
@@ -181,7 +185,7 @@ func main() {
 
 	fmt.Scanf("%s", &opcion)
 	totalParts := gutTheFile(opcion)
-	for c := 0; c < totalParts; c++ {
+	for c := uint64(0); c < totalParts; c++ {
 		sendChunk(c, opcion)
 	}
 }
