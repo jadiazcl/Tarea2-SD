@@ -106,6 +106,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 	}
 	defer conn.Close()
 
+	
 	rand.Seed(time.Now().UTC().UnixNano())
 	chance := rand.Intn(2)
 	if chance < 51 {
@@ -113,7 +114,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
 		if err != nil {
-			log.Fatalf("Error when calling SayHello: %s", err)
+			log.Fatalf("Error when calling YadaYada: %s", err)
 		}
 		theLog = theLog + string(response.Proposal)
 		return false
@@ -122,7 +123,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
 		if err != nil {
-			log.Fatalf("Error when calling SayHello: %s", err)
+			log.Fatalf("Yada Yada, Error: %s", err)
 		}
 		theLog = theLog + string(response.Proposal)
 		return true

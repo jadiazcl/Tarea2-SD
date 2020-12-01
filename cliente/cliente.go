@@ -15,6 +15,13 @@ import (
 )
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
+	req := int(in.Request)
+	log.Printf("Se solicitará el chunk: %d ", req)
+	auxiliar := sendChunk((req), in.BookName)
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
+}
+
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función separa el archivo en diferentes archivos de 250 KB cada uno
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -45,6 +52,18 @@ func gutTheFile(FileName string) uint64 {
 		fmt.Println("Split to : ", fileName)
 	}
 	return totalPartsNum
+}
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+func sendChunk(partToSend int, bookName string) []byte {
+	//gutTheFile(bookName)
+	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
+	chunkBytes, err := ioutil.ReadFile(chunkToSend)
+	if err != nil {
+		fmt.Print(err)
+	}
+	return chunkBytes
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -158,7 +177,11 @@ func main() {
 	// }
 	// stitchTheFile(nameFile, totalChunks)
 	opcion := ""
-	fmt.Scanf("%s", &opcion)
+	fmt.Printf(" Nombre archivo : ")
 
-	gutTheFile(opcion)
+	fmt.Scanf("%s", &opcion)
+	totalParts := gutTheFile(opcion)
+	for c := 0; c < totalParts; c++ {
+		sendChunk(c, opcion)
+	}
 }

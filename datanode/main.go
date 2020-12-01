@@ -20,6 +20,16 @@ type Server struct {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+func (s *Server) YadaYada(ctx context.Context, in *pb.Book) (*pb.Distribution, error) {
+	req := int(in.Request)
+	nm := in.BookName
+	auxiliar := createDistribution(req, nm)
+	return &pb.Distribution{Proposal: auxiliar}, nil
+}
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
@@ -91,24 +101,54 @@ func gutTheFile(FileName string) uint64 {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-func pedir_archivo() (int, string, string) {
+// func pedir_archivo() (int, string, string) {
+// 	var conn *grpc.ClientConn
+// 	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
+// 	if err != nil {
+// 		log.Fatalf("did not connect: %s", err)
+// 	}
+// 	opcion := ""
+// 	defer conn.Close()
+// 	fmt.Println("Ingrese el nombre del pdf a pedir")
+// 	fmt.Scanf("%s", &opcion)
+// 	c := pb.NewGreeterClient(conn)
+// 	response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: opcion})
+// 	if err != nil {
+// 		log.Fatalf("Error when calling SayHello: %s", err)
+// 	}
+// 	partes := response.Partes
+// 	ubicacion := response.Ubicaciones
+// 	return int(partes), ubicacion, opcion
+// }
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+// Esta función se conecta a cierto nodo para recuperar cierto chunk de un archivo
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+func requestChunk(maquina string) {
+
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
+	log.Println("maquina", maquina)
+	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	opcion := ""
 	defer conn.Close()
-	fmt.Println("Ingrese el nombre del pdf a pedir")
-	fmt.Scanf("%s", &opcion)
+	fmt.Println("waiting >>>")
+	fmt.Println("*     Chunk Solicitado      *")
+	fmt.Println(ChunkNum)
+	fmt.Println("*****************************")
 	c := pb.NewGreeterClient(conn)
-	response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: opcion})
+	bookTag := "newFile"
+	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(ChunkNum), BookName: bookTag})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	partes := response.Partes
-	ubicacion := response.Ubicaciones
-	return int(partes), ubicacion, opcion
+	log.Printf("La parte solicitada es: %d", response.Valor)
+	fileName := bookTag + "_" +strconv.FormatUint(uint64(FileCounter), 10) +"_" strconv.FormatUint(uint64(ChunkNum), 10)
+	fmt.Println("se recibe: ", fileName)
+	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -144,36 +184,28 @@ func createDistribution(numParts int, fileName string) []byte {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-func sendChunk(partToSend int, bookName string) []byte {
-	gutTheFile(bookName)
-	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
-	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
-	if err != nil {
-		fmt.Print(err)
-	}
-	return chunkBytes
-}
+// func sendChunk(partToSend int, bookName string) []byte {
+// 	//gutTheFile(bookName)
+// 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
+// 	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
+// 	if err != nil {
+// 		fmt.Print(err)
+// 	}
+// 	return chunkBytes
+// }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-func (s *Server) YadaYada(ctx context.Context, in *pb.Book) (*pb.Distribution, error) {
-	req := int(in.Request)
-	nm := in.BookName
-	auxiliar := createDistribution(req, nm)
-	return &pb.Distribution{Proposal: auxiliar}, nil
-}
-
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
-/*####################################################################################################################################### */
-
+/*####################v################################################################################################################### */
+var ChunkNum int = 0
+var FileCounter int = 1
 func main() {
 	go clientsReception()
 	opcion := 0
 	fmt.Println("-1 : Cerrar el programa ")
 
 	for opcion != -1 {
+		requestChunk("dist159", ChunkNum int, bookTag string)
 		fmt.Scanf("%d", &opcion)
 	}
 }
