@@ -129,7 +129,7 @@ func gutTheFile(FileName string) uint64 {
 func requestChunk(maquina string) {
 
 	var conn *grpc.ClientConn
-	log.Println("maquina", maquina)
+	fmt.Println("Estamos pidiendo a maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
@@ -139,8 +139,8 @@ func requestChunk(maquina string) {
 	fmt.Println("ingrese 1 para comenzar >>>")
 	fmt.Scanf("%d", &input)
 	for input != 0 {
-		fmt.Println("*     Chunk Solicitado      *")
-		fmt.Println(ChunkNum)
+		fmt.Println("******Chunk Solicitado*******")
+		fmt.Println("**********", ChunkNum, "**********")
 		fmt.Println("*****************************")
 		c := pb.NewGreeterClient(conn)
 		bookTag := "newFile"
@@ -203,7 +203,7 @@ func sendChunk(partToSend int, bookName string) []byte {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-/*####################v################################################################################################################### */
+/*####################################################################################################################################### */
 var ChunkNum int = 0
 var FileCounter int = 1
 
