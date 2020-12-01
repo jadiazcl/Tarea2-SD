@@ -203,10 +203,16 @@ func main() {
 	go recepcion_clientes()
 	opcion := ""
 	fmt.Printf(" Nombre archivo : ")
-
+	ok := 0
 	fmt.Scanf("%s", &opcion)
-	totalParts := gutTheFile(opcion)
-	for c := uint64(0); c < totalParts; c++ {
-		sendChunk(int(c), opcion)
+	fmt.Printf(" empezamos? : ")
+	fmt.Scanf("%d", &ok)
+
+	for ok != 0 {
+		totalParts := gutTheFile(opcion)
+		for c := uint64(0); c < totalParts; c++ {
+			sendChunk(int(c), opcion)
+		}
 	}
+
 }
