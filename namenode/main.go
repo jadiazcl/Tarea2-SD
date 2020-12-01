@@ -139,7 +139,7 @@ func main() {
 			break
 		}
 		fmt.Println("decision:  ", boolean)
-		fmt.Println(log)
+		fmt.Println(theLog)
 
 	}
 }
