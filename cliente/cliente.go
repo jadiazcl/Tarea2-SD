@@ -6,15 +6,50 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"os"
 	"strconv"
-	"strings"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
-/*-----------------------------------------------------------------------------------------*/
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+// Esta función separa el archivo en diferentes archivos de 250 KB cada uno
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+func gutTheFile(FileName string) uint64 {
+	fileToBeChunked := FileName
+	file, err := os.Open(fileToBeChunked)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
+	fileInfo, _ := file.Stat()
+	var fileSize int64 = fileInfo.Size()
+	const fileChunk = 256000 //Bytes
+	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
+	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+	for i := uint64(0); i < totalPartsNum; i++ {
+		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+		partBuffer := make([]byte, partSize)
+		file.Read(partBuffer)
+		fileName := FileName + "_" + strconv.FormatUint(i, 10)
+		_, err := os.Create(fileName)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+		fmt.Println("Split to : ", fileName)
+	}
+	return totalPartsNum
+}
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func pedir_archivo() (int, string, string) {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
@@ -35,7 +70,10 @@ func pedir_archivo() (int, string, string) {
 	return int(partes), ubicacion, opcion
 }
 
-/*-----------------------------------------------------------------------------------------*/
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE DOWNLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+// Esta función se conecta a cierto nodo para recuperar cierto chunk de un archivo
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
 func requestChunk(maquina string, fileChunk int, bookTag string) {
 
 	var conn *grpc.ClientConn
@@ -60,7 +98,10 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 }
 
-/*---------------------------------------------------*/
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+// Esta función conecta los chunks ya recogidos en un solo archivo
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
 func stitchTheFile(originalName string, totalPartsNum uint64) {
 	writePosition := int64(0)
 	newFileName := "NEW_" + originalName
@@ -68,64 +109,56 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 	if e != nil {
 		log.Fatal(e)
 	}
-
 	for j := uint64(0); j < totalPartsNum; j++ {
 		currentChunkFileName := originalName + "_" + strconv.FormatUint(j, 10)
-
 		newFileChunk, err := os.Open(currentChunkFileName)
-
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 		defer newFileChunk.Close()
-
 		chunkInfo, err := newFileChunk.Stat()
-
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 		chunkSize := chunkInfo.Size()
 		chunkBufferBytes := make([]byte, chunkSize)
-
 		fmt.Println("Appending at position : [", writePosition, "] bytes")
 		writePosition = writePosition + chunkSize
-
 		reader := bufio.NewReader(newFileChunk)
 		_, err = reader.Read(chunkBufferBytes)
-
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 		n, err := file.Write(chunkBufferBytes)
-
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
 		file.Sync()
 		chunkBufferBytes = nil
-
 		fmt.Println("Written ", n, " bytes")
-
 		fmt.Println("Recombining part [", j, "] into : ", newFileName)
 	}
 	file.Close()
 }
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 func main() {
-	partes, maquinas, nameFile := pedir_archivo()
-	aux_maquina := strings.Split(maquinas, "-")
-	totalChunks := uint64(partes)
-	aux := 0
-	for j := uint64(0); j < totalChunks; j++ {
-		aux = int(j)
-		requestChunk(aux_maquina[aux], aux, nameFile)
-	}
-	stitchTheFile(nameFile, totalChunks)
+	// partes, maquinas, nameFile := pedir_archivo()
+	// aux_maquina := strings.Split(maquinas, "-")
+	// totalChunks := uint64(partes)
+	// aux := 0
+	// for j := uint64(0); j < totalChunks; j++ {
+	// 	aux = int(j)
+	// 	requestChunk(aux_maquina[aux], aux, nameFile)
+	// }
+	// stitchTheFile(nameFile, totalChunks)
+	opcion := 0
+	fmt.Scanf("%s", &opcion)
+
+	gutTheFile(opcion)
 }
