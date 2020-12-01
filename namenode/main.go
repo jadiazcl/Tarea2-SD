@@ -110,8 +110,9 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 	response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
 	if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
+		log.Fatalf("error en YadaYada: %s", err)
 	}
+
 	theLog = theLog + string(response.Proposal)
 	return true
 
@@ -128,7 +129,7 @@ func main() {
 	opcion := 0
 	boolean := true
 	fmt.Println("-1 : Cerrar")
-	fmt.Println("1 : decisionOnProposal(fileChunk int, bookTag string) ")
+	fmt.Println("1 : decisionOnProposal")
 	for opcion != -1 {
 		fmt.Scanf("%d", &opcion)
 		if opcion == 1 {
