@@ -27,6 +27,7 @@ type Server struct {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 //La funcion GRPC para la consulta de la ubicacion del archivo
 func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicacion) (*pb.RespuestaUbicacion, error) {
 	log.Printf("recibi %s ", in.NombreArchivo)
@@ -37,6 +38,7 @@ func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicac
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 // Esta funcion busca la ubicacion de las partes del archivo
 func buscar_en_log(nombre_libro string) (int, string) {
 	file, err := os.Open("log.txt")
@@ -71,6 +73,7 @@ func buscar_en_log(nombre_libro string) (int, string) {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 //funcion para recepcionar conexiones
 func recepcion_clientes() {
 	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
@@ -87,35 +90,40 @@ func recepcion_clientes() {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 var theLog string = "" //Variable que contendrá el log actualizado en un string
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 func decisionOnProposal(fileChunk int, bookTag string) bool {
 	var conn *grpc.ClientConn
-	dist := ""
-	fmt.Println("Ingrese el nombre del DataNode")
-	fmt.Scanf("%d", &dist)
-	dist = dist + ":50054"
-	conn, err := grpc.Dial(string(dist), grpc.WithInsecure())
+	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
 
 	rand.Seed(time.Now().UTC().UnixNano())
-	//chance := rand.Intn(2)
+	chance := rand.Intn(2)
+	if chance < 51 {
+		c := pb.NewGreeterClient(conn)
+		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
-	c := pb.NewGreeterClient(conn)
-	response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
+		if err != nil {
+			log.Fatalf("Error when calling SayHello: %s", err)
+		}
+		theLog = theLog + string(response.Proposal)
+		return false
+	} else {
+		c := pb.NewGreeterClient(conn)
+		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
-	if err != nil {
-		log.Fatalf("error en YadaYada: %s", err)
+		if err != nil {
+			log.Fatalf("Error when calling SayHello: %s", err)
+		}
+		theLog = theLog + string(response.Proposal)
+		return true
 	}
-
-	theLog = theLog + string(response.Proposal)
-	return true
-
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -129,7 +137,7 @@ func main() {
 	opcion := 0
 	boolean := true
 	fmt.Println("-1 : Cerrar")
-	fmt.Println("1 : decisionOnProposal")
+	fmt.Println("1 : decisionOnProposal(fileChunk int, bookTag string) ")
 	for opcion != -1 {
 		fmt.Scanf("%d", &opcion)
 		if opcion == 1 {
