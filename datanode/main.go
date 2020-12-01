@@ -151,6 +151,7 @@ func requestChunk(maquina string) {
 	fileName := bookTag + "_" + strFileCounter + "_" + strChunkNum
 	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
+	ChunkNum++
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -210,5 +211,6 @@ func main() {
 	for opcion != -1 {
 		requestChunk("dist158")
 		fmt.Scanf("%d", &opcion)
+		FileCounter++
 	}
 }
