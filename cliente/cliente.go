@@ -157,7 +157,7 @@ func main() {
 	// 	requestChunk(aux_maquina[aux], aux, nameFile)
 	// }
 	// stitchTheFile(nameFile, totalChunks)
-	opcion := 0
+	opcion := ""
 	fmt.Scanf("%s", &opcion)
 
 	gutTheFile(opcion)
