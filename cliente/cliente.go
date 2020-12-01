@@ -186,6 +186,6 @@ func main() {
 	fmt.Scanf("%s", &opcion)
 	totalParts := gutTheFile(opcion)
 	for c := uint64(0); c < totalParts; c++ {
-		sendChunk(c, opcion)
+		sendChunk(int(c), opcion)
 	}
 }
