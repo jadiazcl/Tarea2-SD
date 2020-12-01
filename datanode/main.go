@@ -205,7 +205,7 @@ func main() {
 	fmt.Println("-1 : Cerrar el programa ")
 
 	for opcion != -1 {
-		requestChunk("dist159", ChunkNum int, bookTag string)
+		requestChunk("dist158", ChunkNum int, bookTag string)
 		fmt.Scanf("%d", &opcion)
 	}
 }
