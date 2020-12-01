@@ -67,6 +67,7 @@ func sendChunk(partToSend int, bookName string) []byte {
 	if err != nil {
 		fmt.Print(err)
 	}
+	fmt.Println("enviando")
 	return chunkBytes
 }
 

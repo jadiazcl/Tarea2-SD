@@ -209,7 +209,7 @@ func main() {
 	fmt.Println("-1 : Cerrar el programa ")
 
 	for opcion != -1 {
-		requestChunk("dist158")
+		requestChunk("dist157")
 		fmt.Scanf("%d", &opcion)
 		FileCounter++
 	}
