@@ -138,9 +138,9 @@ func requestChunk(maquina string) {
 	input := 0
 	fmt.Println("ingrese 1 para comenzar >>>")
 	fmt.Scanf("%d", &input)
-	if input != 0 {
+	for input != 0 {
 		fmt.Println("******Chunk Solicitado*******")
-		fmt.Println("**********", ChunkNum, "**********")
+		fmt.Println("******", ChunkNum, "******")
 		fmt.Println("*****************************")
 		c := pb.NewGreeterClient(conn)
 		bookTag := "newFile"
@@ -198,7 +198,7 @@ func sendChunk(partToSend int, bookName string) []byte {
 	if err != nil {
 		fmt.Print(err)
 	}
-	return chunkByte
+	return chunkBytes
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -208,7 +208,7 @@ var ChunkNum int = 0
 var FileCounter int = 1
 
 func main() {
-	//go clientsReception()
+	go clientsReception()
 	opcion := 0
 	fmt.Println("-1 : Cerrar el programa ")
 
