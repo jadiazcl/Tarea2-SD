@@ -97,7 +97,10 @@ var theLog string = "" //Variable que contendrá el log actualizado en un string
 
 func decisionOnProposal(fileChunk int, bookTag string) bool {
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
+	mac := ""
+	fmt.Scanf("%s", &mac)
+	mach := mac + ":50054"
+	conn, err := grpc.Dial(mach, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
