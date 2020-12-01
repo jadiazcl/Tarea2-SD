@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math"
+	"net"
 	"os"
 	"strconv"
 
@@ -14,8 +15,26 @@ import (
 	"google.golang.org/grpc"
 )
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 type Server struct {
 	pb.UnimplementedGreeterServer
+}
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+func recepcion_clientes() {
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+	grpcServer := grpc.NewServer()
+
+	pb.RegisterGreeterServer(grpcServer, &Server{})
+
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %s", err)
+	}
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -181,6 +200,7 @@ func main() {
 	// 	requestChunk(aux_maquina[aux], aux, nameFile)
 	// }
 	// stitchTheFile(nameFile, totalChunks)
+	go recepcion_clientes()
 	opcion := ""
 	fmt.Printf(" Nombre archivo : ")
 

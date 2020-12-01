@@ -135,23 +135,27 @@ func requestChunk(maquina string) {
 		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
-	fmt.Println("waiting >>>")
-	fmt.Println("*     Chunk Solicitado      *")
-	fmt.Println(ChunkNum)
-	fmt.Println("*****************************")
-	c := pb.NewGreeterClient(conn)
-	bookTag := "newFile"
-	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(ChunkNum), BookName: bookTag})
-	if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
+	input := 0
+	fmt.Println("ingrese 1 para comenzar >>>")
+	fmt.Scanf("%d", &input)
+	for input != 0 {
+		fmt.Println("*     Chunk Solicitado      *")
+		fmt.Println(ChunkNum)
+		fmt.Println("*****************************")
+		c := pb.NewGreeterClient(conn)
+		bookTag := "newFile"
+		response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(ChunkNum), BookName: bookTag})
+		if err != nil {
+			log.Fatalf("Error when calling SayHello: %s", err)
+		}
+		log.Printf("La parte solicitada es: %d", response.Valor)
+		strFileCounter := strconv.FormatUint(uint64(FileCounter), 10)
+		strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
+		fileName := bookTag + "_" + strFileCounter + "_" + strChunkNum
+		fmt.Println("se recibe: ", fileName)
+		ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
+		ChunkNum++
 	}
-	log.Printf("La parte solicitada es: %d", response.Valor)
-	strFileCounter := strconv.FormatUint(uint64(FileCounter), 10)
-	strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
-	fileName := bookTag + "_" + strFileCounter + "_" + strChunkNum
-	fmt.Println("se recibe: ", fileName)
-	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
-	ChunkNum++
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
