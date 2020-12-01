@@ -146,7 +146,9 @@ func requestChunk(maquina string) {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 	log.Printf("La parte solicitada es: %d", response.Valor)
-	fileName := bookTag + "_" +strconv.FormatUint(uint64(FileCounter), 10) +"_" strconv.FormatUint(uint64(ChunkNum), 10)
+	strFileCounter := strconv.FormatUint(uint64(FileCounter), 10)
+	strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
+	fileName := bookTag + "_" +  strFileCounter + "_" + strChunkNum
 	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 }
