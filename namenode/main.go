@@ -105,25 +105,16 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 
 	rand.Seed(time.Now().UTC().UnixNano())
 	chance := rand.Intn(2)
-	if chance < 51 {
-		c := pb.NewGreeterClient(conn)
-		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
-		if err != nil {
-			log.Fatalf("Error when calling SayHello: %s", err)
-		}
-		theLog = theLog + string(response.Proposal)
-		return false
-	} else {
-		c := pb.NewGreeterClient(conn)
-		response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
+	c := pb.NewGreeterClient(conn)
+	response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(fileChunk), BookName: bookTag})
 
-		if err != nil {
-			log.Fatalf("Error when calling SayHello: %s", err)
-		}
-		theLog = theLog + string(response.Proposal)
-		return true
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
 	}
+	theLog = theLog + string(response.Proposal)
+	return true
+
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
