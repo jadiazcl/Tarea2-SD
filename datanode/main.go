@@ -148,7 +148,7 @@ func requestChunk(maquina string) {
 	log.Printf("La parte solicitada es: %d", response.Valor)
 	strFileCounter := strconv.FormatUint(uint64(FileCounter), 10)
 	strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
-	fileName := bookTag + "_" +  strFileCounter + "_" + strChunkNum
+	fileName := bookTag + "_" + strFileCounter + "_" + strChunkNum
 	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 }
@@ -201,13 +201,14 @@ func createDistribution(numParts int, fileName string) []byte {
 /*####################v################################################################################################################### */
 var ChunkNum int = 0
 var FileCounter int = 1
+
 func main() {
 	go clientsReception()
 	opcion := 0
 	fmt.Println("-1 : Cerrar el programa ")
 
 	for opcion != -1 {
-		requestChunk("dist158", ChunkNum int, bookTag string)
+		requestChunk("dist158")
 		fmt.Scanf("%d", &opcion)
 	}
 }
