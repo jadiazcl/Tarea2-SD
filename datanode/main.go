@@ -31,7 +31,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func clientsReception() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
 
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

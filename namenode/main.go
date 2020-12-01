@@ -73,7 +73,7 @@ func buscar_en_log(nombre_libro string) (int, string) {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 //funcion para recepcionar conexiones
 func recepcion_clientes() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -96,7 +96,7 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 	dist := ""
 	fmt.Println("Ingrese el nombre del DataNode")
 	fmt.Scanf("%d", &dist)
-	dist = dist + ":50054"
+	dist = dist + ":50055"
 	conn, err := grpc.Dial(dist, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
