@@ -138,7 +138,7 @@ func requestChunk(maquina string) {
 	input := 0
 	fmt.Println("ingrese 1 para comenzar >>>")
 	fmt.Scanf("%d", &input)
-	for input != 0 {
+	if input != 0 {
 		fmt.Println("******Chunk Solicitado*******")
 		fmt.Println("******", ChunkNum, "******")
 		fmt.Println("*****************************")
