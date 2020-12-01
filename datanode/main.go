@@ -208,7 +208,7 @@ var ChunkNum int = 0
 var FileCounter int = 1
 
 func main() {
-	go clientsReception()
+	//go clientsReception()
 	opcion := 0
 	fmt.Println("-1 : Cerrar el programa ")
 
