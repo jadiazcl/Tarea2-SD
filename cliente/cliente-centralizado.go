@@ -58,7 +58,7 @@ func sendChunk(partToSend int, bookName string) {
 	}
 	// Ver a donde enviar los chunkbytes probar hasta que algun data node responda
 	// por defecto pruebo con el 158
-	maquina:="dist157"
+	maquina:="dist158"
 	var conn *grpc.ClientConn	
 	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err1 != nil {
