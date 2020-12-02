@@ -49,7 +49,7 @@ func recepcion_clientes() {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-func howManyChunks(FileName string) uint64, uint64 {
+func howManyChunks(FileName string) (uint64, uint64) {
 	fileToBeChunked := FileName
 	file, err := os.Open(fileToBeChunked)
 	if err != nil {
@@ -62,7 +62,7 @@ func howManyChunks(FileName string) uint64, uint64 {
 	const fileChunk = 256000 //Bytes
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-	return totalPartsNum , fileSize
+	return totalPartsNum, fileSize
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -82,9 +82,9 @@ func gutTheFile(FileName string) uint64 {
 		}
 		file.Read(partBuffer)
 		fileName := FileName + "_" + strconv.FormatUint(i, 10)
-		_, err := os.Create(fileName)
+		_, err1 := os.Create(fileName)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err1)
 			os.Exit(1)
 		}
 		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
