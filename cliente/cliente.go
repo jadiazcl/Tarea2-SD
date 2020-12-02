@@ -221,13 +221,20 @@ func main() {
 	// stitchTheFile(nameFile, totalChunks)
 	go recepcion_clientes()
 	opcion := ""
+op:
+	-1
 	fmt.Printf(" Nombre archivo : ")
 	fmt.Scanf("%s", &opcion)
 	totalParts := gutTheFile(opcion)
+	fmt.Printf(" continue? : ")
 
-	for c := uint64(0); c < totalParts; c++ {
-		fmt.Println("in for para send")
-		sendChunk(int(c), opcion)
+	fmt.Scanf("%d", &op)
+
+	if op == 1 {
+		for c := uint64(0); c < totalParts; c++ {
+			fmt.Println("in for para send")
+			sendChunk(int(c), opcion)
+		}
 	}
 
 }
