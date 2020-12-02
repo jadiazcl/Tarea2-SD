@@ -55,7 +55,6 @@ func sendChunk(partToSend int, bookName string,maquina string) {
 	if err != nil {
 		fmt.Print(err)
 	}
-	
 	var conn *grpc.ClientConn	
 	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err1 != nil {
@@ -217,7 +216,7 @@ func solicitar_archivo(){
 				aux=int(j)
 				requestChunk(aux_maquina[aux],aux,opcion)
 			}
-			stitchTheFile(nameFile, totalChunks)
+			stitchTheFile(opcion, totalChunks)
 			fmt.Println("[°] Archivo Reconstruido y disponible")
 
 	    }else{
