@@ -198,7 +198,7 @@ func solicitar_archivo(){
 	//archivos_dis:=archivos_disponibles()   
 	opcion:="bandera"
 	check:=1
-	archivos_dis:={"test.pdf"}
+	archivos_dis:=[1]string{"test.pdf"}
 	for check!=0{ 	
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
