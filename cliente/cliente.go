@@ -158,6 +158,7 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	fileName := bookTag + "_" + strconv.FormatUint(uint64(fileChunk), 10)
 	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
+
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
