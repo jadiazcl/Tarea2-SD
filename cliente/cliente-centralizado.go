@@ -70,7 +70,7 @@ func sendChunk(partToSend int, bookName string) {
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	fmt.Println("# DataNode responde: Se a recibido chunk numero ",responde.Valor )
+	fmt.Println("# DataNode responde: Se a recibido chunk numero ",response.Valor )
 	return 
 }
 
