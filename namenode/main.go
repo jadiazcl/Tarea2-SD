@@ -29,7 +29,7 @@ func (s *Server) SolicitarUbicaciones(ctx context.Context, in *pb.ConsultaUbicac
 
 // conecta con cliente para entregar archivos Disp
 
-func (s *Server) AvailableFiles() (*pb.ConsultaUbicacion, error) {
+func (s *Server) AvailableFiles(ctx context.Context, *pb.ConsultaUbicacion) (*pb.ConsultaUbicacion, error) {
 	stringArchivos := FilesOnLog()
 	return &pb.ConsultaUbicacion{NombreArchivo: stringArchivos}, nil
 }

@@ -38,6 +38,6 @@ service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
-  rpc AvailableFiles () returns (ConsultaUbicacion) {}
+  rpc AvailableFiles (ConsultaUbicacion) returns (ConsultaUbicacion) {}
 
 }

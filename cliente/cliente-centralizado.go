@@ -190,11 +190,11 @@ func archivos_disponibles() /**string[]**/ {
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
-	response, err := c.AvailableFiles(context.Background())
+	response, err := c.AvailableFiles(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: ""})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	fmt.Println(response)
+	fmt.Println(response.NombreArchivo)
 
 }
 
