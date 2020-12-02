@@ -114,26 +114,6 @@ func gutTheFile(FileName string) uint64 {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-// func pedir_archivo() (int, string, string) {
-// 	var conn *grpc.ClientConn
-// 	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
-// 	if err != nil {
-// 		log.Fatalf("did not connect: %s", err)
-// 	}
-// 	opcion := ""
-// 	defer conn.Close()
-// 	fmt.Println("Ingrese el nombre del pdf a pedir")
-// 	fmt.Scanf("%s", &opcion)
-// 	c := pb.NewGreeterClient(conn)
-// 	response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: opcion})
-// 	if err != nil {
-// 		log.Fatalf("Error when calling SayHello: %s", err)
-// 	}
-// 	partes := response.Partes
-// 	ubicacion := response.Ubicaciones
-// 	return int(partes), ubicacion, opcion
-// }
-
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -141,7 +121,7 @@ func gutTheFile(FileName string) uint64 {
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 func requestChunk(maquina string, bookTag string) {
 	var conn *grpc.ClientConn
-	log.Println("maquina", maquina)
+	//log.Println("maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
