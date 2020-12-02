@@ -19,8 +19,7 @@ func pedir_archivo(opcion string) (int , string, string ){
    conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
    if err != nil {
      log.Fatalf("did not connect: %s", err)
-   }
-   opcion:=""
+   }   
    defer conn.Close()   
    fmt.Scanf("%s", &opcion)
    c := pb.NewGreeterClient(conn)
@@ -60,8 +59,8 @@ func sendChunk(partToSend int, bookName string) {
 	// por defecto pruebo con el 158
 	maquina:="dist157"
 	var conn *grpc.ClientConn	
-	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
-	if err != nil {
+	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
+	if err1 != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()	
@@ -200,7 +199,7 @@ func solicitar_archivo(){
 	opcion:="bandera"
 	check:=0
 	archivos_dis:=["test.pdf"]	
-	for check==0{ 	
+	for check=0{ 	
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
 			fmt.Println(archivos_dis[i])		
