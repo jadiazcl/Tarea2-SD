@@ -91,7 +91,7 @@ func gutTheFile(FileName string) uint64 {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 func sendChunk(partToSend int, bookName string) []byte {
-	gutTheFile(bookName)
+	//gutTheFile(bookName)
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
