@@ -139,7 +139,7 @@ func gutTheFile(FileName string) uint64 {
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función se conecta a cierto nodo para recuperar cierto chunk de un archivo
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
-func requestChunk(maquina string) {
+func requestChunk(maquina string, bookTag string) {
 	var conn *grpc.ClientConn
 	log.Println("maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
@@ -152,7 +152,7 @@ func requestChunk(maquina string) {
 	fmt.Println("**************", ChunkNum, "**************")
 	fmt.Println("*****************************")
 	c := pb.NewGreeterClient(conn)
-	bookTag := "newFile"
+	//bookTag := "newFile"
 	fmt.Println(bookTag)
 	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(ChunkNum), BookName: bookTag})
 	if err != nil {
@@ -217,11 +217,12 @@ var ChunkNum int = 0
 var FileCounter int = 1
 
 func main() {
+	bookTag := "archivo.pdf"
 	go clientsReception()
 	opcion := 0
 	fmt.Println("-1 : Cerrar el programa ")
 	for opcion != -1 {
-		requestChunk("dist157")
+		requestChunk("dist157", bookTag)
 		fmt.Println("-1 : Cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
 		FileCounter++
