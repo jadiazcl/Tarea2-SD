@@ -200,7 +200,7 @@ var ChunkNum int = 0
 var FileCounter int = 1
 
 func main() {
-	bookTag := "archivo.pdf"
+	bookTag := "archivo.pdf" // conseguirlo de otra forma
 	go clientsReception()
 	opcion := 0
 	for opcion != -1 {
