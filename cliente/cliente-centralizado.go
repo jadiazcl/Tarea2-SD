@@ -185,7 +185,7 @@ func archivos_disponibles() /**string[]**/ {
 	var conn *grpc.ClientConn
 	conn, err1 := grpc.Dial("dis157:50054", grpc.WithInsecure())
 	if err1 != nil {
-		log.Fatalf("did not connect: %s", err)
+		log.Fatalf("did not connect: %s", err1)
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
