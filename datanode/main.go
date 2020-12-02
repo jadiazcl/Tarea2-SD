@@ -144,7 +144,7 @@ func requestChunk(maquina string, bookTag string) int {
 	fmt.Println("se recibe: ", fileName)
 	fmt.Println(len(response.Chunk))
 	ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
-	chunks := int(response.parts)
+	chunks := int(response.Parts)
 	ChunkNum++
 	return chunks
 
