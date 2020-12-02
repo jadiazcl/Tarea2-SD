@@ -114,6 +114,7 @@ func gutTheFile(FileName string) uint64 {
 func sendChunk(partToSend int, bookName string) []byte {
 	//gutTheFile(bookName)
 	var conn *grpc.ClientConn
+	fmt.Println("toy hasta el pico")
 	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
