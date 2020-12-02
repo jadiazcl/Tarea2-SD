@@ -54,7 +54,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.Test) (*pb.Book, e
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func clientsReception() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))
+	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
 
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
