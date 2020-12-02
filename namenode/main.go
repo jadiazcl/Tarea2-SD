@@ -106,7 +106,6 @@ func decisionOnProposal(fileChunk int, bookTag string) bool {
 	}
 	defer conn.Close()
 
-	
 	rand.Seed(time.Now().UTC().UnixNano())
 	chance := rand.Intn(2)
 	if chance < 51 {
