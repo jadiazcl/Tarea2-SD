@@ -204,8 +204,7 @@ func main() {
 	go clientsReception()
 	opcion := 0
 	for opcion != -1 {
-		fmt.Println("-1 : Cerrar el programa ")
-		fmt.Scanf("%d", &opcion)
+
 		parts := 0
 		parts = requestChunk("dist157", bookTag)
 		for ChunkNum < (parts - 1) {
@@ -213,6 +212,8 @@ func main() {
 
 			FileCounter++
 		}
+		fmt.Println("-1 : Cerrar el programa ")
+		fmt.Scanf("%d", &opcion)
 
 	}
 	ChunkNum = 0
