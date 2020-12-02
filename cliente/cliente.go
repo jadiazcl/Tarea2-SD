@@ -27,8 +27,9 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
 	auxiliar := sendChunk((req), in.BookName)
-	parts := int32(howManyChunks(in.BookName))
-	return &pb.Test{Valor: in.Request, Chunk: auxiliar, Parts: parts}, nil
+	parts, _ := howManyChunks(in.BookName)
+
+	return &pb.Test{Valor: in.Request, Chunk: auxiliar, Parts: int32(parts)}, nil
 }
 
 func recepcion_clientes() {
@@ -58,8 +59,8 @@ func howManyChunks(FileName string) (uint64, uint64) {
 	}
 	defer file.Close()
 	fileInfo, _ := file.Stat()
-	var fileSize int64 = fileInfo.Size()
-	const fileChunk = 256000 //Bytes
+	var fileSize uint64 = fileInfo.Size()
+	fileChunk := 256000 //Bytes
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
 	return totalPartsNum, fileSize
@@ -69,7 +70,7 @@ func howManyChunks(FileName string) (uint64, uint64) {
 // Esta función separa el archivo en diferentes archivos de 250 KB cada uno
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 func gutTheFile(FileName string) uint64 {
-	const fileChunk = 256000 //Bytes
+	fileChunk := 256000 //Bytes
 
 	totalPartsNum, fileChunk := howManyChunks(FileName)
 	for i := uint64(0); i < totalPartsNum; i++ {
