@@ -59,7 +59,7 @@ func howManyChunks(FileName string) (uint64, uint64) {
 	}
 	defer file.Close()
 	fileInfo, _ := file.Stat()
-	var fileSize uint64 = fileInfo.Size()
+	fileSize := uint64(fileInfo.Size())
 	fileChunk := 256000 //Bytes
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
@@ -69,12 +69,12 @@ func howManyChunks(FileName string) (uint64, uint64) {
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función separa el archivo en diferentes archivos de 250 KB cada uno
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
-func gutTheFile(FileName string) uint64 {
+func gutTheFile(fileName string) uint64 {
 	fileChunk := 256000 //Bytes
 
-	totalPartsNum, fileChunk := howManyChunks(FileName)
+	totalPartsNum, fileSize := howManyChunks(FileName)
 	for i := uint64(0); i < totalPartsNum; i++ {
-		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
+		partSize := int(math.Min(fileChunk, float64(int64(fileSize)-int64(i*fileChunk))))
 		partBuffer := make([]byte, partSize)
 		file, err := os.Open(fileName)
 		if err != nil {
