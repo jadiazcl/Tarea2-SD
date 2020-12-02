@@ -98,7 +98,7 @@ func gutTheFile(fileName string) uint64 {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func sendChunk(partToSend int, bookName string) []byte {
-	//gutTheFile(bookName)
+	gutTheFile(bookName)
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
@@ -222,11 +222,7 @@ func main() {
 	// }
 	// stitchTheFile(nameFile, totalChunks)
 	go recepcion_clientes()
-	opcion := "-"
 	op := 1
-	fmt.Printf(" Nombre archivo : ")
-	fmt.Scanf("%s", &opcion)
-	gutTheFile(opcion)
 	fmt.Printf(" continue?\n  yes :1  no: anything else ")
 
 	fmt.Scanf("%d", &op)
