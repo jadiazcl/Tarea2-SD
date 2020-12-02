@@ -108,6 +108,8 @@ func sendChunk(partToSend int, bookName string) {
 	if err != nil {
 		log.Fatalf("Error when calling ClientToDataNode: %s", err)
 	}
+
+	fmt.Println(response.BookName)
 	return
 }
 
