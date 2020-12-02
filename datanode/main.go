@@ -203,17 +203,17 @@ func main() {
 	bookTag := "archivo.pdf"
 	go clientsReception()
 	opcion := 0
-	parts := 0
-	fmt.Println("-1 : Cerrar el programa ")
 	for opcion != -1 {
-		parts := requestChunk("dist157", bookTag)
+		fmt.Println("-1 : Cerrar el programa ")
+		fmt.Scanf("%d", &opcion)
+		parts := 0
+		parts = requestChunk("dist157", bookTag)
 		for ChunkNum < (parts - 1) {
 			requestChunk("dist157", bookTag)
 
 			FileCounter++
 		}
-		fmt.Println("-1 : Cerrar el programa ")
-		fmt.Scanf("%d", &opcion)
+
 	}
 	ChunkNum = 0
 
