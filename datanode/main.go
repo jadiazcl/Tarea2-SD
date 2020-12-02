@@ -39,6 +39,19 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
+func (s *Server) ClientToDataNode(ctx context.Context, in *pb.Test) (*pb.Book, error) {
+	fileName := "" + "_" + strconv.FormatUint(in.Valor, 10)
+	_, err := os.Create(fileName)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	ioutil.WriteFile(fileName, in.Chuck, os.ModeAppend)
+	fmt.Println("Split to : ", fileName)
+
+	return &pb.Book{Request: in.Valor, BookName: "-"}, nil
+}
+
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func clientsReception() {
 	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50054))

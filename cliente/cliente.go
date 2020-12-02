@@ -45,6 +45,10 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
 }
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función separa el archivo en diferentes archivos de 250 KB cada uno
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -79,15 +83,32 @@ func gutTheFile(FileName string) uint64 {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-func sendChunk(partToSend int, bookName string) []byte {
+func sendChunk(partToSend int, bookName string) {
 	//gutTheFile(bookName)
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 	chunkBytes, err := ioutil.ReadFile(chunkToSend)
 	if err != nil {
 		fmt.Print(err)
 	}
 	fmt.Println("enviando")
-	return chunkBytes
+
+	opcion := ""
+	defer conn.Close()
+	fmt.Println("Ingrese el nombre del pdf a pedir")
+	fmt.Scanf("%s", &opcion)
+	c := pb.NewGreeterClient(conn)
+	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chunk: chunkBytes})
+
+	if err != nil {
+		log.Fatalf("Error when calling ClientToDataNode: %s", err)
+	}
+	return
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -213,6 +234,8 @@ func main() {
 		for c := uint64(0); c < totalParts; c++ {
 			sendChunk(int(c), opcion)
 		}
+		fmt.Printf(" empezamos? : ")
+		fmt.Scanf("%d", &ok)
 	}
 
 }

@@ -71,4 +71,6 @@ service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc YadaYada (Book) returns (Distribution) {}
+  rpc ClientToDataNode (Test) returns (Book) {}
 }
+
