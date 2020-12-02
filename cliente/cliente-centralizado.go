@@ -101,9 +101,7 @@ func gutTheFile(fileName string) uint64 {
 
 /*-----------------------------------------------------------------------------------------*/
 func requestChunk(maquina string, fileChunk int, bookTag string) {
-
-	var conn *grpc.ClientConn
-	log.Println("maquina", maquina)
+	var conn *grpc.ClientConn	
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
@@ -123,6 +121,35 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	fmt.Println("se recibe: ", fileName)
 	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 }
+
+func avisar_termino(maquina string, bookTag string, partes int) {
+	var conn *grpc.ClientConn	
+	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()	
+	c := pb.NewGreeterClient(conn)
+	aux_maquina:=0
+	if maquina=="dist158"{
+		aux_maquina=0
+	}else if maquina=="dist159"{
+		aux_maquina=1
+	}else{
+		aux_maquina=2
+	}
+	response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(aux_maquina), BookName: bookTag,Partes: int32(partes)})
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
+	}
+	if response.valor==0{
+		log.Printf("La distribucion fue exitosa")	
+	}else{
+		log.Printf("La distribucion no fue posible")	
+	}		
+}
+
+
 
 /*---------------------------------------------------*/
 func stitchTheFile(originalName string, totalPartsNum uint64) {
@@ -240,6 +267,7 @@ func subir_archivo(){
 		sendChunk(i, opcion,maquina)		
 	}
 	fmt.Println("[°] Todos los chunks enviados")	
+	avisar_termino(maquina, opcion,cantidad_partes)
 }	
 
 func menu(){

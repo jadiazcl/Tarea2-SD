@@ -9,6 +9,12 @@ message Book {
   string BookName =2;
 }
 
+message ClientCheck {
+  int32 Request = 1;
+  string BookName =2;
+  int32 Partes = 1;
+}
+
 message Test {
   int32 Valor = 1;
   bytes Chuck = 2;
@@ -33,9 +39,16 @@ message Resultado {
   int32 Valor = 1;
 }
 
+message Distribution{
+  string Proposal = 1;
+  string BookName =2;
+  int32 Partes = 1;
+}
 
 service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
+  rpc YadaYada (Book) returns (Resultado) {}
+  rpc CheckDistribucion (Distribution) returns (Resultado) {}
 }

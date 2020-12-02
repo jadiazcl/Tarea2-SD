@@ -27,6 +27,27 @@ package main
  	return &pb.RespuestaUbicacion{Partes: int32(partes),Ubicaciones:ubicaciones}, nil
  }
 
+ func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
+  resultado:=decisionOnProposal(in.Proposal)  
+  return &pb.Resultado{Valor:int32(resultado)}, nil
+ }
+s
+func decisionOnProposal(distribucion string) int{
+  maquinas:=strings.Split(distribucion, "-")  
+  for i := 0; i < len(maquinas); i++ {
+    var conn *grpc.ClientConn  
+    mach := maquinas[i] + ":50054"
+    conn, err := grpc.Dial(mach, grpc.WithInsecure())
+    if err != nil {
+      fmt.Println("Maquina no disponible, distribucion rechazada")
+      return -1   
+    }
+  }
+  fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
+  defer conn.Close()
+  return 0  
+}
+
  // Esta funcion busca la ubicacion de las partes del archivo
  func buscar_en_log(nombre_libro string) (int, string){
     file, err := os.Open("log.txt")
