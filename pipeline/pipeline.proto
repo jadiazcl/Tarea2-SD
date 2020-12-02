@@ -4,44 +4,6 @@ package pipeline;
 
 option go_package ="Lab2-Test/Tarea2-SD/pipeline";
 
-message Message {
-  string Id = 1;
-  string Producto = 2;
-  int32 Valor = 3;
-  string Tienda =4;
-  string Destino = 5;
-  int32 Prioridad = 6;
-  int32 Seguimiento = 7;
-
-}
-
-message RespuestaCon {
-  string Id = 1;
-  string Producto = 2;
-  int32 Valor = 3;
-  string Tienda =4;
-  string Destino = 5;
-  int32 Prioridad = 6;
-  int32 Seguimiento = 7;
-  int32 Intentos = 8;
-  int32 Estado = 9;
-  int32 IdCamion =10;
-  string TiempoEntrega=11;
-}
-
-message ActCamion {
-  int32 Seguimiento = 1;
-  int32 Exito = 2;
-}
-
-message ConsultaEstado {
-  int32 Seguimiento = 1;
-}
-
-message Solcamion {
-  int32 IdCamion = 1;
-}
-
 message Book {
   int32 Request = 1;
   string BookName =2;
@@ -61,8 +23,18 @@ message RespuestaUbicacion {
   string Ubicaciones=2;
 }
 
+message DataChuck {
+  int32 Valor = 1;
+  bytes Chuck = 2;
+}
+
+message Resultado {
+  int32 Valor = 1;
+}
+
 
 service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
+  rpc ClientToDataNode (DataChuck) returns (Resultado) {}
 }
