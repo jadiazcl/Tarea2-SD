@@ -22,11 +22,12 @@ type Server struct {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
-	auxiliar := sendChunk(req, in.BookName)
-	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
+	auxiliar := sendChunk((req), in.BookName)
+	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
 }
 
 func recepcion_clientes() {

@@ -141,12 +141,11 @@ func gutTheFile(FileName string) uint64 {
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 func requestChunk(maquina string) {
 	var conn *grpc.ClientConn
-	fmt.Println("Estamos pidiendo a maquina", maquina)
+	log.Println("maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-
 	defer conn.Close()
 
 	fmt.Println("******Chunk Solicitado*******")
@@ -154,20 +153,18 @@ func requestChunk(maquina string) {
 	fmt.Println("*****************************")
 	c := pb.NewGreeterClient(conn)
 	bookTag := "newFile"
-
+	fmt.Println(bookTag)
 	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(ChunkNum), BookName: bookTag})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 
 	log.Printf("La parte solicitada es: %d", response.Valor)
-	strFileCounter := strconv.FormatUint(uint64(FileCounter), 10)
-	strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
-	fileName := bookTag + "_" + strFileCounter + "_" + strChunkNum
+	fileName := bookTag + "_" + strconv.FormatUint(uint64(ChunkNum), 10)
 	fmt.Println("se recibe: ", fileName)
-	ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
-	ChunkNum++
+	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
 
+	ChunkNum++
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
