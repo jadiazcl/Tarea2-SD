@@ -197,9 +197,9 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 func solicitar_archivo(){
 	//archivos_dis:=archivos_disponibles()   
 	opcion:="bandera"
-	check:=0
-	archivos_dis:=["test.pdf"]	
-	for check=0{ 	
+	check:=1
+	archivos_dis:={"test.pdf"}
+	for check!=0{ 	
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
 			fmt.Println(archivos_dis[i])		
@@ -207,7 +207,8 @@ func solicitar_archivo(){
 	    fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")	    
 	    fmt.Scanf("%s", &opcion)
 	    //check=verificar_archivo(opcion)
-	    if check==0{
+	    check=0
+	    if check==0{	    	
 	    	partes,maquinas,nameFile:=pedir_archivo(opcion)
 	    	//chequear las maquinas
 	    	aux_maquina:=strings.Split(maquinas, "-")
