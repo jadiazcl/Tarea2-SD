@@ -224,7 +224,6 @@ func main() {
 	go clientsReception()
 	opcion := 0
 	fmt.Println("-1 : Cerrar el programa ")
-
 	for opcion != -1 {
 		requestChunk("dist157")
 		fmt.Scanf("%d", &opcion)
