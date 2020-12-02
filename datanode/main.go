@@ -119,7 +119,7 @@ func gutTheFile(FileName string) uint64 {
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función se conecta a cierto nodo para recuperar cierto chunk de un archivo
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
-func requestChunk(maquina string, bookTag string) {
+func requestChunk(maquina string, bookTag string) []string {
 	var conn *grpc.ClientConn
 	//log.Println("maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
@@ -213,4 +213,6 @@ func main() {
 		fmt.Println("-1 : Cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
 	}
+
+	createDistribution()
 }

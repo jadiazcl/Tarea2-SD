@@ -50,6 +50,7 @@ message Book {
 message Test {
   int32 Valor = 1;
   bytes Chunk = 2;
+  int32 Parts = 3;
 }
 
 message ConsultaUbicacion {

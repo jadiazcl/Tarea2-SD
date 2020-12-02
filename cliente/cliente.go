@@ -27,7 +27,8 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
 	auxiliar := sendChunk((req), in.BookName)
-	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
+	parts := int(howManyChunks(in.BookName))
+	return &pb.Test{Valor: in.Request, Chunk: auxiliar, Parts: parts}, nil
 }
 
 func recepcion_clientes() {
@@ -44,22 +45,11 @@ func recepcion_clientes() {
 	}
 }
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-// func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
-// 	req := int(in.Request)
-// 	log.Printf("Se solicitará el chunk: %d ", req)
-// 	auxiliar := sendChunk(req, in.BookName)
-// 	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
-// }
-
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
-/*----------------------------------------------------------------------------------------------------------------------------------------*/
-// Esta función separa el archivo en diferentes archivos de 250 KB cada uno
-/*----------------------------------------------------------------------------------------------------------------------------------------*/
-func gutTheFile(FileName string) uint64 {
+func howManyChunks(FileName string) uint64 {
 	fileToBeChunked := FileName
 	file, err := os.Open(fileToBeChunked)
 	if err != nil {
@@ -72,6 +62,14 @@ func gutTheFile(FileName string) uint64 {
 	const fileChunk = 256000 //Bytes
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
+	return totalPartsNum
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+// Esta función separa el archivo en diferentes archivos de 250 KB cada uno
+/*----------------------------------------------------------------------------------------------------------------------------------------*/
+func gutTheFile(FileName string) uint64 {
+	totalPartsNum := howManyChunks(FileName)
 	for i := uint64(0); i < totalPartsNum; i++ {
 		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
 		partBuffer := make([]byte, partSize)
@@ -89,7 +87,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func sendChunk(partToSend int, bookName string) []byte {
 	//gutTheFile(bookName)
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
@@ -101,7 +99,6 @@ func sendChunk(partToSend int, bookName string) []byte {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 func pedir_archivo() (int, string, string) {
 	var conn *grpc.ClientConn
@@ -123,7 +120,10 @@ func pedir_archivo() (int, string, string) {
 	return int(partes), ubicacion, opcion
 }
 
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE DOWNLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+/*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función se conecta a cierto nodo para recuperar cierto chunk de un archivo
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
