@@ -66,7 +66,7 @@ func sendChunk(partToSend int, bookName string) {
 	}
 	defer conn.Close()	
 	c := pb.NewGreeterClient(conn)	
-	response, err := c.SayHello(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chuck: chunkBytes})
+	response, err := c.SayHello(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
