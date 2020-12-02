@@ -78,15 +78,15 @@ func gutTheFile(fileName string) uint64 {
 		partBuffer := make([]byte, partSize)
 		file, err := os.Open(fileName)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			log.Fatalf(err)
+
 		}
 		file.Read(partBuffer)
 		fileName := fileName + "_" + strconv.FormatUint(i, 10)
 		_, err1 := os.Create(fileName)
 		if err != nil {
-			fmt.Println(err1)
-			os.Exit(1)
+			log.Fatalf(err1)
+
 		}
 		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
 		fmt.Println("Split to : ", fileName)

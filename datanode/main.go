@@ -142,8 +142,9 @@ func requestChunk(maquina string, bookTag string) {
 	log.Printf("La parte solicitada es: %d", response.Valor)
 	fileName := bookTag + "_" + strconv.FormatUint(uint64(ChunkNum), 10)
 	fmt.Println("se recibe: ", fileName)
-	ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
-
+	if response.Chunk != "" {
+		ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
+	}
 	ChunkNum++
 }
 
@@ -170,7 +171,7 @@ func createDistribution(numParts int, fileName string) []byte {
 			ind++
 			randomIndex := rand.Intn(len(m))
 			pick := m[randomIndex]
-			newDistr = newDistr + "parte_1_" + strconv.Itoa(e+ind) + " " + pick + "\n"
+			newDistr = newDistr + "parte_" + strconv.Itoa(e+ind) + " " + pick + "\n"
 		}
 	}
 	//fmt.Println(newDistr)
@@ -213,5 +214,6 @@ func main() {
 		fmt.Println("-1 : Cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
 	}
+	ChunkNum = 0
 
 }
