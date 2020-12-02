@@ -25,7 +25,7 @@ message RespuestaUbicacion {
 
 message DataChuck {
   int32 Valor = 1;
-  bytes Chuck = 2;
+  bytes Chunck = 2;
 }
 
 message Resultado {
