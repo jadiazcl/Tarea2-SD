@@ -34,7 +34,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ioutil.WriteFile(fileName, in.Chunk, os.ModeAppend)
+	ioutil.WriteFile(fileName, in.Chunck, os.ModeAppend)
 	fmt.Println("Split to : ", fileName)
 	return &pb.Resultado{Valor: in.Valor}, nil
 }
