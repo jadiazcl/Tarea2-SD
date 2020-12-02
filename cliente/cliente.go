@@ -235,7 +235,6 @@ func main() {
 	totalParts := gutTheFile(opcion)
 
 	for c := uint64(0); c < totalParts; c++ {
-		totalParts := gutTheFile(opcion)
 		fmt.Println("in for para send")
 		sendChunk(int(c), opcion)
 	}
