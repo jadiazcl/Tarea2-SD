@@ -221,7 +221,7 @@ func main() {
 	// }
 	// stitchTheFile(nameFile, totalChunks)
 	go recepcion_clientes()
-	
+
 	op := 1
 	fmt.Printf(" Nombre archivo : ")
 	fmt.Scanf("%s", &opcion)
@@ -233,8 +233,6 @@ func main() {
 	if op != 1 {
 		fmt.Printf(" continue?\n  yes :1  no: anything else ")
 		fmt.Scanf("%d", &op)
-	
-		}
-	}
 
+	}
 }
