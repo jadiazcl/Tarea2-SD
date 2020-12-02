@@ -27,7 +27,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
 	auxiliar := sendChunk((req), in.BookName)
-	parts := int(howManyChunks(in.BookName))
+	parts := int32(howManyChunks(in.BookName))
 	return &pb.Test{Valor: in.Request, Chunk: auxiliar, Parts: parts}, nil
 }
 
@@ -49,7 +49,7 @@ func recepcion_clientes() {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-func howManyChunks(FileName string) uint64 {
+func howManyChunks(FileName string) uint64, uint64 {
 	fileToBeChunked := FileName
 	file, err := os.Open(fileToBeChunked)
 	if err != nil {
@@ -62,17 +62,24 @@ func howManyChunks(FileName string) uint64 {
 	const fileChunk = 256000 //Bytes
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-	return totalPartsNum
+	return totalPartsNum , fileSize
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 // Esta función separa el archivo en diferentes archivos de 250 KB cada uno
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 func gutTheFile(FileName string) uint64 {
-	totalPartsNum := howManyChunks(FileName)
+	const fileChunk = 256000 //Bytes
+
+	totalPartsNum, fileChunk := howManyChunks(FileName)
 	for i := uint64(0); i < totalPartsNum; i++ {
 		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
 		partBuffer := make([]byte, partSize)
+		file, err := os.Open(fileName)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		file.Read(partBuffer)
 		fileName := FileName + "_" + strconv.FormatUint(i, 10)
 		_, err := os.Create(fileName)
