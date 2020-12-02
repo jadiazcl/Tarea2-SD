@@ -66,7 +66,7 @@ func sendChunk(partToSend int, bookName string) {
 	}
 	defer conn.Close()	
 	c := pb.NewGreeterClient(conn)	
-	response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes})
+	response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes,NombreArchivo:bookName})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}

@@ -28,7 +28,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 
 /*-----------------------------------------------------------------------------------------*/
 func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Resultado, error) {
-	fileName := "" + "_" + strconv.FormatUint(uint64(in.Valor), 10)
+	fileName := in.NombreArchivo + "_" + strconv.FormatUint(uint64(in.Valor), 10)
 	_, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println(err)

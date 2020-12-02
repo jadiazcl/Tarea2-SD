@@ -26,6 +26,7 @@ message RespuestaUbicacion {
 message DataChuck {
   int32 Valor = 1;
   bytes Chunck = 2;
+  string NombreArchivo = 3;
 }
 
 message Resultado {
