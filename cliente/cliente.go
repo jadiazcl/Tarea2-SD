@@ -134,7 +134,7 @@ func sendChunk(partToSend int, bookName string) {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 
-	fmt.Println(response.BookName)
+	fmt.Println(response.Chunk)
 	return
 }
 
@@ -256,6 +256,5 @@ func main() {
 	for c := uint64(0); c < totalParts; c++ {
 		sendChunk(int(c), opcion)
 	}
-	fmt.Printf(" empezamos? : ")
-	fmt.Scanf("%d", &ok)
+
 }
