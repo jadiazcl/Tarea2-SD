@@ -6,32 +6,32 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"math"
+	"os"
 	"strconv"
 	"strings"
+
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"	
+	"google.golang.org/grpc"
 )
 
 /*-----------------------------------------------------------------------------------------*/
-func pedir_archivo(opcion string) (int , string){
-   var conn *grpc.ClientConn
-   conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
-   if err != nil {
-     log.Fatalf("did not connect: %s", err)
-   }   
-   defer conn.Close()   
-   c := pb.NewGreeterClient(conn)
-   response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:opcion})
-   if err != nil {
-     log.Fatalf("Error when calling SayHello: %s", err)
-   }
-	 partes:=response.Partes
-	 ubicacion:=response.Ubicaciones
-	 return int(partes),ubicacion
+func pedir_archivo(opcion string) (int, string) {
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
+	response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: opcion})
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
+	}
+	partes := response.Partes
+	ubicacion := response.Ubicaciones
+	return int(partes), ubicacion
 }
-
 
 func howManyChunks(FileName string) (uint64, uint64) {
 	fileToBeChunked := FileName
@@ -49,25 +49,25 @@ func howManyChunks(FileName string) (uint64, uint64) {
 	return totalPartsNum, fileSize
 }
 
-func sendChunk(partToSend int, bookName string,maquina string) {
+func sendChunk(partToSend int, bookName string, maquina string) {
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
-	var conn *grpc.ClientConn	
+	var conn *grpc.ClientConn
 	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err1 != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	defer conn.Close()	
-	c := pb.NewGreeterClient(conn)	
-	response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes,NombreArchivo:bookName})
+	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
+	response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes, NombreArchivo: bookName})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	fmt.Println("# DataNode responde: Se a recibido chunk numero ",response.Valor )
-	return 
+	fmt.Println("# DataNode responde: Se a recibido chunk numero ", response.Valor)
+	return
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -97,7 +97,6 @@ func gutTheFile(fileName string) uint64 {
 	}
 	return totalPartsNum
 }
-
 
 /*-----------------------------------------------------------------------------------------*/
 func requestChunk(maquina string, fileChunk int, bookTag string) {
@@ -182,84 +181,98 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 	file.Close()
 }
 
-//func archivos_disponibles() string[]{
-  // DEBERIA RETORNAR LA LISTA DE ARCHIVOS DISPONIBLES
-//}
+func archivos_disponibles() /**string[]**/ {
+	var conn *grpc.ClientConn
+	conn, err1 := grpc.Dial("dis157:50054", grpc.WithInsecure())
+	if err1 != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
+
+	response, err := c.AvailableFiles(context.Background())
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
+	}
+	fmt.Println(response)
+
+}
 
 //func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
-  // DEBERIA verificar si el archivo existe o no
-  // 0 si existe 1 si no
+// DEBERIA verificar si el archivo existe o no
+// 0 si existe 1 si no
 //}
 
-func solicitar_archivo(){
-	//archivos_dis:=archivos_disponibles()   
-	opcion:="bandera"
-	check:=1
-	archivos_dis:=[1]string{"test.pdf"}
-	for check!=0{ 	
+func solicitar_archivo() {
+	//archivos_dis:=archivos_disponibles()
+	opcion := "bandera"
+	check := 1
+	archivos_dis := [1]string{"test.pdf"}
+	for check != 0 {
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
-			fmt.Println(archivos_dis[i])		
-		}	
-	    fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")	    
-	    fmt.Println("# Ejemplo: test.pdf ")	
-	    fmt.Scanf("%s", &opcion)
-	    //check=verificar_archivo(opcion, archivos_dis)
-	    check=0
-	    if check==0{	    	
-	    	partes,maquinas:=pedir_archivo(opcion)
-	    	//chequear las maquinas
-	    	aux_maquina:=strings.Split(maquinas, "-")
-			totalChunks:=uint64(partes)
-			aux:=0
+			fmt.Println(archivos_dis[i])
+		}
+		fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")
+		fmt.Println("# Ejemplo: test.pdf ")
+		fmt.Scanf("%s", &opcion)
+		//check=verificar_archivo(opcion, archivos_dis)
+		check = 0
+		if check == 0 {
+			partes, maquinas := pedir_archivo(opcion)
+			//chequear las maquinas
+			aux_maquina := strings.Split(maquinas, "-")
+			totalChunks := uint64(partes)
+			aux := 0
 			for j := uint64(0); j < totalChunks; j++ {
-				aux=int(j)
-				requestChunk(aux_maquina[aux],aux,opcion)
+				aux = int(j)
+				requestChunk(aux_maquina[aux], aux, opcion)
 			}
 			stitchTheFile(opcion, totalChunks)
 			fmt.Println("[°] Archivo Reconstruido y disponible")
 
-	    }else{
-	    	fmt.Println("### Escriba un nombre de archivo valido")
-	    }	
+		} else {
+			fmt.Println("### Escriba un nombre de archivo valido")
+		}
 	}
 }
 
-func subir_archivo(){
-	opcion:=""
-	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")	
-	fmt.Println("# Ejemplo: test.pdf ")	
+func subir_archivo() {
+	opcion := ""
+	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")
+	fmt.Println("# Ejemplo: test.pdf ")
 	fmt.Scanf("%s", &opcion)
 	/// valor si existe el archivo
-	fmt.Println("[°] Comenzando proceso para subir el archivo")	
-	cantidad_partes:=gutTheFile(opcion)
+	fmt.Println("[°] Comenzando proceso para subir el archivo")
+	cantidad_partes := gutTheFile(opcion)
 	// Ver a donde enviar los chunkbytes probar hasta que algun data node responda
 	// por defecto pruebo con el 158
-	maquina:="dist158"
+	maquina := "dist158"
 	for i := 0; i < int(cantidad_partes); i++ {
-		sendChunk(i, opcion,maquina)		
+		sendChunk(i, opcion, maquina)
 	}
-	fmt.Println("[°] Todos los chunks enviados")	
-}	
+	fmt.Println("[°] Todos los chunks enviados")
+}
 
-func menu(){
-	opcion:=0	
+func menu() {
+	opcion := 0
 	fmt.Println("### Bienvenid@ a la tarea 2 de Distribuidos")
-	for opcion!=3{
+	for opcion != 3 {
 		fmt.Println("Escriba 1 para poder subir un pdf")
 		fmt.Println("Escriba 2 para poder pedir un pdf")
 		fmt.Println("Escriba 3 para salir")
 		fmt.Scanf("%d", &opcion)
-		if opcion==1{
-			subir_archivo()			
+		if opcion == 1 {
+			subir_archivo()
 		}
-		if opcion==2{
+		if opcion == 2 {
 			solicitar_archivo()
-		}		
+		}
 	}
-	
+
 }
 
 func main() {
-	menu()	
+	//menu()
+	archivos_disponibles()
 }
