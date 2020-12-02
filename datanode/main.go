@@ -153,7 +153,7 @@ func requestChunk(maquina string) {
 	fmt.Scanf("%d", &input)
 	if input != 0 {
 		fmt.Println("******Chunk Solicitado*******")
-		fmt.Println("******", ChunkNum, "******")
+		fmt.Println("**************", ChunkNum, "**************")
 		fmt.Println("*****************************")
 		c := pb.NewGreeterClient(conn)
 		bookTag := "newFile"

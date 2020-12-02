@@ -83,6 +83,34 @@ func gutTheFile(FileName string) uint64 {
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
+// func sendChunk(partToSend int, bookName string) {
+// 	//gutTheFile(bookName)
+// 	var conn *grpc.ClientConn
+// 	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
+// 	if err != nil {
+// 		log.Fatalf("did not connect: %s", err)
+// 	}
+
+// 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
+// 	chunkBytes, err := ioutil.ReadFile(chunkToSend)
+// 	if err != nil {
+// 		fmt.Print(err)
+// 	}
+// 	opcion := ""
+// 	defer conn.Close()
+// 	fmt.Println("Ingrese el nombre del pdf a pedir")
+// 	fmt.Scanf("%s", &opcion)
+// 	c := pb.NewGreeterClient(conn)
+// 	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chuck: chunkBytes})
+
+// 	if err != nil {
+// 		log.Fatalf("Error when calling ClientToDataNode: %s", err)
+// 	}
+
+// 	fmt.Println(response.BookName)
+// 	return
+// }
+
 func sendChunk(partToSend int, bookName string) {
 	//gutTheFile(bookName)
 	var conn *grpc.ClientConn
@@ -90,23 +118,20 @@ func sendChunk(partToSend int, bookName string) {
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 	chunkBytes, err := ioutil.ReadFile(chunkToSend)
 	if err != nil {
 		fmt.Print(err)
 	}
-	fmt.Println("enviando")
-
 	opcion := ""
 	defer conn.Close()
 	fmt.Println("Ingrese el nombre del pdf a pedir")
 	fmt.Scanf("%s", &opcion)
 	c := pb.NewGreeterClient(conn)
-	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chuck: chunkBytes})
+	response, err := c.SayHello(context.Background(), &pb.Book{Request: partToSend, BookName: bookName})
 
 	if err != nil {
-		log.Fatalf("Error when calling ClientToDataNode: %s", err)
+		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 
 	fmt.Println(response.BookName)
@@ -226,18 +251,11 @@ func main() {
 	go recepcion_clientes()
 	opcion := ""
 	fmt.Printf(" Nombre archivo : ")
-	ok := 0
 	fmt.Scanf("%s", &opcion)
+	totalParts := gutTheFile(opcion)
+	for c := uint64(0); c < totalParts; c++ {
+		sendChunk(int(c), opcion)
+	}
 	fmt.Printf(" empezamos? : ")
 	fmt.Scanf("%d", &ok)
-
-	for ok != 0 {
-		totalParts := gutTheFile(opcion)
-		for c := uint64(0); c < totalParts; c++ {
-			sendChunk(int(c), opcion)
-		}
-		fmt.Printf(" empezamos? : ")
-		fmt.Scanf("%d", &ok)
-	}
-
 }
