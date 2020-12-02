@@ -226,7 +226,7 @@ func main() {
 	op := 1
 	fmt.Printf(" Nombre archivo : ")
 	fmt.Scanf("%s", &opcion)
-	totalParts := gutTheFile(opcion)
+	gutTheFile(opcion)
 	fmt.Printf(" continue?\n  yes :1  no: anything else ")
 
 	fmt.Scanf("%d", &op)
