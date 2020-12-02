@@ -12,7 +12,7 @@ message Book {
 message ClientCheck {
   int32 Request = 1;
   string BookName =2;
-  int32 Partes = 1;
+  int32 Partes = 3;
 }
 
 message Test {
@@ -42,7 +42,7 @@ message Resultado {
 message Distribution{
   string Proposal = 1;
   string BookName =2;
-  int32 Partes = 1;
+  int32 Partes = 3;
 }
 
 service Greeter {
