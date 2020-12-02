@@ -111,7 +111,7 @@ func gutTheFile(FileName string) uint64 {
 // 	return
 // }
 
-func sendChunk(partToSend int, bookName string) {
+func sendChunk(partToSend int, bookName string) []byte {
 	//gutTheFile(bookName)
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
@@ -135,7 +135,7 @@ func sendChunk(partToSend int, bookName string) {
 	}
 
 	fmt.Println(response.Chunk)
-	return
+	return chunkBytes
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
