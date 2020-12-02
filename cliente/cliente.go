@@ -91,30 +91,12 @@ func gutTheFile(FileName string) uint64 {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 func sendChunk(partToSend int, bookName string) []byte {
-	//gutTheFile(bookName)
-	var conn *grpc.ClientConn
-	fmt.Println("toy hasta el pico")
-	conn, err := grpc.Dial("dist160:50054", grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("did not connect: %s", err)
-	}
+	gutTheFile(bookName)
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
-	chunkBytes, err := ioutil.ReadFile(chunkToSend)
+	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
-	opcion := ""
-	defer conn.Close()
-	fmt.Println("Ingrese el nombre del pdf a pedir")
-	fmt.Scanf("%s", &opcion)
-	c := pb.NewGreeterClient(conn)
-	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(partToSend), BookName: bookName})
-
-	if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
-	}
-
-	fmt.Println(response.Chunk)
 	return chunkBytes
 }
 
