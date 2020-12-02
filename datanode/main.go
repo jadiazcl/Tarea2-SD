@@ -30,12 +30,12 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.Book) (*pb.Distribution, e
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
-	req := int(in.Request)
-	log.Printf("Se solicitará el chunk: %d ", req)
-	auxiliar := sendChunk(req, in.BookName)
-	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
-}
+// func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
+// 	req := int(in.Request)
+// 	log.Printf("Se solicitará el chunk: %d ", req)
+// 	auxiliar := sendChunk(req, in.BookName)
+// 	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
+// }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
@@ -140,13 +140,13 @@ func gutTheFile(FileName string) uint64 {
 // Esta función se conecta a cierto nodo para recuperar cierto chunk de un archivo
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
 func requestChunk(maquina string) {
-
 	var conn *grpc.ClientConn
 	fmt.Println("Estamos pidiendo a maquina", maquina)
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
+
 	defer conn.Close()
 
 	fmt.Println("******Chunk Solicitado*******")
@@ -154,10 +154,12 @@ func requestChunk(maquina string) {
 	fmt.Println("*****************************")
 	c := pb.NewGreeterClient(conn)
 	bookTag := "newFile"
+
 	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(ChunkNum), BookName: bookTag})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
+
 	log.Printf("La parte solicitada es: %d", response.Valor)
 	strFileCounter := strconv.FormatUint(uint64(FileCounter), 10)
 	strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
