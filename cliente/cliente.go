@@ -42,7 +42,7 @@ func recepcion_clientes() {
 // 	req := int(in.Request)
 // 	log.Printf("Se solicitará el chunk: %d ", req)
 // 	auxiliar := sendChunk(req, in.BookName)
-// 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
+// 	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
 // }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -101,7 +101,7 @@ func gutTheFile(FileName string) uint64 {
 // 	fmt.Println("Ingrese el nombre del pdf a pedir")
 // 	fmt.Scanf("%s", &opcion)
 // 	c := pb.NewGreeterClient(conn)
-// 	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chuck: chunkBytes})
+// 	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chunk: chunkBytes})
 
 // 	if err != nil {
 // 		log.Fatalf("Error when calling ClientToDataNode: %s", err)
@@ -128,7 +128,7 @@ func sendChunk(partToSend int, bookName string) {
 	fmt.Println("Ingrese el nombre del pdf a pedir")
 	fmt.Scanf("%s", &opcion)
 	c := pb.NewGreeterClient(conn)
-	response, err := c.SayHello(context.Background(), &pb.Book{Request: partToSend, BookName: bookName})
+	response, err := c.SayHello(context.Background(), &pb.Book{Request: int32(partToSend), BookName: bookName})
 
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
@@ -186,7 +186,7 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 	log.Printf("La parte solicitada es: %d", response.Valor)
 	fileName := bookTag + "_" + strconv.FormatUint(uint64(fileChunk), 10)
 	fmt.Println("se recibe: ", fileName)
-	ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
+	ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/

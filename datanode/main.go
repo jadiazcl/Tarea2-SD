@@ -34,7 +34,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	req := int(in.Request)
 	log.Printf("Se solicitará el chunk: %d ", req)
 	auxiliar := sendChunk((req), in.BookName)
-	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
+	return &pb.Test{Valor: in.Request, Chunk: auxiliar}, nil
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -46,7 +46,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.Test) (*pb.Book, e
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ioutil.WriteFile(fileName, in.Chuck, os.ModeAppend)
+	ioutil.WriteFile(fileName, in.Chunk, os.ModeAppend)
 	fmt.Println("Split to : ", fileName)
 
 	return &pb.Book{Request: in.Valor, BookName: "-"}, nil
@@ -166,7 +166,7 @@ func requestChunk(maquina string) {
 		strChunkNum := strconv.FormatUint(uint64(ChunkNum), 10)
 		fileName := bookTag + "_" + strFileCounter + "_" + strChunkNum
 		fmt.Println("se recibe: ", fileName)
-		ioutil.WriteFile(fileName, response.Chuck, os.ModeAppend)
+		ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
 		ChunkNum++
 	}
 }

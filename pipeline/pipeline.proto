@@ -49,7 +49,7 @@ message Book {
 
 message Test {
   int32 Valor = 1;
-  bytes Chuck = 2;
+  bytes Chunk = 2;
 }
 
 message ConsultaUbicacion {
