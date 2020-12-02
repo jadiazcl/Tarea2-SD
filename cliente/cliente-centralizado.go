@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"math"
 	"strconv"
 	"strings"
 	"golang.org/x/net/context"
@@ -65,7 +66,7 @@ func sendChunk(partToSend int, bookName string) {
 	}
 	defer conn.Close()	
 	c := pb.NewGreeterClient(conn)	
-	response, err := c.SayHello(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes})
+	response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
@@ -228,13 +229,14 @@ func solicitar_archivo(){
 }
 
 func subir_archivo(){
+	opcion:=""
 	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")	
 	fmt.Println("# Ejemplo: test.pdf ")	
 	fmt.Scanf("%s", &opcion)
 	/// valor si existe el archivo
 	fmt.Println("[°] Comenzando proceso para subir el archivo")	
 	cantidad_partes:=gutTheFile(opcion)
-	for i := 0; i < cantidad_partes; i++ {
+	for i := 0; i < int(cantidad_partes); i++ {
 		sendChunk(i, opcion)		
 	}
 	fmt.Println("[°] Todos los chunks enviados")	
