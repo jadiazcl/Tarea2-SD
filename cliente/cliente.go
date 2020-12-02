@@ -38,12 +38,12 @@ func recepcion_clientes() {
 }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||  CLIENTE UPLOADER  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
-func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
-	req := int(in.Request)
-	log.Printf("Se solicitará el chunk: %d ", req)
-	auxiliar := sendChunk((req), in.BookName)
-	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
-}
+// func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
+// 	req := int(in.Request)
+// 	log.Printf("Se solicitará el chunk: %d ", req)
+// 	auxiliar := sendChunk(req, in.BookName)
+// 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
+// }
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
@@ -103,7 +103,7 @@ func sendChunk(partToSend int, bookName string) {
 	fmt.Println("Ingrese el nombre del pdf a pedir")
 	fmt.Scanf("%s", &opcion)
 	c := pb.NewGreeterClient(conn)
-	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chunk: chunkBytes})
+	response, err := c.ClientToDataNode(context.Background(), &pb.Test{Valor: 1, Chuck: chunkBytes})
 
 	if err != nil {
 		log.Fatalf("Error when calling ClientToDataNode: %s", err)

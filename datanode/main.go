@@ -40,7 +40,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
 func (s *Server) ClientToDataNode(ctx context.Context, in *pb.Test) (*pb.Book, error) {
-	fileName := "" + "_" + strconv.FormatUint(in.Valor, 10)
+	fileName := "" + "_" + strconv.FormatUint(uint64(in.Valor), 10)
 	_, err := os.Create(fileName)
 	if err != nil {
 		fmt.Println(err)
