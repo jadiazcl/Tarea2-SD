@@ -72,7 +72,7 @@ func gutTheFile(FileName string) uint64 {
 	const fileChunk = 256000 //Bytes
 	totalPartsNum := uint64(math.Ceil(float64(fileSize) / float64(fileChunk)))
 	fmt.Printf("Splitting to %d pieces.\n", totalPartsNum)
-	for i := uint64(1); i <= totalPartsNum; i++ {
+	for i := uint64(0); i < totalPartsNum; i++ {
 		partSize := int(math.Min(fileChunk, float64(fileSize-int64(i*fileChunk))))
 		partBuffer := make([]byte, partSize)
 		file.Read(partBuffer)
