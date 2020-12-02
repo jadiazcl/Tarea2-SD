@@ -221,8 +221,7 @@ func main() {
 	// stitchTheFile(nameFile, totalChunks)
 	go recepcion_clientes()
 	opcion := ""
-op:
-	-1
+	op := -1
 	fmt.Printf(" Nombre archivo : ")
 	fmt.Scanf("%s", &opcion)
 	totalParts := gutTheFile(opcion)
