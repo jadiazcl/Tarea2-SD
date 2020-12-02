@@ -72,9 +72,9 @@ func howManyChunks(FileName string) (uint64, uint64) {
 func gutTheFile(fileName string) uint64 {
 	fileChunk := 256000 //Bytes
 
-	totalPartsNum, fileSize := howManyChunks(FileName)
+	totalPartsNum, fileSize := howManyChunks(fileName)
 	for i := uint64(0); i < totalPartsNum; i++ {
-		partSize := int(math.Min(fileChunk, float64(int64(fileSize)-int64(i*fileChunk))))
+		partSize := int(math.Min(float64(fileChunk), float64(int64(fileSize)-int64(i*fileChunk))))
 		partBuffer := make([]byte, partSize)
 		file, err := os.Open(fileName)
 		if err != nil {
@@ -82,7 +82,7 @@ func gutTheFile(fileName string) uint64 {
 			os.Exit(1)
 		}
 		file.Read(partBuffer)
-		fileName := FileName + "_" + strconv.FormatUint(i, 10)
+		fileName := fileName + "_" + strconv.FormatUint(i, 10)
 		_, err1 := os.Create(fileName)
 		if err != nil {
 			fmt.Println(err1)
