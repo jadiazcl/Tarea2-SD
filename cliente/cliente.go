@@ -218,10 +218,11 @@ func main() {
 	// for j := uint64(0); j < totalChunks; j++ {
 	// 	aux = int(j)
 	// 	requestChunk(aux_maquina[aux], aux, nameFile)
+
 	// }
 	// stitchTheFile(nameFile, totalChunks)
 	go recepcion_clientes()
-
+	opcion := "-"
 	op := 1
 	fmt.Printf(" Nombre archivo : ")
 	fmt.Scanf("%s", &opcion)
