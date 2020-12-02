@@ -74,7 +74,7 @@ func gutTheFile(fileName string) uint64 {
 
 	totalPartsNum, fileSize := howManyChunks(fileName)
 	for i := uint64(0); i < totalPartsNum; i++ {
-		partSize := int(math.Min(float64(fileChunk), float64(int64(fileSize)-int64(i*fileChunk))))
+		partSize := int(math.Min(float64(fileChunk), float64(int64(fileSize)-int64(i*uint64(fileChunk)))))
 		partBuffer := make([]byte, partSize)
 		file, err := os.Open(fileName)
 		if err != nil {
