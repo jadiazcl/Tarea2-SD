@@ -142,9 +142,9 @@ func requestChunk(maquina string, bookTag string) {
 	log.Printf("La parte solicitada es: %d", response.Valor)
 	fileName := bookTag + "_" + strconv.FormatUint(uint64(ChunkNum), 10)
 	fmt.Println("se recibe: ", fileName)
-	if response.Chunk != "" {
-		ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
-	}
+	fmt.Println(len(response.Chunk))
+	ioutil.WriteFile(fileName, response.Chunk, os.ModeAppend)
+
 	ChunkNum++
 }
 
