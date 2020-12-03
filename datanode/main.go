@@ -80,6 +80,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 			if err != nil {
 				log.Fatalf("Error when enviar distribucion: %s", err)
 			}
+			fmt.Println("Maquina retorna" , response)
 		}
 		fmt.Println("Parte enviada")
 	}
