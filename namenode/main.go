@@ -40,6 +40,7 @@ package main
     escribir_log(resultado, in.BookName)
   }else{
     escribir_log(in.Proposal, in.BookName)
+    resultado=in.Proposal
   }
   return &pb.Distribution{Proposal:resultado}, nil
  }

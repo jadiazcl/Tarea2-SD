@@ -27,7 +27,7 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultad
 	partes := int(in.Partes)
 	auxiliar := createDistribution(partes,maquina)
 	valor:=EnviarDistribucion(maquina,auxiliar,partes,nom)
-	EnviarPartes(valor, nom, maquina  )
+	EnviarPartes(valor, nom, maquina)
 	return &pb.Resultado{Valor: int32(1)}, nil
 }
 
