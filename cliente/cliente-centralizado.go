@@ -225,8 +225,10 @@ func solicitar_archivo() {
 	archivos_dis := archivos_disponibles()
 	opcion := "bandera"
 	check := 1
+
 	//archivos_dis := [1]string{"test.pdf"}
 	for check != 0 {
+		something := 2
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
 			fmt.Println(archivos_dis[i])
@@ -236,7 +238,7 @@ func solicitar_archivo() {
 		fmt.Scanf("%s", &opcion)
 		check = verificar_archivo(opcion, archivos_dis)
 		//check = 0
-		if check == 0 {
+		if check == 1 {
 			partes, maquinas := pedir_archivo(opcion)
 			//chequear las maquinas
 			aux_maquina := strings.Split(maquinas, "-")
@@ -244,7 +246,8 @@ func solicitar_archivo() {
 			aux := 0
 			for j := uint64(0); j < totalChunks; j++ {
 				aux = int(j)
-				if checkMa(aux_maquina[aux]) == 1 {
+				something = checkMa(aux_maquina[aux])
+				if something == 1 {
 					requestChunk(aux_maquina[aux], aux, opcion)
 				} else {
 					fmt.Println("maquina mala")
