@@ -64,7 +64,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	if response.valor==0{
+	if response.Valor==0{
 		log.Printf("La distribucion fue exitosa")
 		return 0
 	}else{
