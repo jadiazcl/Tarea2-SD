@@ -62,7 +62,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 	c := pb.NewGreeterClient(conn)
 	response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag,Partes: int32(partes),Maquina: int32(maquina)})
 	if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
+		log.Fatalf("Error when enviar distribucion: %s", err)
 	}
 	if response.Valor==0{
 		log.Printf("La distribucion fue exitosa")
