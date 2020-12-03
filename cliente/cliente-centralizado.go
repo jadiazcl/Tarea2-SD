@@ -215,11 +215,13 @@ func checkMa(maquina string) int {
 	if err != nil {
 		fmt.Println("Maquina no disponible, distribucion rechazada")
 		return 0
+	} else {
+		fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
+		return 1
+
 	}
 	defer conn.Close()
 
-	fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
-	return 1
 }
 
 func solicitar_archivo() {
