@@ -85,6 +85,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
     largo=largo+1
     que_maquinas[1]=listo
   }
+  fmt.Println("Nueva Distribucion: ",aux)
   return 0
 }
 
