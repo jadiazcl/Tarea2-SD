@@ -42,9 +42,9 @@ func decisionOnProposal(distribucion string) int{
       fmt.Println("Maquina no disponible, distribucion rechazada")
       return -1
     }
+    defer conn.Close()
   }
   fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
-  defer conn.Close()
   return 0
 }
 
