@@ -215,7 +215,7 @@ func checkMa(maquina string) int {
 		fmt.Println("Maquina no disponible, distribucion rechazada")
 		return 0
 	}
-	defer conn.Close()
+	//defer conn.Close()
 
 	fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
 	return 1
