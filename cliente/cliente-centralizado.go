@@ -203,8 +203,8 @@ func verificar_archivo(nombre_archivo string, archivos_dis []string) int {
 		if archivos_dis[cont] == nombre_archivo {
 			return 1
 		}
-		return 0
 	}
+	return 0
 }
 
 func solicitar_archivo() {
