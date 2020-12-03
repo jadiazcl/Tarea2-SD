@@ -189,7 +189,7 @@ func archivos_disponibles() {
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
-	response, err := c.FilesAvl(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: "A"})
+	response, err := c.FilesAvl(context.Background(), &pb.Resultado{Valor: 1})
 	if err != nil {
 		log.Fatalf("Error when calling FilesAvl: %s", err)
 	}

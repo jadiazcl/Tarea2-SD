@@ -38,5 +38,5 @@ service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
-  rpc FilesAvl (ConsultaUbicacion) returns (ConsultaUbicacion) {}
+  rpc FilesAvl (Resultado) returns (ConsultaUbicacion) {}
 }
