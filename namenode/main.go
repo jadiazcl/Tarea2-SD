@@ -74,7 +74,7 @@ package main
          log.Fatal(err)
      }
      defer theLog.Close()
-     parts := len(maquinas)
+     parts := len(maquinas)-1
      strParts := strconv.Itoa(parts)
      aux_string := nombre_libro + " " + strParts + "\n"
      _, err2 := theLog.WriteString(aux_string)
@@ -82,7 +82,7 @@ package main
          log.Fatal(err2)
      }
      aux := ""
-     for i := 0; i < parts-1; i++ {
+     for i := 0; i < parts; i++ {
          a := i + 1
          aux = strconv.Itoa(a)
          aux_string = "parte_" + aux + " " + maquinas[i] + "\n"
