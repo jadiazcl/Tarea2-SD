@@ -35,7 +35,7 @@ func (s *Server) AvailableFiles(ctx context.Context, in *pb.ConsultaUbicacion) (
 }
 
 // Esta funcion busca los archivos en LOG
-func FilesOnLog(nombre_libro string) string {
+func FilesOnLog() string {
 	XFiles := "" // archivos en LOG
 	file, err := os.Open("log.txt")
 	if err != nil {
