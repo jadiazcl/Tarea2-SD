@@ -198,20 +198,20 @@ func archivos_disponibles() []string {
 	return files
 }
 
-func verificar_archivo( nombre_archivo string, archivos_dis []string) int{
-	for cont := 0; cont < len(archivos_dis); cont ++ {
-		if archivos_dis[cont] == nombre_archivo{
-            return 1
+func verificar_archivo(nombre_archivo string, archivos_dis []string) int {
+	for cont := 0; cont < len(archivos_dis); cont++ {
+		if archivos_dis[cont] == nombre_archivo {
+			return 1
 		}
-    return 0
-}
+		return 0
+	}
 }
 
 func solicitar_archivo() {
-	archivos_dis:=archivos_disponibles()
+	archivos_dis := archivos_disponibles()
 	opcion := "bandera"
 	check := 1
-	archivos_dis := [1]string{"test.pdf"}
+	//archivos_dis := [1]string{"test.pdf"}
 	for check != 0 {
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
@@ -221,7 +221,7 @@ func solicitar_archivo() {
 		fmt.Println("# Ejemplo: test.pdf ")
 		fmt.Scanf("%s", &opcion)
 		check = verificar_archivo(opcion, archivos_dis)
-		check = 0
+		//check = 0
 		if check == 0 {
 			partes, maquinas := pedir_archivo(opcion)
 			//chequear las maquinas
@@ -280,5 +280,5 @@ func main() {
 	//menu()
 	weas := archivos_disponibles()
 
-	fmt.Println(verificar_archivo("test.pdf",weas)=)
+	fmt.Println(verificar_archivo("test.pdf", weas))
 }
