@@ -2,7 +2,7 @@ syntax = "proto3";
 package pipeline;
 
 
-option go_package ="Lab2-Test/Tarea2-SD/pipeline";
+option go_package ="Lab2/Tarea2-SD/pipeline";
 
 message Book {
   int32 Request = 1;

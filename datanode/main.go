@@ -1,18 +1,19 @@
 package main
 
 import (
+	pb "Lab2/Tarea2-SD/pipeline"
+	"context"
 	"fmt"
 	"io/ioutil"
-	"strconv"
 	"log"
 	"math"
-  "strings"
-	"net"
 	"math/rand"
+	"net"
 	"os"
-	"context"
+	"strconv"
+	"strings"
+
 	"google.golang.org/grpc"
-	pb "Lab2-Test/Tarea2-SD/pipeline"
 )
 
 type Server struct {
@@ -25,8 +26,8 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultad
 	maquina := int(in.Request)
 	nom := in.BookName
 	partes := int(in.Partes)
-	auxiliar := createDistribution(partes,maquina)
-	valor:=EnviarDistribucion(maquina,auxiliar,partes,nom)
+	auxiliar := createDistribution(partes, maquina)
+	valor := EnviarDistribucion(maquina, auxiliar, partes, nom)
 	EnviarPartes(valor, nom, maquina)
 	return &pb.Resultado{Valor: int32(1)}, nil
 }
@@ -39,11 +40,12 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 	auxiliar := sendChunk((req), in.BookName)
 	return &pb.Test{Valor: in.Request, Chuck: auxiliar}, nil
 }
+
 /*-----------------------------------------------------------------------------------------*/
 func (s *Server) TesteoEstado(ctx context.Context, in *pb.Bla) (*pb.Bla, error) {
 	req := int(in.Valor)
 	log.Printf("Se solicitará el chunk: %d ", req)
-	return &pb.Bla{Valor:int32(1)}, nil
+	return &pb.Bla{Valor: int32(1)}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -60,7 +62,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 }
 
 /*-----------------------------------------------------------------------------------------*/
-func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) string{
+func EnviarDistribucion(maquina int, distribucion string, partes int, bookTag string) string {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
 	if err != nil {
@@ -68,7 +70,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
-	response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag,Partes: int32(partes),Maquina: int32(maquina)})
+	response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag, Partes: int32(partes), Maquina: int32(maquina)})
 	if err != nil {
 		log.Fatalf("Error when enviar distribucion: %s", err)
 	}
@@ -76,11 +78,11 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 }
 
 /*-----------------------------------------------------------------------------------------*/
-func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
-	maquinas:=strings.Split(distribucion, "-")
+func EnviarPartes(distribucion string, nombre_archivo string, maquina int) {
+	maquinas := strings.Split(distribucion, "-")
 	m := [3]string{"dist158", "dist159", "dist160"}
-	for index := 0;  index< len(maquinas)-1;index ++ {
-		if maquinas[index]!=m[maquina]{
+	for index := 0; index < len(maquinas)-1; index++ {
+		if maquinas[index] != m[maquina] {
 			var conn *grpc.ClientConn
 			conn, err := grpc.Dial(maquinas[index]+":50054", grpc.WithInsecure())
 			if err != nil {
@@ -93,7 +95,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 				fmt.Print(err)
 			}
 			c := pb.NewGreeterClient(conn)
-			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:nombre_archivo})
+			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes, NombreArchivo: nombre_archivo})
 			if err != nil {
 				log.Fatalf("Error when enviar partes: %s", err)
 			}
@@ -103,25 +105,24 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 	}
 }
 
-
 /*-----------------------------------------------------------------------------------------*/
-func createDistribution(numParts int,  maquina int ) string {
+func createDistribution(numParts int, maquina int) string {
 	m := [3]string{"dist158", "dist159", "dist160"}
-	aux:=m[maquina]	+"-"
-	cantidad:=1
+	aux := m[maquina] + "-"
+	cantidad := 1
 	for i := 0; i < 3; i++ {
-		if i!=maquina{
-			if cantidad<numParts{
-				cantidad=cantidad+1
-				aux=aux+m[i]+"-"
+		if i != maquina {
+			if cantidad < numParts {
+				cantidad = cantidad + 1
+				aux = aux + m[i] + "-"
 			}
 		}
 	}
-	if cantidad<numParts{
-		for j := cantidad; j<numParts; j++ {
+	if cantidad < numParts {
+		for j := cantidad; j < numParts; j++ {
 			randomIndex := rand.Intn(len(m))
 			pick := m[randomIndex]
-			aux=aux+pick+"-"
+			aux = aux + pick + "-"
 		}
 	}
 	fmt.Println("Distribution")
@@ -189,7 +190,7 @@ func gutTheFile(FileName string) uint64 {
 }
 
 /**---------------------------------------------------------------------------------------------wwww*/
-func sendChunk(partToSend int, bookName string) []byte {	
+func sendChunk(partToSend int, bookName string) []byte {
 	chunkToSend := bookName + "_" + strconv.FormatUint(uint64(partToSend), 10)
 	chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 	if err != nil {
