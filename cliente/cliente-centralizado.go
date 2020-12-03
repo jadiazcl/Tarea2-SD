@@ -197,14 +197,14 @@ func archivos_disponibles() {
 	return
 }
 
-func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
-	for i, item := range archivos_dis {
-        if item == nombre_archivo {
-            return 1
-        }
-    }
-    return 0
-}
+// func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
+// 	for i, item := range archivos_dis {
+//         if item == nombre_archivo {
+//             return 1
+//         }
+//     }
+//     return 0
+// }
 
 func solicitar_archivo() {
 	//archivos_dis:=archivos_disponibles()
