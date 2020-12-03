@@ -90,7 +90,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
     que_maquinas[1]=listo
   }
   fmt.Println("Nueva Distribucion: ",aux)
-  return
+  return 0
 }
 
 
