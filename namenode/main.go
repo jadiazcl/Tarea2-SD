@@ -63,7 +63,8 @@ func decisionOnProposal(distribucion string) int{
 
 func NuevaDistribucion(maquina int, aux string,partes int) int{
   m := [3]string{"dist158", "dist159", "dist160"}
-  que_maquinas:=[2]int{maquina}
+  que_maquinas:=[2]int
+  que_maquinas[0]=maquina
   largo:=1
   restantes:=partes-1
   a:=0
