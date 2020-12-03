@@ -185,13 +185,13 @@ func archivos_disponibles() /**string[]**/ {
 	var conn *grpc.ClientConn
 	conn, err1 := grpc.Dial("dist157:50054", grpc.WithInsecure())
 	if err1 != nil {
-		log.Fatalf("did not connect: %s", err)
+		log.Fatalf("did not connect: %s", err1)
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 	response, err := c.AvailableFiles(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: "A"})
 	if err != nil {
-		log.Fatalf("Error when calling SayHello: %s", err)
+		log.Fatalf("Error when calling AvailableFiles: %s", err)
 	}
 	fmt.Println(response.NombreArchivo)
 	return
