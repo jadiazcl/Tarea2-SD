@@ -28,24 +28,24 @@ package main
  }
 
  func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
-  resultado:=decisionOnProposal(in.Proposal)  
+  resultado:=decisionOnProposal(in.Proposal)
   return &pb.Resultado{Valor:int32(resultado)}, nil
  }
-s
+
 func decisionOnProposal(distribucion string) int{
-  maquinas:=strings.Split(distribucion, "-")  
+  maquinas:=strings.Split(distribucion, "-")
   for i := 0; i < len(maquinas); i++ {
-    var conn *grpc.ClientConn  
+    var conn *grpc.ClientConn
     mach := maquinas[i] + ":50054"
     conn, err := grpc.Dial(mach, grpc.WithInsecure())
     if err != nil {
       fmt.Println("Maquina no disponible, distribucion rechazada")
-      return -1   
+      return -1
     }
   }
   fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
   defer conn.Close()
-  return 0  
+  return 0
 }
 
  // Esta funcion busca la ubicacion de las partes del archivo
