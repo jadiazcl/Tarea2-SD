@@ -219,7 +219,7 @@ func checkMa(maquina string) int {
 
 	re, err1 := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
 	if err1 != nil {
-		return int(re)
+		return int(re.Valor)
 	} else {
 		return 0
 	}
