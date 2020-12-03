@@ -64,7 +64,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
   m := [3]string{"dist158", "dist159", "dist160"}
   que_maquinas:=[2]int{maquina}
   largo:=1
-  restantes:=partes-1
+  restantes:=partes-2
   a:=0
   inicial:=aux+"-"
   listo:=1
