@@ -69,7 +69,7 @@ package main
 
  func escribir_log(distribucion string, nombre_libro string) {
      maquinas := strings.Split(distribucion, "-")
-     theLog, err := os.Open("log.txt")
+     theLog, err := os.Create("log.txt")
      if err != nil {
          log.Fatal(err)
      }
@@ -77,7 +77,7 @@ package main
      parts := len(maquinas)
      strParts := strconv.Itoa(parts)
      aux_string := nombre_libro + " " + strParts + "\n"
-     _, err2 := theLog.Write(aux_string)
+     _, err2 := theLog.WriteString(aux_string)
      if err2 != nil {
          log.Fatal(err2)
      }
@@ -86,7 +86,7 @@ package main
          a := i + 1
          aux = strconv.Itoa(a)
          aux_string = "parte_" + aux + " " + maquinas[i] + "\n"
-         _, err3 := theLog.Write(aux_string)
+         _, err3 := theLog.WriteString(aux_string)
          if err2 != nil {
              log.Fatal(err3)
          }
