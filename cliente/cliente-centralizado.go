@@ -211,11 +211,12 @@ func checkMa(maquina string) int {
 	var conn *grpc.ClientConn
 	mach := maquina + ":50054"
 	conn, err := grpc.Dial(mach, grpc.WithInsecure())
+
 	if err != nil {
 		fmt.Println("Maquina no disponible, distribucion rechazada")
 		return 0
 	}
-	//defer conn.Close()
+	defer conn.Close()
 
 	fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
 	return 1
