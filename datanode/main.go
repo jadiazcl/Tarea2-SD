@@ -79,28 +79,12 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:bookTag})
 			if err != nil {
 				log.Fatalf("Error when enviar distribucion: %s", err)
-			}			
+			}
 		}
 		fmt.Println("Parte enviada")
 	}
 }
 
-/*-----------------------------------------------------------------------------------------*/
-func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ) string{
-
-	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("did not connect: %s", err)
-	}
-	defer conn.Close()
-	c := pb.NewGreeterClient(conn)
-	response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag,Partes: int32(partes),Maquina: int32(maquina)})
-	if err != nil {
-		log.Fatalf("Error when enviar distribucion: %s", err)
-	}
-	return response.Proposal
-}
 
 
 /*-----------------------------------------------------------------------------------------*/
