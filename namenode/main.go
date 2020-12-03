@@ -30,6 +30,7 @@ package main
  func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
+  fmt.Println(maquinas)
   if resultado!=0{
     resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
   }
@@ -64,7 +65,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
   m := [3]string{"dist158", "dist159", "dist160"}
   que_maquinas:=[2]int{maquina}
   largo:=1
-  restantes:=partes-2
+  restantes:=partes-1
   a:=0
   inicial:=aux+"-"
   listo:=1
