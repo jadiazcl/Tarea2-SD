@@ -60,12 +60,11 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
-	//response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag,Partes: int32(partes),Maquina: int32(maquina)})
-	response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:"test.pdf"})
+	response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag,Partes: int32(partes),Maquina: int32(maquina)})
 	if err != nil {
 		log.Fatalf("Error when enviar distribucion: %s", err)
 	}
-	if response.Partes==0{
+	if response.Valor==0{
 		log.Printf("La distribucion fue exitosa")
 		return 0
 	}else{
