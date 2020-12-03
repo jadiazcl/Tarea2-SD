@@ -183,7 +183,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func archivos_disponibles() /**string[]**/ {
 	var conn *grpc.ClientConn
-	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
+	conn, err1 := grpc.Dial("dist157:50054", grpc.WithInsecure())
 	if err1 != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
