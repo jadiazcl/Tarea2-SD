@@ -267,8 +267,7 @@ func check_maquinas() int{
 func solicitar_archivo(){
 	archivos_dis:=archivos_disponibles()
 	opcion:="bandera"
-	check:=1
-	archivos_dis:=[1]string{"test.pdf"}
+	check:=1	
 	for check!=0{
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
@@ -300,7 +299,7 @@ func subir_archivo(){
 	opcion:=""
 	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")
 	fmt.Println("# Ejemplo: test.pdf ")
-	fmt.Scanf("%s", &opcion)	
+	fmt.Scanf("%s", &opcion)
 	fmt.Println("[°] Comenzando proceso para subir el archivo")
 	cantidad_partes:=gutTheFile(opcion)
 	maquina_dis:=check_maquinas()
