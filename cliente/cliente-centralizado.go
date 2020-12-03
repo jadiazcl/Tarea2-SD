@@ -221,6 +221,7 @@ func checkMa(maquina string) int {
 
 	}
 	defer conn.Close()
+	return 0
 
 }
 
