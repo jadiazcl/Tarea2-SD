@@ -46,10 +46,16 @@ message Distribution{
   int32 Maquina = 4;
 }
 
+message Bla {
+  int32 Valor = 1;
+}
+
+
 service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
   rpc YadaYada (ClientCheck) returns (Resultado) {}
   rpc CheckDistribucion (Distribution) returns (Resultado) {}
+  rpc TesteoEstado (Bla) returns (Bla) {}
 }
