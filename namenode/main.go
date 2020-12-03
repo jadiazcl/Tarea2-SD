@@ -6,7 +6,7 @@ package main
          "os"
          "strings"
          "strconv"
-         "net"         
+         "net"
          "bufio"
          "google.golang.org/grpc"
          "context"
@@ -82,21 +82,18 @@ func decisionOnProposal(distribucion string) int{
 
  //funcion para recepcionar conexiones
  func  recepcion_clientes(){
-  lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
-   if err != nil {
-    log.Fatalf("failed to listen: %v", err)
-  }
-   grpcServer := grpc.NewServer()
-
-   pb.RegisterGreeterServer(grpcServer, &Server{})
-
-   if err := grpcServer.Serve(lis); err != nil {
-    log.Fatalf("failed to serve: %s", err)
-  }
+   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
+ 	if err != nil {
+ 		log.Fatalf("failed to listen: %v", err)
+ 	}
+ 	grpcServer := grpc.NewServer()
+ 	pb.RegisterGreeterServer(grpcServer, &Server{})
+ 	if err := grpcServer.Serve(lis); err != nil {
+ 		log.Fatalf("failed to serve: %s", err)
+ 	}
 }
 
  func main() {
-
     go recepcion_clientes()
     opcion:=0
     for opcion!=-1{
