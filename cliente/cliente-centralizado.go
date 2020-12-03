@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"	
+	"google.golang.org/grpc"
 )
 
 /*-----------------------------------------------------------------------------------------*/
@@ -20,8 +20,8 @@ func pedir_archivo(opcion string) (int , string){
    conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
    if err != nil {
      log.Fatalf("did not connect: %s", err)
-   }   
-   defer conn.Close()   
+   }
+   defer conn.Close()
    c := pb.NewGreeterClient(conn)
    response, err := c.SolicitarUbicaciones(context.Background(), &pb.ConsultaUbicacion{NombreArchivo:opcion})
    if err != nil {
@@ -55,19 +55,19 @@ func sendChunk(partToSend int, bookName string,maquina string) {
 	if err != nil {
 		fmt.Print(err)
 	}
-	var conn *grpc.ClientConn	
+	var conn *grpc.ClientConn
 	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err1 != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	defer conn.Close()	
-	c := pb.NewGreeterClient(conn)	
+	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
 	response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(partToSend), Chunck: chunkBytes,NombreArchivo:bookName})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 	fmt.Println("# DataNode responde: Se a recibido chunk numero ",response.Valor )
-	return 
+	return
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@ func gutTheFile(fileName string) uint64 {
 
 /*-----------------------------------------------------------------------------------------*/
 func requestChunk(maquina string, fileChunk int, bookTag string) {
-	var conn *grpc.ClientConn	
+	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
@@ -123,12 +123,12 @@ func requestChunk(maquina string, fileChunk int, bookTag string) {
 }
 
 func avisar_termino(maquina string, bookTag string, partes int) {
-	var conn *grpc.ClientConn	
+	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	defer conn.Close()	
+	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 	aux_maquina:=0
 	if maquina=="dist158"{
@@ -138,15 +138,15 @@ func avisar_termino(maquina string, bookTag string, partes int) {
 	}else{
 		aux_maquina=2
 	}
-	response, err := c.YadaYada(context.Background(), &pb.Book{Request: int32(aux_maquina), BookName: bookTag,Partes: int32(partes)})
+	response, err := c.YadaYada(context.Background(), &pb.ClientCheck{Request: int32(aux_maquina), BookName: bookTag,Partes: int32(partes)})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	if response.valor==0{
-		log.Printf("La distribucion fue exitosa")	
+	if response.Valor==0{
+		log.Printf("La distribucion fue exitosa")
 	}else{
-		log.Printf("La distribucion no fue posible")	
-	}		
+		log.Printf("La distribucion no fue posible")
+	}
 }
 
 
@@ -219,21 +219,21 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 //}
 
 func solicitar_archivo(){
-	//archivos_dis:=archivos_disponibles()   
+	//archivos_dis:=archivos_disponibles()
 	opcion:="bandera"
 	check:=1
 	archivos_dis:=[1]string{"test.pdf"}
-	for check!=0{ 	
+	for check!=0{
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
-			fmt.Println(archivos_dis[i])		
-		}	
-	    fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")	    
-	    fmt.Println("# Ejemplo: test.pdf ")	
+			fmt.Println(archivos_dis[i])
+		}
+	    fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")
+	    fmt.Println("# Ejemplo: test.pdf ")
 	    fmt.Scanf("%s", &opcion)
 	    //check=verificar_archivo(opcion, archivos_dis)
 	    check=0
-	    if check==0{	    	
+	    if check==0{
 	    	partes,maquinas:=pedir_archivo(opcion)
 	    	//chequear las maquinas
 	    	aux_maquina:=strings.Split(maquinas, "-")
@@ -248,30 +248,30 @@ func solicitar_archivo(){
 
 	    }else{
 	    	fmt.Println("### Escriba un nombre de archivo valido")
-	    }	
+	    }
 	}
 }
 
 func subir_archivo(){
 	opcion:=""
-	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")	
-	fmt.Println("# Ejemplo: test.pdf ")	
+	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")
+	fmt.Println("# Ejemplo: test.pdf ")
 	fmt.Scanf("%s", &opcion)
 	/// valor si existe el archivo
-	fmt.Println("[°] Comenzando proceso para subir el archivo")	
+	fmt.Println("[°] Comenzando proceso para subir el archivo")
 	cantidad_partes:=gutTheFile(opcion)
 	// Ver a donde enviar los chunkbytes probar hasta que algun data node responda
 	// por defecto pruebo con el 158
 	maquina:="dist158"
 	for i := 0; i < int(cantidad_partes); i++ {
-		sendChunk(i, opcion,maquina)		
+		sendChunk(i, opcion,maquina)
 	}
-	fmt.Println("[°] Todos los chunks enviados")	
-	avisar_termino(maquina, opcion,cantidad_partes)
-}	
+	fmt.Println("[°] Todos los chunks enviados")
+	avisar_termino(maquina, opcion,int(cantidad_partes))
+}
 
 func menu(){
-	opcion:=0	
+	opcion:=0
 	fmt.Println("### Bienvenid@ a la tarea 2 de Distribuidos")
 	for opcion!=3{
 		fmt.Println("Escriba 1 para poder subir un pdf")
@@ -279,15 +279,15 @@ func menu(){
 		fmt.Println("Escriba 3 para salir")
 		fmt.Scanf("%d", &opcion)
 		if opcion==1{
-			subir_archivo()			
+			subir_archivo()
 		}
 		if opcion==2{
 			solicitar_archivo()
-		}		
+		}
 	}
-	
+
 }
 
 func main() {
-	menu()	
+	menu()
 }
