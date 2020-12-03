@@ -211,8 +211,8 @@ func checkMa(maquina string) int {
 	var conn *grpc.ClientConn
 	mach := maquina + ":50054"
 	conn, err := grpc.Dial(mach, grpc.WithInsecure())
-	if err1 != nil {
-		log.Fatalf("did not connect: %s", err1)
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
