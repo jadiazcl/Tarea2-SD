@@ -96,7 +96,7 @@ package main
 func decisionOnProposal(distribucion string) string{
   maquinas:=strings.Split(distribucion, "-")
   fmt.Println(distribucion)
-  for i := 0; i < len(maquinas)-1; i++ {
+  for i := 0; i < len(maquinas)-2; i++ {
     var conn *grpc.ClientConn
     mach := maquinas[i] + ":50054"
     conn, err := grpc.Dial(mach, grpc.WithInsecure())
