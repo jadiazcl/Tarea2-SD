@@ -211,16 +211,18 @@ func checkMa(maquina string) int {
 	var conn *grpc.ClientConn
 	mach := maquina + ":50054"
 	conn, err := grpc.Dial(mach, grpc.WithInsecure())
-
-	if err != nil {
-		fmt.Println("Maquina no disponible, distribucion rechazada")
-		return 0
-	} else {
-		fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
-		return 1
-
+	if err1 != nil {
+		log.Fatalf("did not connect: %s", err1)
 	}
 	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
+
+	response, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
+	if err != nil {
+		return 1
+	} else {
+		return 0
+	}
 	return 0
 
 }
@@ -303,6 +305,8 @@ func menu() {
 
 func main() {
 	//menu()
-	checkMa("dist160")
+	if checkMa("dist160") == 0 {
+		fmt.Println("maquina qla apaga")
+	}
 
 }

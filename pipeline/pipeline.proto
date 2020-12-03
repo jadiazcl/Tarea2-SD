@@ -4,6 +4,10 @@ package pipeline;
 
 option go_package ="Lab2-Centralizada/Tarea2-SD/pipeline";
 
+message Bla {
+  int32 Valor = 1;
+}
+
 message Book {
   int32 Request = 1;
   string BookName =2;
@@ -38,4 +42,6 @@ service Greeter {
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
   rpc FilesAvl (Resultado) returns (ConsultaUbicacion) {}
+  rpc TesteoEstado (Bla) returns (Bla) {}
+
 }

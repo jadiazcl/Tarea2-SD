@@ -1,20 +1,27 @@
 package main
 
 import (
+	pb "Lab2-Test/Tarea2-SD/pipeline"
+	"context"
 	"fmt"
 	"io/ioutil"
-	"strconv"
 	"log"
 	"math"
 	"net"
 	"os"
-	"context"
+	"strconv"
+
 	"google.golang.org/grpc"
-	pb "Lab2-Test/Tarea2-SD/pipeline"
 )
 
 type Server struct {
 	pb.UnimplementedGreeterServer
+}
+
+func (s *Server) TesteoEstado(ctx context.Context, in pb.Bla) (pb.Bla, error) {
+	req := int(in.Valor)
+	log.Printf("Se solicitará el chunk: %d ", req)
+	return &pb.Bla{Valor: int32(1)}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -38,7 +45,6 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 	fmt.Println("Split to : ", fileName)
 	return &pb.Resultado{Valor: in.Valor}, nil
 }
-
 
 /*-----------------------------------------------------------------------------------------*/
 func clientsReception() {
