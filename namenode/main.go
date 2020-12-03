@@ -73,7 +73,9 @@ func NuevaDistribucion(maquina string, aux string,partes int){
   }
   que_maquinas:= [2]int{auxiliar_general, 0}
   largo:=1
+  fmt.Println(partes)
   restantes:=partes-2
+  fmt.Println(restantes)
   a:=0
   inicial:=aux+"-"
   listo:=1
@@ -82,7 +84,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
     restantes=partes-2
     a=0
     bandera:=0
-    for restantes!=0 {
+    for restantes>0 {
       if a!=que_maquinas[0] {
         aux=aux+m[a]+"-"
         restantes=restantes-1
@@ -99,8 +101,9 @@ func NuevaDistribucion(maquina string, aux string,partes int){
       }
       if a==2{
         a=0
+      }else{
+        a++
       }
-      a++
     }
     salida:=decisionOnProposal(aux)
     if salida!="check"{
