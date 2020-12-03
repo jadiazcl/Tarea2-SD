@@ -217,7 +217,7 @@ func checkMa(maquina string) int {
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
-	response, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
+	_, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
 	if err != nil {
 		return 1
 	} else {
