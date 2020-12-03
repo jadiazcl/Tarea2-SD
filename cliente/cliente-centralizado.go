@@ -138,6 +138,7 @@ func avisar_termino(maquina string, bookTag string, partes int) {
 	}else{
 		aux_maquina=2
 	}
+	log.Printf("Enviando aviso")
 	response, err := c.YadaYada(context.Background(), &pb.ClientCheck{Request: int32(aux_maquina), BookName: bookTag,Partes: int32(partes)})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
