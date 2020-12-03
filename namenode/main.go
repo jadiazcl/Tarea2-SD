@@ -30,10 +30,10 @@ package main
  func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
-  if resultado!=check{
+  if resultado!="check"{
     resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
   }
-  return &pb.Resultado{Valor:int32(resultado)}, nil
+  return &pb.Resultado{Valor:int32(1)}, nil
  }
 
 func decisionOnProposal(distribucion string) string{
