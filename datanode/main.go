@@ -96,8 +96,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ) str
 			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:nombre_archivo})
 			if err != nil {
 				log.Fatalf("Error when enviar distribucion: %s", err)
-			}
-			return response.Proposal
+			}			
 		}
 		fmt.Println("Parte enviada")
 	}
