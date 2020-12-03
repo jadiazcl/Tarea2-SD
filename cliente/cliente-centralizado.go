@@ -188,6 +188,7 @@ func archivos_disponibles() /**string[]**/ {
 		log.Fatalf("did not connect: %s", err1)
 	}
 	defer conn.Close()
+
 	c := pb.NewGreeterClient(conn)
 
 	response, err := c.AvailableFiles(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: ""})

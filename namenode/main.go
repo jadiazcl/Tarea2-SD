@@ -45,9 +45,10 @@ func FilesOnLog(nombre_libro string) string {
 	ubicacion := ""
 	cantidad_saltos := 0
 	for fileScanner.Scan() {
-		cantidad_saltos, err = strconv.Atoi(partes[1])
 		linea := fileScanner.Text()
 		partes := strings.Split(linea, " ")
+		cantidad_saltos, err = strconv.Atoi(partes[1])
+
 		nombre_registro := partes[0]
 		XFiles = XFiles + nombre_registro
 		for index := 0; index < cantidad_saltos; index++ {
