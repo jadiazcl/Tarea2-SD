@@ -106,6 +106,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
       }
     }
     salida:=decisionOnProposal(aux)
+    fmt.Println(salida)
     if salida!="check"{
       auxiliar_general:=0
       if salida=="dist158"{
