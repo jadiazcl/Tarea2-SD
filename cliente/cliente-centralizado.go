@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "Lab2-Test/Tarea2-SD/pipeline"
+	pb "Lab2-Centralizada/Tarea2-SD/pipeline"
 	"bufio"
 	"fmt"
 	"io/ioutil"
@@ -195,7 +195,6 @@ func archivos_disponibles() {
 	}
 	fmt.Println(response.NombreArchivo)
 	return
-
 }
 
 //func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
