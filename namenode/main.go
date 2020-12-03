@@ -119,6 +119,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
       que_maquinas[1]=auxiliar_general
     }else{
       listo=0
+      break
     }
   }
   fmt.Println("Nueva Distribucion: ",aux)
