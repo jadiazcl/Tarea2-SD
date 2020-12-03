@@ -54,7 +54,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 /*-----------------------------------------------------------------------------------------*/
 func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) int{
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist157:50054", grpc.WithInsecure())
+	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
