@@ -31,7 +31,7 @@ package main
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
   if resultado!="check"{
-    resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
+    NuevaDistribucion(resultado,maquinas[0],len(maquinas))
   }
   return &pb.Resultado{Valor:int32(1)}, nil
  }
@@ -61,7 +61,7 @@ func decisionOnProposal(distribucion string) string{
   return "check"
 }
 
-func NuevaDistribucion(maquina string, aux string,partes int) int{
+func NuevaDistribucion(maquina string, aux string,partes int){
   m := [3]string{"dist158", "dist159", "dist160"}
   auxiliar_general:=0
   if maquina=="dist158"{
@@ -112,7 +112,7 @@ func NuevaDistribucion(maquina string, aux string,partes int) int{
     }
   }
   fmt.Println("Nueva Distribucion: ",aux)
-  return 0
+  return 
 }
 
 
