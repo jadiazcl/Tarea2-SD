@@ -183,19 +183,18 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func archivos_disponibles() /**string[]**/ {
 	var conn *grpc.ClientConn
-	conn, err1 := grpc.Dial("dis157:50054", grpc.WithInsecure())
+	conn, err1 := grpc.Dial(maquina+":50054", grpc.WithInsecure())
 	if err1 != nil {
-		log.Fatalf("did not connect: %s", err1)
+		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
-
 	c := pb.NewGreeterClient(conn)
-
-	response, err := c.AvailableFiles(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: ""})
+	response, err := c.AvailableFiles(context.Background(), &pb.ConsultaUbicacion{NombreArchivo: "A"})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 	fmt.Println(response.NombreArchivo)
+	return
 
 }
 

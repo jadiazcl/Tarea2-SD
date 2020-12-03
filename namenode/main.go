@@ -42,7 +42,6 @@ func FilesOnLog() string {
 		log.Fatalf("Error when opening file: %s", err)
 	}
 	fileScanner := bufio.NewScanner(file)
-	ubicacion := ""
 	cantidad_saltos := 0
 	for fileScanner.Scan() {
 		linea := fileScanner.Text()
