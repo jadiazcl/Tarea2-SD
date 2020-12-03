@@ -39,5 +39,4 @@ service Greeter {
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
   rpc AvailableFiles (ConsultaUbicacion) returns (ConsultaUbicacion) {}
-
 }
