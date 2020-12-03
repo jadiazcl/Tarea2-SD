@@ -30,13 +30,13 @@ package main
  func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
-  if resultado!=0{
+  if resultado!=check{
     resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
   }
   return &pb.Resultado{Valor:int32(resultado)}, nil
  }
 
-func decisionOnProposal(distribucion string) int{
+func decisionOnProposal(distribucion string) string{
   maquinas:=strings.Split(distribucion, "-")
   fmt.Println(distribucion)
   for i := 0; i < len(maquinas); i++ {
@@ -45,26 +45,34 @@ func decisionOnProposal(distribucion string) int{
     conn, err := grpc.Dial(mach, grpc.WithInsecure())
     if err != nil {
       fmt.Println("Maquina no disponible, distribucion rechazada")
-      return i
+      return maquinas[i]
     }
     defer conn.Close()
     c := pb.NewGreeterClient(conn)
     response, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor:int32(1)})
   	if err != nil {
       fmt.Println("Maquina no disponible, distribucion rechazada")
-      return i
+      return maquinas[i]
   	}
     fmt.Println("Maquina Respondio ",response)
     defer conn.Close()
   }
   fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
-  return 0
+  return "check"
 }
 
-func NuevaDistribucion(maquina int, aux string,partes int) int{
+func NuevaDistribucion(maquina string, aux string,partes int) int{
   m := [3]string{"dist158", "dist159", "dist160"}
+  auxiliar_general:=0
+  if maquina=="dist158"{
+    auxiliar_general=0
+  }else if maquina=="dist159"{
+    auxiliar_general=1
+  }else{
+    auxiliar_general=2
+  }
   var que_maquinas [2]int
-  que_maquinas[0]=maquina
+  que_maquinas[0]=auxiliar_general
   largo:=1
   restantes:=partes-1
   a:=0
@@ -87,9 +95,21 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
       }
       a++
     }
-    listo=decisionOnProposal(aux)
-    largo=largo+1
-    que_maquinas[1]=listo
+    salida:=decisionOnProposal(aux)
+    if salida!="check"{
+      auxiliar_general:=0
+      if salida=="dist158"{
+        auxiliar_general=0
+      }else if salida=="dist159"{
+        auxiliar_general=1
+      }else{
+        auxiliar_general=2
+      }
+      largo=largo+1
+      que_maquinas[1]=auxiliar_general
+    }else{
+      listo=0
+    }
   }
   fmt.Println("Nueva Distribucion: ",aux)
   return 0
