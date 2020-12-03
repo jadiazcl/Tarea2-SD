@@ -82,7 +82,7 @@ func decisionOnProposal(distribucion string) int{
 
  //funcion para recepcionar conexiones
  func  recepcion_clientes(){
-   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50060))
+   lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", 50055))
  	if err != nil {
  		log.Fatalf("failed to listen: %v", err)
  	}
