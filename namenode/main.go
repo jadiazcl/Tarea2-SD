@@ -71,8 +71,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
   }else{
     auxiliar_general=2
   }
-  var que_maquinas [2]int
-  que_maquinas[0]=auxiliar_general
+  que_maquinas= [2]int{auxiliar_general, 0}  
   largo:=1
   restantes:=partes-1
   a:=0
@@ -112,7 +111,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
     }
   }
   fmt.Println("Nueva Distribucion: ",aux)
-  return 
+  return
 }
 
 
