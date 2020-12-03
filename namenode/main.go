@@ -27,18 +27,71 @@ package main
  	return &pb.RespuestaUbicacion{Partes: int32(partes),Ubicaciones:ubicaciones}, nil
  }
 
+ func (s *Server) FilesAvl(ctx context.Context, in *pb.Resultado) (*pb.ConsultaUbicacion, error) {
+     stringArchivos := FilesOnLog()
+     return &pb.ConsultaUbicacion{NombreArchivo: stringArchivos}, nil
+ }
+
  func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Distribution, error) {
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
   if resultado!="check"{
     resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
-  }  
+  }
+  escribir_log(distribucion, in.BookName)
   return &pb.Distribution{Proposal:resultado}, nil
  }
 
-func escribir_log(distribucion string, nombre_libro string){
+ func FilesOnLog() string {
+     XFiles := "" // archivos en LOG
+     file, err := os.Open("log.txt")
+     if err != nil {
+         log.Fatalf("Error when opening file: %s", err)
+     }
+     fileScanner := bufio.NewScanner(file)
+     cantidad_saltos := 0
+     for fileScanner.Scan() {
+         linea := fileScanner.Text()
+         partes := strings.Split(linea, " ")
+         cantidad_saltos, err = strconv.Atoi(partes[1])
 
-}
+         nombre_registro := partes[0]
+         XFiles = XFiles + "-" + nombre_registro
+         for index := 0; index < cantidad_saltos; index++ {
+             fileScanner.Scan()
+         }
+     }
+
+     return XFiles
+ }
+
+ func escribir_log(distribucion string, nombre_libro string) {
+     maquinas := strings.Split(distribucion, "-")
+     theLog, err := os.Create("log.txt")
+     if err != nil {
+         log.Fatal(err)
+     }
+     defer theLog.Close()
+     parts := len(maquinas)
+     strParts := strconv.Itoa(parts)
+     aux_string := nombre_libro + " " + strParts + "\n"
+     _, err2 := theLog.WriteString(aux_string)
+     if err2 != nil {
+         log.Fatal(err2)
+     }
+     aux := ""
+     for i := 0; i < parts; i++ {
+         a := i + 1
+         aux = strconv.Itoa(a)
+         aux_string = "parte_" + aux + " " + maquinas[i] + "\n"
+         _, err3 := theLog.WriteString(aux_string)
+         if err2 != nil {
+             log.Fatal(err3)
+         }
+
+     }
+
+ }
 
 func decisionOnProposal(distribucion string) string{
   maquinas:=strings.Split(distribucion, "-")

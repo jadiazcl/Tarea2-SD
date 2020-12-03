@@ -58,4 +58,5 @@ service Greeter {
   rpc YadaYada (ClientCheck) returns (Resultado) {}
   rpc CheckDistribucion (Distribution) returns (Distribution) {}
   rpc TesteoEstado (Bla) returns (Bla) {}
+  rpc FilesAvl (Resultado) returns (ConsultaUbicacion) {}
 }

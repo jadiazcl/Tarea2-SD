@@ -210,17 +210,62 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 	file.Close()
 }
 
-//func archivos_disponibles() string[]{
-  // DEBERIA RETORNAR LA LISTA DE ARCHIVOS DISPONIBLES
-//}
+func archivos_disponibles() []string {
+    var conn *grpc.ClientConn
+    conn, err1 := grpc.Dial("dist157:50054", grpc.WithInsecure())
+    if err1 != nil {
+        log.Fatalf("did not connect: %s", err1)
+    }
+    defer conn.Close()
+    c := pb.NewGreeterClient(conn)
+    response, err := c.FilesAvl(context.Background(), &pb.Resultado{Valor: int32(1)})
+    if err != nil {
+        log.Fatalf("Error when calling FilesAvl: %s", err)
+    }
+    StrFiles := response.NombreArchivo
+    files := strings.Split(StrFiles, "-")
+    return files
+}
 
-//func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
-  // DEBERIA verificar si el archivo existe o no
-  // 0 si existe 1 si no
-//}
+func verificar_archivo(nombre_archivo string, archivos_dis []string) int {
+    for cont := 0; cont < len(archivos_dis); cont++ {
+        if archivos_dis[cont] == nombre_archivo {
+            return 0
+        }
+    }
+    return 1
+}
+
+func check_maquinas() int{
+	m := [3]string{"dist158", "dist159", "dist160"}
+	blag:=0
+	for i := 0; i < len(m); i++ {
+		blag=0
+		var conn *grpc.ClientConn
+		mach := m[i] + ":50054"
+		conn, err := grpc.Dial(mach, grpc.WithInsecure())
+		if err != nil {
+			fmt.Println("Maquina no disponible, distribucion rechazada")
+		}
+		defer conn.Close()
+		c := pb.NewGreeterClient(conn)
+		response, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor:int32(1)})
+		if err != nil {
+			fmt.Println("Maquina no disponible, distribucion rechazada")
+			blag=1
+		}
+		fmt.Println("Maquina Respondio ",response)
+		if blag==0{
+			return i
+		}
+		defer conn.Close()
+	}
+	fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
+	return -1
+}
 
 func solicitar_archivo(){
-	//archivos_dis:=archivos_disponibles()
+	archivos_dis:=archivos_disponibles()
 	opcion:="bandera"
 	check:=1
 	archivos_dis:=[1]string{"test.pdf"}
@@ -232,20 +277,18 @@ func solicitar_archivo(){
 	    fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")
 	    fmt.Println("# Ejemplo: test.pdf ")
 	    fmt.Scanf("%s", &opcion)
-	    //check=verificar_archivo(opcion, archivos_dis)
-	    check=0
+			check=verificar_archivo(opcion, archivos_dis)
 	    if check==0{
 	    	partes,maquinas:=pedir_archivo(opcion)
-	    	//chequear las maquinas
 	    	aux_maquina:=strings.Split(maquinas, "-")
-			totalChunks:=uint64(partes)
-			aux:=0
-			for j := uint64(0); j < totalChunks; j++ {
-				aux=int(j)
-				requestChunk(aux_maquina[aux],aux,opcion)
-			}
-			stitchTheFile(opcion, totalChunks)
-			fmt.Println("[°] Archivo Reconstruido y disponible")
+				totalChunks:=uint64(partes)
+				aux:=0
+				for j := uint64(0); j < totalChunks; j++ {
+					aux=int(j)
+					requestChunk(aux_maquina[aux],aux,opcion)
+				}
+				stitchTheFile(opcion, totalChunks)
+				fmt.Println("[°] Archivo Reconstruido y disponible")
 
 	    }else{
 	    	fmt.Println("### Escriba un nombre de archivo valido")
@@ -257,13 +300,12 @@ func subir_archivo(){
 	opcion:=""
 	fmt.Println("# Ingrese el nombre exacto del archivo que va a subir")
 	fmt.Println("# Ejemplo: test.pdf ")
-	fmt.Scanf("%s", &opcion)
-	/// valor si existe el archivo
+	fmt.Scanf("%s", &opcion)	
 	fmt.Println("[°] Comenzando proceso para subir el archivo")
 	cantidad_partes:=gutTheFile(opcion)
-	// Ver a donde enviar los chunkbytes probar hasta que algun data node responda
-	// por defecto pruebo con el 158
-	maquina:="dist158"
+	maquina_dis:=check_maquinas()
+	m := [3]string{"dist158", "dist159", "dist160"}
+	maquina:=m[maquina_dis]
 	for i := 0; i < int(cantidad_partes); i++ {
 		sendChunk(i, opcion,maquina)
 	}
