@@ -73,13 +73,13 @@ func NuevaDistribucion(maquina string, aux string,partes int){
   }
   que_maquinas:= [2]int{auxiliar_general, 0}
   largo:=1
-  restantes:=partes-1
+  restantes:=partes-2
   a:=0
   inicial:=aux+"-"
   listo:=1
   for listo!=0{
     aux=inicial
-    restantes=partes-1
+    restantes=partes-2
     a=0
     bandera:=0
     for restantes!=0 {
