@@ -244,7 +244,7 @@ func solicitar_archivo() {
 			aux := 0
 			for j := uint64(0); j < totalChunks; j++ {
 				aux = int(j)
-				if checkMa(aux_maquina[aux]) {
+				if checkMa(aux_maquina[aux] == 1) {
 					requestChunk(aux_maquina[aux], aux, opcion)
 				} else {
 					fmt.Println("maquina mala")
