@@ -24,8 +24,8 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultad
 	nom := in.BookName
 	partes := int(in.Partes)
 	auxiliar := createDistribution(partes,maquina)
-	valor:=EnviarDistribucion(maquina,auxiliar,partes)
-	return &pb.Resultado{Valor: valor}, nil
+	valor:=EnviarDistribucion(maquina,auxiliar,partes,nom)
+	return &pb.Resultado{Valor: int32(valor)}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 }
 
 /*-----------------------------------------------------------------------------------------*/
-func EnviarDistribucion(maquina int, distribucion string, partes int) int{
+func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) int{
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist157:50054", grpc.WithInsecure())
 	if err != nil {
@@ -59,7 +59,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int) int{
 	}
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
-	response, err := c.CheckDistribucion(context.Background(), &pb.Book{Proposal: distribucion, BookName: bookTag,Partes: int32(partes)})
+	response, err := c.CheckDistribucion(context.Background(), &pb.Distribution{Proposal: distribucion, BookName: bookTag,Partes: int32(partes),Maquina: int32(maquina)})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
