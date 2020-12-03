@@ -195,21 +195,20 @@ func archivos_disponibles() []string {
 	}
 	StrFiles := response.NombreArchivo
 	files := strings.Split(StrFiles, "-")
-	fmt.Println(files)
 	return files
 }
 
-// func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
-// 	for i, item := range archivos_dis {
-//         if item == nombre_archivo {
-//             return 1
-//         }
-//     }
-//     return 0
-// }
+func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
+	for _, b := range archivos_dis {
+        if b == nombre_archivo {
+            return 1
+        }
+    }
+    return 0
+}
 
 func solicitar_archivo() {
-	//archivos_dis:=archivos_disponibles()
+	archivos_dis:=archivos_disponibles()
 	opcion := "bandera"
 	check := 1
 	archivos_dis := [1]string{"test.pdf"}
@@ -221,7 +220,7 @@ func solicitar_archivo() {
 		fmt.Println("Ingrese el nombre exacto de alguno de los archivos disponibles")
 		fmt.Println("# Ejemplo: test.pdf ")
 		fmt.Scanf("%s", &opcion)
-		//check=verificar_archivo(opcion, archivos_dis)
+		check = verificar_archivo(opcion, archivos_dis)
 		check = 0
 		if check == 0 {
 			partes, maquinas := pedir_archivo(opcion)
@@ -279,5 +278,6 @@ func menu() {
 
 func main() {
 	//menu()
-	archivos_disponibles()
+	weas := archivos_disponibles()
+	fmt.Println(verificar_archivo("test.pdf",weas)
 }
