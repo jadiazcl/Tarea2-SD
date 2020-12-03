@@ -181,7 +181,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 	file.Close()
 }
 
-func archivos_disponibles() /**string[]**/ {
+func archivos_disponibles() {
 	var conn *grpc.ClientConn
 	conn, err1 := grpc.Dial("dist157:50054", grpc.WithInsecure())
 	if err1 != nil {
