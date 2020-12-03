@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"log"
 	"math"
+  "strings"
 	"net"
 	"math/rand"
 	"os"
@@ -27,7 +28,7 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultad
 	auxiliar := createDistribution(partes,maquina)
 	valor:=EnviarDistribucion(maquina,auxiliar,partes,nom)
 	EnviarPartes(valor, nom, maquina  )
-	return &pb.Resultado{Valor: int32(valor)}, nil
+	return &pb.Resultado{Valor: int32(1)}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
