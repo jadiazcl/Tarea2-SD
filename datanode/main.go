@@ -82,7 +82,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 	for index := 0;  index< len(maquinas)-1;index ++ {
 		if maquinas[index]!=m[maquina]{
 			var conn *grpc.ClientConn
-			conn, err := grpc.Dial(maquinas[index]+":50055", grpc.WithInsecure())
+			conn, err := grpc.Dial(maquinas[index]+":50054", grpc.WithInsecure())
 			if err != nil {
 				log.Fatalf("did not connect: %s", err)
 			}
