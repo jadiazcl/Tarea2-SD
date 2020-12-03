@@ -53,6 +53,7 @@ func decisionOnProposal(distribucion string) int{
       fmt.Println("Maquina no disponible, distribucion rechazada")
       return i
   	}
+    fmt.Println("Maquina Respondio ",response)
     defer conn.Close()
   }
   fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
