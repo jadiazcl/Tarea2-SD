@@ -207,6 +207,20 @@ func verificar_archivo(nombre_archivo string, archivos_dis []string) int {
 	return 0
 }
 
+func checkMa(maquina string) int {
+	var conn *grpc.ClientConn
+	mach := maquina + ":50054"
+	conn, err := grpc.Dial(mach, grpc.WithInsecure())
+	if err != nil {
+		fmt.Println("Maquina no disponible, distribucion rechazada")
+		return 0
+	}
+	defer conn.Close()
+
+	fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
+	return 1
+}
+
 func solicitar_archivo() {
 	archivos_dis := archivos_disponibles()
 	opcion := "bandera"
@@ -230,7 +244,11 @@ func solicitar_archivo() {
 			aux := 0
 			for j := uint64(0); j < totalChunks; j++ {
 				aux = int(j)
-				requestChunk(aux_maquina[aux], aux, opcion)
+				if checkMa(aux_maquina[aux]) {
+					requestChunk(aux_maquina[aux], aux, opcion)
+				} else {
+					fmt.Println("maquina mala")
+				}
 			}
 			stitchTheFile(opcion, totalChunks)
 			fmt.Println("[°] Archivo Reconstruido y disponible")
@@ -277,8 +295,6 @@ func menu() {
 }
 
 func main() {
-	//menu()
-	weas := archivos_disponibles()
+	menu()
 
-	fmt.Println(verificar_archivo("test.pdf", weas))
 }
