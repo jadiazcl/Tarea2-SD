@@ -205,6 +205,7 @@ func verificar_archivo( nombre_archivo string, archivos_dis []string) int{
 		}
     return 0
 }
+}
 
 func solicitar_archivo() {
 	archivos_dis:=archivos_disponibles()
@@ -278,5 +279,6 @@ func menu() {
 func main() {
 	//menu()
 	weas := archivos_disponibles()
-	fmt.Println(verificar_archivo("test.pdf",weas)
+
+	fmt.Println(verificar_archivo("test.pdf",weas)=)
 }
