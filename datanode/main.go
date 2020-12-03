@@ -82,7 +82,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 	for index := 0;  index< len(maquinas)-1;index ++ {
 		if maquinas[index]!=m[maquina]{
 			var conn *grpc.ClientConn
-			conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
+			conn, err := grpc.Dial(maquinas[index]+":50055", grpc.WithInsecure())
 			if err != nil {
 				log.Fatalf("did not connect: %s", err)
 			}
@@ -95,7 +95,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 			c := pb.NewGreeterClient(conn)
 			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:nombre_archivo})
 			if err != nil {
-				log.Fatalf("Error when enviar distribucion: %s", err)
+				log.Fatalf("Error when enviar partes: %s", err)
 			}
 			fmt.Println("Maquina responde: ", response)
 		}
