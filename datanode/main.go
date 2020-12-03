@@ -87,7 +87,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ) str
 				log.Fatalf("did not connect: %s", err)
 			}
 			defer conn.Close()
-			chunkToSend := bookTag + "_" + strconv.FormatUint(uint64(index), 10)
+			chunkToSend := nombre_archivo + "_" + strconv.FormatUint(uint64(index), 10)
 			chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
 			if err != nil {
 				fmt.Print(err)
