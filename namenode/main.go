@@ -80,7 +80,7 @@ package main
          log.Fatal(err2)
      }
      aux := ""
-     for i := 0; i < parts; i++ {
+     for i := 0; i < parts-1; i++ {
          a := i + 1
          aux = strconv.Itoa(a)
          aux_string = "parte_" + aux + " " + maquinas[i] + "\n"

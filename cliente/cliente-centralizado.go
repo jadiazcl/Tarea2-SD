@@ -212,7 +212,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 
 func archivos_disponibles() []string {
     var conn *grpc.ClientConn
-    conn, err1 := grpc.Dial("dist157:50054", grpc.WithInsecure())
+    conn, err1 := grpc.Dial("dist157:50055", grpc.WithInsecure())
     if err1 != nil {
         log.Fatalf("did not connect: %s", err1)
     }
@@ -267,7 +267,7 @@ func check_maquinas() int{
 func solicitar_archivo(){
 	archivos_dis:=archivos_disponibles()
 	opcion:="bandera"
-	check:=1	
+	check:=1
 	for check!=0{
 		fmt.Println("### Los archivos disponibles son los siguientes:")
 		for i := 0; i < len(archivos_dis); i++ {
