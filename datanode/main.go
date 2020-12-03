@@ -61,7 +61,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) {
 	maquinas:=strings.Split(distribucion, "-")
 	m := [3]string{"dist158", "dist159", "dist160"}
-	for index := 0;  index< len(maquinas)-1; ++ {
+	for index := 0;  index< len(maquinas)-1;index ++ {
 		if maquinas[index]!=m[maquina]{
 			var conn *grpc.ClientConn
 			conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
