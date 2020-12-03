@@ -19,7 +19,7 @@ type Server struct {
 
 /*-----------------------------------------------------------------------------------------*/
 
-func (s *Server) YadaYada(ctx context.Context, in *pb.Book) (*pb.Distribution, error) {
+func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultado, error) {
 	maquina := int(in.Request)
 	nom := in.BookName
 	partes := int(in.Partes)
@@ -52,29 +52,29 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 
 /*-----------------------------------------------------------------------------------------*/
 func EnviarDistribucion(maquina int, distribucion string, partes int) int{
-	var conn *grpc.ClientConn	
+	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist157:50054", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
-	defer conn.Close()	
-	c := pb.NewGreeterClient(conn)	
-	response, err := c.CheckDistribucion(context.Background(), &pb.Book{Proposal: distribucion, BookName: bookTag,Partes: int32(partes)})	 
+	defer conn.Close()
+	c := pb.NewGreeterClient(conn)
+	response, err := c.CheckDistribucion(context.Background(), &pb.Book{Proposal: distribucion, BookName: bookTag,Partes: int32(partes)})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
 	if response.valor==0{
-		log.Printf("La distribucion fue exitosa")	
+		log.Printf("La distribucion fue exitosa")
 		return 0
 	}else{
-		log.Printf("La distribucion no fue posible")	
+		log.Printf("La distribucion no fue posible")
 		return -1
-	}		
+	}
 }
 
 
 /*-----------------------------------------------------------------------------------------*/
-func createDistribution(numParts int,  maquina int ) string {	
+func createDistribution(numParts int,  maquina int ) string {
 	m := [3]string{"dist158", "dist159", "dist160"}
 	aux:=m[maquina]	+"-"
 	cantidad:=1
@@ -82,17 +82,17 @@ func createDistribution(numParts int,  maquina int ) string {
 		if i!=maquina{
 			if cantidad<numParts{
 				cantidad=cantidad+1
-				aux=aux+m[i]+"-"						
-			}			
-		}		
+				aux=aux+m[i]+"-"
+			}
+		}
 	}
 	if cantidad<numParts{
-		for j := cantidad; j<numParts; j-- {			
+		for j := cantidad; j<numParts; j-- {
 			randomIndex := rand.Intn(len(m))
 			pick := m[randomIndex]
-			aux=aux+pick+"-"									
+			aux=aux+pick+"-"
 		}
-	}		
+	}
 	fmt.Println("Distribution")
 	fmt.Println(aux)
 	return aux
