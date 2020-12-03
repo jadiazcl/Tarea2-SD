@@ -43,7 +43,7 @@ message Distribution{
   string Proposal = 1;
   string BookName =2;
   int32 Partes = 3;
-  int32 Maquina = 3;
+  int32 Maquina = 4;
 }
 
 service Greeter {
