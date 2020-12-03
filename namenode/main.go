@@ -49,7 +49,7 @@ func FilesOnLog() string {
 		cantidad_saltos, err = strconv.Atoi(partes[1])
 
 		nombre_registro := partes[0]
-		XFiles = XFiles + nombre_registro
+		XFiles = XFiles + "-" + nombre_registro
 		for index := 0; index < cantidad_saltos; index++ {
 			fileScanner.Scan()
 		}

@@ -181,7 +181,7 @@ func stitchTheFile(originalName string, totalPartsNum uint64) {
 	file.Close()
 }
 
-func archivos_disponibles() {
+func archivos_disponibles() []string {
 	var conn *grpc.ClientConn
 	conn, err1 := grpc.Dial("dist157:50054", grpc.WithInsecure())
 	if err1 != nil {
@@ -193,8 +193,10 @@ func archivos_disponibles() {
 	if err != nil {
 		log.Fatalf("Error when calling FilesAvl: %s", err)
 	}
-	fmt.Println(response.NombreArchivo)
-	return
+	StrFiles := response.NombreArchivo
+	files := strings.Split(StrFiles, "-")
+	fmt.Println(files)
+	return files
 }
 
 // func verificar_archivo( nombre_archivo string, archivos_dis string[]) int{
