@@ -54,16 +54,16 @@ func decisionOnProposal(distribucion string) int{
 func NuevaDistribucion(maquina int, aux string,partes int) int{
   m := [3]string{"dist158", "dist159", "dist160"}
   que_maquinas:=[2]int{maquina}
-  largo=1
-  restantes=partes-1
-  a=0
-  inicial=aux
-  listo=1
+  largo:=1
+  restantes:=partes-1
+  a:=0
+  inicial:=aux
+  listo:=1
   for listo!=0{
     aux=inicial
     for restantes!=0 {
       for index := 0; index < largo; index++ {
-        if a!=que_maquinas[index]{
+        if a!=que_maquinas[index] {
           aux=aux+m[a]+"-"
           restantes=restantes-1
         }
