@@ -27,7 +27,7 @@ package main
  	return &pb.RespuestaUbicacion{Partes: int32(partes),Ubicaciones:ubicaciones}, nil
  }
 
- func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
+ func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Distribution, error) {
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
   if resultado!="check"{
