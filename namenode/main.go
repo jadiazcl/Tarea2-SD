@@ -38,6 +38,7 @@ package main
 
 func decisionOnProposal(distribucion string) int{
   maquinas:=strings.Split(distribucion, "-")
+  fmt.Println(distribucion)
   for i := 0; i < len(maquinas); i++ {
     var conn *grpc.ClientConn
     mach := maquinas[i] + ":50054"
