@@ -62,7 +62,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
   for listo!=0{
     aux=inicial
     for restantes!=0 {
-      for index := 0; index < largo; ++ {
+      for index := 0; index < largo; index++ {
         if a!=que_maquinas[index]{
           aux=aux+m[a]+"-"
           restantes=restantes-1
