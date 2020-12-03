@@ -217,9 +217,9 @@ func checkMa(maquina string) int {
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
-	_, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
-	if err != nil {
-		return 1
+	re, err1 := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
+	if err1 != nil {
+		return int(re)
 	} else {
 		return 0
 	}
