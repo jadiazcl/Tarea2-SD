@@ -299,6 +299,6 @@ func menu() {
 
 func main() {
 	//menu()
-	checkMa("dist159")
+	checkMa("dist160")
 
 }
