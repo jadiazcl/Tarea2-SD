@@ -56,6 +56,6 @@ service Greeter {
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
   rpc YadaYada (ClientCheck) returns (Resultado) {}
-  rpc CheckDistribucion (Distribution) returns (Resultado) {}
+  rpc CheckDistribucion (Distribution) returns (Distribution) {}
   rpc TesteoEstado (Bla) returns (Bla) {}
 }

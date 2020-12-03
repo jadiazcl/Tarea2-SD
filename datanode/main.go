@@ -26,6 +26,7 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultad
 	partes := int(in.Partes)
 	auxiliar := createDistribution(partes,maquina)
 	valor:=EnviarDistribucion(maquina,auxiliar,partes,nom)
+
 	return &pb.Resultado{Valor: int32(valor)}, nil
 }
 
@@ -58,7 +59,36 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 }
 
 /*-----------------------------------------------------------------------------------------*/
-func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) int{
+func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) string{
+	maquinas:=strings.Split(distribucion, "-")
+	m := [3]string{"dist158", "dist159", "dist160"}
+	for index := 0;  < len(maquinas)-1; ++ {
+		if maquinas[index]!=m[maquina]{
+			var conn *grpc.ClientConn
+			conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
+			if err != nil {
+				log.Fatalf("did not connect: %s", err)
+			}
+			defer conn.Close()
+			chunkToSend := bookTag + "_" + strconv.FormatUint(uint64(index), 10)
+			chunkBytes, err := ioutil.ReadFile(chunkToSend) // just pass the file name
+			if err != nil {
+				fmt.Print(err)
+			}
+			c := pb.NewGreeterClient(conn)
+			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:bookTag})
+			if err != nil {
+				log.Fatalf("Error when enviar distribucion: %s", err)
+			}
+			return response.Proposal
+		}
+		fmt.Println("Parte enviada")
+	}
+}
+
+/*-----------------------------------------------------------------------------------------*/
+func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ) string{
+
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist157:50055", grpc.WithInsecure())
 	if err != nil {
@@ -70,13 +100,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 	if err != nil {
 		log.Fatalf("Error when enviar distribucion: %s", err)
 	}
-	if response.Valor==0{
-		log.Printf("La distribucion fue exitosa")
-		return 0
-	}else{
-		log.Printf("La distribucion no fue posible")
-		return -1
-	}
+	return response.Proposal
 }
 
 

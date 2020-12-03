@@ -31,10 +31,14 @@ package main
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
   if resultado!="check"{
-    NuevaDistribucion(resultado,maquinas[0],len(maquinas))
+    resultado:=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
   }
-  return &pb.Resultado{Valor:int32(1)}, nil
+  return &pb.Distribution{Proposal:resultado}, nil
  }
+
+func escribir_log(distribucion string, nombre_libro string){
+
+}
 
 func decisionOnProposal(distribucion string) string{
   maquinas:=strings.Split(distribucion, "-")
@@ -61,7 +65,7 @@ func decisionOnProposal(distribucion string) string{
   return "check"
 }
 
-func NuevaDistribucion(maquina string, aux string,partes int){
+func NuevaDistribucion(maquina string, aux string,partes int) string{
   m := [3]string{"dist158", "dist159", "dist160"}
   auxiliar_general:=0
   if maquina=="dist158"{
@@ -105,7 +109,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
         a++
       }
     }
-    salida:=decisionOnProposal(aux)    
+    salida:=decisionOnProposal(aux)
     if salida!="check"{
       auxiliar_general:=0
       if salida=="dist158"{
@@ -123,11 +127,8 @@ func NuevaDistribucion(maquina string, aux string,partes int){
     }
   }
   fmt.Println("Nueva Distribucion: ",aux)
-  return
+  return aux
 }
-
-
-
 
 
  // Esta funcion busca la ubicacion de las partes del archivo
