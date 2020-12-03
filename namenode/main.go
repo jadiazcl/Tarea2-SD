@@ -71,7 +71,7 @@ func NuevaDistribucion(maquina string, aux string,partes int){
   }else{
     auxiliar_general=2
   }
-  que_maquinas:= [2]int{auxiliar_general, 0}  
+  que_maquinas:= [2]int{auxiliar_general, 0}
   largo:=1
   restantes:=partes-1
   a:=0
@@ -81,12 +81,20 @@ func NuevaDistribucion(maquina string, aux string,partes int){
     aux=inicial
     restantes=partes-1
     a=0
+    bandera:=0
     for restantes!=0 {
-      for index := 0; index < largo; index++ {
-        if a!=que_maquinas[index] {
-          aux=aux+m[a]+"-"
-          restantes=restantes-1
-          index=largo
+      if a!=que_maquinas[0] {
+        aux=aux+m[a]+"-"
+        restantes=restantes-1
+        bandera=1
+      }
+      if bandera==0{
+        if largo==2{
+          if a!=que_maquinas[1] {
+            aux=aux+m[a]+"-"
+            restantes=restantes-1
+            bandera=1
+          }
         }
       }
       if a==2{
