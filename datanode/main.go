@@ -8,6 +8,7 @@ import (
 	"math"
 	"net"
 	"math/rand"
+	"strings"
 	"os"
 	"context"
 	"google.golang.org/grpc"
@@ -78,8 +79,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:bookTag})
 			if err != nil {
 				log.Fatalf("Error when enviar distribucion: %s", err)
-			}
-			return response.Proposal
+			}			
 		}
 		fmt.Println("Parte enviada")
 	}
