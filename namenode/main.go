@@ -31,8 +31,8 @@ package main
   resultado:=decisionOnProposal(in.Proposal)
   maquinas:=strings.Split(in.Proposal, "-")
   if resultado!="check"{
-    resultado:=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
-  }
+    resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
+  }  
   return &pb.Distribution{Proposal:resultado}, nil
  }
 
