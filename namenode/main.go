@@ -38,7 +38,7 @@ package main
   if resultado!="check"{
     resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
   }
-  escribir_log(distribucion, in.BookName)
+  escribir_log(resultado, in.BookName)
   return &pb.Distribution{Proposal:resultado}, nil
  }
 
