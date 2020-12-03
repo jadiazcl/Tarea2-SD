@@ -2,15 +2,17 @@ syntax = "proto3";
 package pipeline;
 
 
-option go_package ="Lab2-Centralizada/Tarea2-SD/pipeline";
-
-message Bla {
-  int32 Valor = 1;
-}
+option go_package ="Lab2-Test/Tarea2-SD/pipeline";
 
 message Book {
   int32 Request = 1;
   string BookName =2;
+}
+
+message ClientCheck {
+  int32 Request = 1;
+  string BookName =2;
+  int32 Partes = 3;
 }
 
 message Test {
@@ -37,11 +39,24 @@ message Resultado {
   int32 Valor = 1;
 }
 
+message Distribution{
+  string Proposal = 1;
+  string BookName =2;
+  int32 Partes = 3;
+  int32 Maquina = 4;
+}
+
+message Bla {
+  int32 Valor = 1;
+}
+
+
 service Greeter {
   rpc SayHello (Book) returns (Test) {}
   rpc SolicitarUbicaciones (ConsultaUbicacion) returns (RespuestaUbicacion) {}
   rpc ClientToDataNode (DataChuck) returns (Resultado) {}
-  rpc FilesAvl (Resultado) returns (ConsultaUbicacion) {}
+  rpc YadaYada (ClientCheck) returns (Resultado) {}
+  rpc CheckDistribucion (Distribution) returns (Distribution) {}
   rpc TesteoEstado (Bla) returns (Bla) {}
-
+  rpc FilesAvl (Resultado) returns (ConsultaUbicacion) {}
 }
