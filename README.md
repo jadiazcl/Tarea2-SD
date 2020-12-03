@@ -1,11 +1,5 @@
 # Tarea2-SD
+EL laboratorio será encontrado en la ruta:
+cd /usr/local/go/src/Lab2/Tarea2-SD
 
-Para correr esta tarea hay que saber que:
-```
-Name Node =   dist157
-Data Node 1 = dist158
-Data Node 2 = dist159
-Data Node 3 = dist160
-
-``` 
-
+En cada maquina se encontrara una carpeta para cada tipo de nodo, por lo tanto para ejecutar el codigo de un nodo debera hacer "make" en dicha carpeta.

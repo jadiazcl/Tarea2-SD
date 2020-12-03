@@ -1,2 +1,2 @@
 run:
-        go run cliente-centralizado.go
+	go run cliente-centralizado.go
