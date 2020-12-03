@@ -97,6 +97,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 			if err != nil {
 				log.Fatalf("Error when enviar distribucion: %s", err)
 			}
+			fmt.Println("Maquina responde: ", response)
 		}
 		fmt.Println("Parte enviada")
 	}
