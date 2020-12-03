@@ -304,11 +304,5 @@ func menu() {
 }
 
 func main() {
-	//menu()
-	if checkMa("dist157") == 0 {
-		fmt.Println("maquina qla apaga")
-	} else {
-		fmt.Println("prendia")
-	}
-
+	menu()
 }
