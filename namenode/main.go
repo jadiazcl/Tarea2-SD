@@ -67,7 +67,7 @@ func escribir_log(distribucion string, nombre_libro string) {
 	defer theLog.Close()
 	parts := len(maquinas)
 	strParts := strconv.Itoa(parts)
-	aux_string := nombre_libro + strParts + "\n"
+	aux_string := nombre_libro + " " + strParts + "\n"
 	_, err2 := theLog.WriteString(aux_string)
 	if err2 != nil {
 		log.Fatal(err2)
@@ -76,7 +76,7 @@ func escribir_log(distribucion string, nombre_libro string) {
 	for i := 0; i < parts; i++ {
 		a := i + 1
 		aux = strconv.Itoa(a)
-		aux_string = "parte_" + aux + " " + maquinas[i]
+		aux_string = "parte_" + aux + " " + maquinas[i] + "\n"
 		_, err3 := theLog.WriteString(aux_string)
 		if err2 != nil {
 			log.Fatal(err3)
