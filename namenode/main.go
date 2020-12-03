@@ -52,6 +52,7 @@ func decisionOnProposal(distribucion string) string{
     response, err := c.TesteoEstado(context.Background(), &pb.Bla{Valor:int32(1)})
   	if err != nil {
       fmt.Println("Maquina no disponible, distribucion rechazada")
+      fmt.Println(maquinas[i])
       return maquinas[i]
   	}
     fmt.Println("Maquina Respondio ",response)
