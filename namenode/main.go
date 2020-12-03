@@ -79,6 +79,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
         if a!=que_maquinas[index] {
           aux=aux+m[a]+"-"
           restantes=restantes-1
+          index=largo
         }
       }
       if a==2{
