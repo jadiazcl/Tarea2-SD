@@ -88,7 +88,7 @@ func createDistribution(numParts int,  maquina int ) string {
 		}
 	}
 	if cantidad<numParts{
-		for j := cantidad; j<numParts; j-- {
+		for j := cantidad; j<numParts; j++ {
 			randomIndex := rand.Intn(len(m))
 			pick := m[randomIndex]
 			aux=aux+pick+"-"
