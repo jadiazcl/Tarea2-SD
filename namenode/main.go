@@ -58,6 +58,32 @@ func FilesOnLog() string {
 	return XFiles
 }
 
+func escribir_log(distribucion string, nombre_libro string) {
+	maquinas := strings.Split(distribucion, "-")
+	theLog, err := os.Create("log.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer theLog.Close()
+	parts := len(maquinas)
+	aux_string := nombre_libro + parts + "\n"
+	_, err2 := theLog.WriteString(aux_string)
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+	aux := ""
+	for i := 0; i < parts; i++ {
+		aux = strconv.Atoi(i + 1)
+		aux_string = "parte_" + aux + " " + maquinas[i]
+		_, err3 := theLog.WriteString(aux_string)
+		if err2 != nil {
+			log.Fatal(err3)
+		}
+
+	}
+
+}
+
 // Esta funcion busca la ubicacion de las partes del archivo
 func buscar_en_log(nombre_libro string) (int, string) {
 	file, err := os.Open("log.txt")
@@ -112,4 +138,5 @@ func main() {
 		fmt.Println("Ingrese -1 para cerrar el programa ")
 		fmt.Scanf("%d", &opcion)
 	}
+	escribir_log("m1-m2-m3-m4-m5", "file")
 }
