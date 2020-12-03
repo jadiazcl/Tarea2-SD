@@ -71,6 +71,8 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
   listo:=1
   for listo!=0{
     aux=inicial
+    restantes=partes-1
+    a=0
     for restantes!=0 {
       for index := 0; index < largo; index++ {
         if a!=que_maquinas[index] {
@@ -88,7 +90,7 @@ func NuevaDistribucion(maquina int, aux string,partes int) int{
     que_maquinas[1]=listo
   }
   fmt.Println("Nueva Distribucion: ",aux)
-  return 0
+  return
 }
 
 
