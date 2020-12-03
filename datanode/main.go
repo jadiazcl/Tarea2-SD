@@ -25,9 +25,8 @@ func (s *Server) YadaYada(ctx context.Context, in *pb.ClientCheck) (*pb.Resultad
 	nom := in.BookName
 	partes := int(in.Partes)
 	auxiliar := createDistribution(partes,maquina)
-	valor:=EnviarDistribucion(maquina,auxiliar,partes,nom)
-
-	return &pb.Resultado{Valor: int32(valor)}, nil
+	EnviarDistribucion(maquina,auxiliar,partes,nom)	 
+	return &pb.Resultado{Valor: int32(1)}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -59,7 +58,7 @@ func (s *Server) ClientToDataNode(ctx context.Context, in *pb.DataChuck) (*pb.Re
 }
 
 /*-----------------------------------------------------------------------------------------*/
-func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) string{
+func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag string ) {
 	maquinas:=strings.Split(distribucion, "-")
 	m := [3]string{"dist158", "dist159", "dist160"}
 	for index := 0;  < len(maquinas)-1; ++ {
