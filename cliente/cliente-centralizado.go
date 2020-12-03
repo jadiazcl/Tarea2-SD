@@ -217,9 +217,9 @@ func checkMa(maquina string) int {
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
-	re, err1 := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
+	_, err1 := c.TesteoEstado(context.Background(), &pb.Bla{Valor: int32(1)})
 	if err1 != nil {
-		return int(re.Valor)
+		return 1
 	} else {
 		return 0
 	}
@@ -307,6 +307,8 @@ func main() {
 	//menu()
 	if checkMa("dist160") == 0 {
 		fmt.Println("maquina qla apaga")
+	}esle{
+		fmt.Println("prendia")
 	}
 
 }
