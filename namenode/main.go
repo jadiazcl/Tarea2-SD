@@ -37,8 +37,10 @@ package main
   maquinas:=strings.Split(in.Proposal, "-")
   if resultado!="check"{
     resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
+    escribir_log(resultado, in.BookName)
+  }else{
+    escribir_log(in.Proposal, in.BookName)
   }
-  escribir_log(resultado, in.BookName)
   return &pb.Distribution{Proposal:resultado}, nil
  }
 
@@ -67,7 +69,7 @@ package main
 
  func escribir_log(distribucion string, nombre_libro string) {
      maquinas := strings.Split(distribucion, "-")
-     theLog, err := os.Create("log.txt")
+     theLog, err := os.Open("log.txt")
      if err != nil {
          log.Fatal(err)
      }
