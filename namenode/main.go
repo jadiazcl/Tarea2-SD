@@ -29,6 +29,10 @@ package main
 
  func (s *Server) CheckDistribucion(ctx context.Context, in *pb.Distribution) (*pb.Resultado, error) {
   resultado:=decisionOnProposal(in.Proposal)
+  maquinas:=strings.Split(in.Proposal, "-")
+  if resultado!=0{
+    resultado=NuevaDistribucion(resultado,maquinas[0],len(maquinas))
+  }
   return &pb.Resultado{Valor:int32(resultado)}, nil
  }
 
@@ -40,13 +44,45 @@ func decisionOnProposal(distribucion string) int{
     conn, err := grpc.Dial(mach, grpc.WithInsecure())
     if err != nil {
       fmt.Println("Maquina no disponible, distribucion rechazada")
-      return -1
+      return i
     }
     defer conn.Close()
   }
   fmt.Println("Todas las maquinas disponibles, distribucion aceptada")
   return 0
 }
+func NuevaDistribucion(maquina int, aux string,partes int) int{
+  m := [3]string{"dist158", "dist159", "dist160"}
+  que_maquinas:=[2]int{maquina}
+  largo=1
+  restantes=partes-1
+  a=0
+  inicial=aux
+  listo=1
+  for listo!=0{
+    aux=inicial
+    for restantes!=0 {
+      for index := 0; index < largo; ++ {
+        if a!=que_maquinas[index]{
+          aux=aux+m[a]+"-"
+          restantes=restantes-1
+        }
+      }
+      if a==2{
+        a=0
+      }
+      a++
+    }
+    listo=decisionOnProposal(aux)
+    largo=largo+1
+    que_maquinas[1]=listo
+  }
+  return 0
+}
+
+
+
+
 
  // Esta funcion busca la ubicacion de las partes del archivo
  func buscar_en_log(nombre_libro string) (int, string){
