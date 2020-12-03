@@ -41,7 +41,7 @@ func (s *Server) SayHello(ctx context.Context, in *pb.Book) (*pb.Test, error) {
 func (s *Server) TesteoEstado(ctx context.Context, in *pb.Bla) (*pb.Bla, error) {
 	req := int(in.Valor)
 	log.Printf("Se solicitará el chunk: %d ", req)
-	return &pb.Bla{Valor:1}, nil
+	return &pb.Bla{Valor:int32(1)}, nil
 }
 
 /*-----------------------------------------------------------------------------------------*/
