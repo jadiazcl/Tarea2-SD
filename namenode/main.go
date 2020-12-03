@@ -77,7 +77,7 @@ package main
      parts := len(maquinas)
      strParts := strconv.Itoa(parts)
      aux_string := nombre_libro + " " + strParts + "\n"
-     _, err2 := theLog.WriteString(aux_string)
+     _, err2 := theLog.Write(aux_string)
      if err2 != nil {
          log.Fatal(err2)
      }
@@ -86,7 +86,7 @@ package main
          a := i + 1
          aux = strconv.Itoa(a)
          aux_string = "parte_" + aux + " " + maquinas[i] + "\n"
-         _, err3 := theLog.WriteString(aux_string)
+         _, err3 := theLog.Write(aux_string)
          if err2 != nil {
              log.Fatal(err3)
          }
