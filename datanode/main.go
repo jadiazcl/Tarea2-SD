@@ -76,7 +76,7 @@ func EnviarDistribucion(maquina int, distribucion string, partes int,bookTag str
 }
 
 /*-----------------------------------------------------------------------------------------*/
-func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ) string{
+func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ){
 	maquinas:=strings.Split(distribucion, "-")
 	m := [3]string{"dist158", "dist159", "dist160"}
 	for index := 0;  index< len(maquinas)-1;index ++ {
@@ -96,7 +96,7 @@ func EnviarPartes(distribucion string, nombre_archivo string, maquina int  ) str
 			response, err := c.ClientToDataNode(context.Background(), &pb.DataChuck{Valor: int32(index), Chunck: chunkBytes,NombreArchivo:nombre_archivo})
 			if err != nil {
 				log.Fatalf("Error when enviar distribucion: %s", err)
-			}			
+			}
 		}
 		fmt.Println("Parte enviada")
 	}
